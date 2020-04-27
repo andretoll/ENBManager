@@ -11,4 +11,8 @@
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ENBManager.Core\ENBManager.Core.csproj" />
+  </ItemGroup>
+
 </Project>
