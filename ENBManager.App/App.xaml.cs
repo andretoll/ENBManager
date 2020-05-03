@@ -1,4 +1,8 @@
 ﻿using ENBManager.Core.Views;
+using ENBManager.Modules.SkyrimSE;
+using Prism.Ioc;
+using Prism.Modularity;
+using Prism.Unity;
 using System.Windows;
 
 namespace ENBManager.App
@@ -6,14 +10,20 @@ namespace ENBManager.App
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override Window CreateShell()
         {
-            base.OnStartup(e);
+            return Container.Resolve<Shell>();
+        }
 
-            MainWindow window = new MainWindow();
-            window.ShowDialog();
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+        }
+
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
+        {
+            moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
         }
     }
 }

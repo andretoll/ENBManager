@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Wpf" Version="7.2.0.1422" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SkyrimSE\Models\" />
+    <Folder Include="SkyrimSE\ViewModels\" />
+    <Folder Include="SkyrimSE\Views\" />
+  </ItemGroup>
+
+</Project>
