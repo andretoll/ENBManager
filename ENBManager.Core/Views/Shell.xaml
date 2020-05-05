@@ -13,7 +13,7 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         Background="{DynamicResource MaterialDesignPaper}"
         mc:Ignorable="d"
-        Title="ENB Manager" 
+        Title="ENB Manager"
         Height="450" Width="800">
 
     <Window.Resources>

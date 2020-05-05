@@ -4,11 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:uc="clr-namespace:ENBManager.Core.Views.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
     
-    <Grid Background="DeepSkyBlue">
-        <TextBlock Text="THIS IS THE MENU" />
-    </Grid>
+    <DockPanel Background="DeepSkyBlue"
+               LastChildFill="True">
+        
+        <!-- Action bar-->
+        <Grid DockPanel.Dock="Bottom">
+            <uc:ActionBarView />
+        </Grid>
+        
+        <!-- Games list -->
+        <Grid>
+            <uc:GamesListView />
+        </Grid>
+        
+    </DockPanel>
     
 </UserControl>
