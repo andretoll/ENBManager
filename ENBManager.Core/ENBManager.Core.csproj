@@ -17,7 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ENBManager.Configuration\ENBManager.Configuration.csproj" />
+    <ProjectReference Include="..\ENBManager.Infrastructure\ENBManager.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Icons\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

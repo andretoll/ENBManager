@@ -1,4 +1,7 @@
-﻿using ENBManager.Core.Views;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Services;
+using ENBManager.Core.Views;
+using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Modules.SkyrimSE;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -19,6 +22,7 @@ namespace ENBManager.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            _ = containerRegistry.Register<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

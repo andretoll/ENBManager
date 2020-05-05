@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ENBManager.Core.Views.UserControls.GamesListView"
+﻿<UserControl x:Class="ENBManager.Core.Views.ActionBarView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,11 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
     <Grid>
-        <ListView>
-            <ListViewItem Content="Item 1" />
-            <ListViewItem Content="Item 2" />
-            <ListViewItem Content="Item 3" />
-        </ListView>
+        <TextBlock Text="ACTION BAR" />
     </Grid>
-    
 </UserControl>

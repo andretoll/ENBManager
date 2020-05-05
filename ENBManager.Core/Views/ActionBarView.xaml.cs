@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ENBManager.Core.Views.UserControls
+namespace ENBManager.Core.Views
 {
     /// <summary>
     /// Interaction logic for ActionBarView.xaml
