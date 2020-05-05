@@ -46,7 +46,13 @@ namespace ENBManager.Configuration.Services
                 Directory.CreateDirectory(Path.GetDirectoryName(_settings.GetFilePath()));
 
             string json = JsonConvert.SerializeObject(_settings);
+
+            // If file exists, unlock it
+            if (File.Exists(_settings.GetFilePath()))
+                File.SetAttributes(_settings.GetFilePath(), FileAttributes.Normal);
+
             File.WriteAllText(_settings.GetFilePath(), json);
+            File.SetAttributes(_settings.GetFilePath(), FileAttributes.ReadOnly);
         }
 
         #endregion

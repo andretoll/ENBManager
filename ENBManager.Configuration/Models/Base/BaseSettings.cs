@@ -35,7 +35,7 @@ namespace ENBManager.Configuration.Models.Base
         #region Public Methods
 
         /// <summary>
-        /// Gets the complete path to the settings directory.
+        /// Gets the complete path to the settings file.
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
