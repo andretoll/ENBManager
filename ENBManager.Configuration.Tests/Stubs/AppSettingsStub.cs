@@ -1,13 +1,17 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Base;
+﻿using ENBManager.Configuration.Models.Base;
 
 namespace ENBManager.Configuration.Tests.Stubs
 {
     public class AppSettingsStub : BaseSettings
     {
-        private const string FILE_PATH = "test//appsettings.json";
+        #region Private Members
+
+        private const string FILE_PATH = "test//appsettings.json"; 
+
+        #endregion
 
         #region Public Properties
-        
+
         public bool Condition { get; set; }
         public string Name { get; set; }
 

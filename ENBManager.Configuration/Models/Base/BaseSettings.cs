@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ENBManager.Infrastructure.BusinessEntities.Base
+namespace ENBManager.Configuration.Models.Base
 {
     public abstract class BaseSettings
     {

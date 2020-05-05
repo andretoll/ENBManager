@@ -1,10 +1,14 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Base;
+﻿using ENBManager.Configuration.Models.Base;
 
-namespace ENBManager.Infrastructure.BusinessEntities
+namespace ENBManager.Configuration.Models
 {
     public class AppSettings : BaseSettings
     {
-        private const string FILE_PATH = "appsettings.json";
+        #region Private Members
+
+        private const string FILE_PATH = "appsettings.json"; 
+
+        #endregion
 
         #region Public Properties
 

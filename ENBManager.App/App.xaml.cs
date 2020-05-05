@@ -1,7 +1,7 @@
 ﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Models;
 using ENBManager.Configuration.Services;
 using ENBManager.Core.Views;
-using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Modules.SkyrimSE;
 using Prism.Ioc;
 using Prism.Modularity;

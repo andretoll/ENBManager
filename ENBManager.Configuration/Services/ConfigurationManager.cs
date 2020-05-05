@@ -1,5 +1,5 @@
 ﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Infrastructure.BusinessEntities.Base;
+using ENBManager.Configuration.Models.Base;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -10,7 +10,6 @@ namespace ENBManager.Configuration.Services
     {
         #region Private Members
 
-        // Complete path to the file
         private BaseSettings _settings;
 
         #endregion

@@ -1,7 +1,7 @@
 ﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Models;
 using ENBManager.Core.Constants;
 using ENBManager.Core.Views;
-using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Mvvm;
 using Prism.Regions;
 

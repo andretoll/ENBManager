@@ -12,13 +12,6 @@ namespace ENBManager.Configuration.Tests.Configuration
     {
         private const string TEST_DIRECTORY = "ENBManager//test";
 
-        [SetUp]
-        public void Setup()
-        {
-            //string appData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            //Directory.CreateDirectory(Path.Combine(appData, TEST_DIRECTORY));
-        }
-
         [TearDown]
         public void TearDown()
         {
@@ -27,13 +20,26 @@ namespace ENBManager.Configuration.Tests.Configuration
         }
 
         [Test]
-        public void ShouldCreateSettingsFile()
+        public void ShouldCreateInitialSettingsFileWhenSaving()
         {
             // Arrange
             var manager = new ConfigurationManager<AppSettingsStub>();
 
             // Act
             manager.SaveSettings();
+
+            // Assert
+            Assert.That(File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), TEST_DIRECTORY, manager.LoadSettings().GetFilePath())));
+        }
+
+        [Test]
+        public void ShouldCreateInitialSettingsFileWhenLoading()
+        {
+            // Arrange
+            var manager = new ConfigurationManager<AppSettingsStub>();
+
+            // Act
+            _ = manager.LoadSettings();
 
             // Assert
             Assert.That(File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), TEST_DIRECTORY, manager.LoadSettings().GetFilePath())));
