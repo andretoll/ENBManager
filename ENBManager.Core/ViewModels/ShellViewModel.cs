@@ -16,13 +16,17 @@ namespace ENBManager.Core.ViewModels
 
         #endregion
 
-        public ShellViewModel(IRegionManager regionManager, IConfigurationManager<AppSettings> configManager)
+        #region Constructor
+
+        public ShellViewModel(IConfigurationManager<AppSettings> configManager, IRegionManager regionManager)
         {
             _regionManager = regionManager;
             _configManager = configManager;
 
             InitializeViews();
-        }
+        } 
+
+        #endregion
 
         #region Private Methods
 

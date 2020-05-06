@@ -8,51 +8,43 @@ namespace ENBManager.Configuration.Services
 {
     public class ConfigurationManager<T> : IConfigurationManager<T> where T : BaseSettings
     {
-        #region Private Members
-
-        private BaseSettings _settings;
-
-        #endregion
-
         #region Constructor
 
         public ConfigurationManager()
         {
-            _settings = (BaseSettings)Activator.CreateInstance(typeof(T));
+            Settings = (T)Activator.CreateInstance(typeof(T));
+            LoadSettings();
         }
 
         #endregion
 
         #region IConfigurationManager Implementation
 
-        public T LoadSettings()
+        public T Settings { get; private set; }
+
+        public void LoadSettings()
         {
-            // If directory does not exist, create it
-            if (!Directory.Exists(Path.GetDirectoryName(_settings.GetFilePath())))
+            // If directory or file does not exist, create it
+            if (!Directory.Exists(Path.GetDirectoryName(Settings.GetFilePath())) || !File.Exists(Settings.GetFilePath()))
                 SaveSettings();
 
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText(_settings.GetFilePath()));
-        }
-
-        public void ApplySettings(T settings)
-        {
-            _settings = settings;
+            Settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(Settings.GetFilePath()));
         }
 
         public void SaveSettings()
         {
             // If directory does not exist, create it
-            if (!Directory.Exists(Path.GetDirectoryName(_settings.GetFilePath())))
-                Directory.CreateDirectory(Path.GetDirectoryName(_settings.GetFilePath()));
+            if (!Directory.Exists(Path.GetDirectoryName(Settings.GetFilePath())))
+                Directory.CreateDirectory(Path.GetDirectoryName(Settings.GetFilePath()));
 
-            string json = JsonConvert.SerializeObject(_settings);
+            string json = JsonConvert.SerializeObject(Settings);
 
             // If file exists, unlock it
-            if (File.Exists(_settings.GetFilePath()))
-                File.SetAttributes(_settings.GetFilePath(), FileAttributes.Normal);
+            if (File.Exists(Settings.GetFilePath()))
+                File.SetAttributes(Settings.GetFilePath(), FileAttributes.Normal);
 
-            File.WriteAllText(_settings.GetFilePath(), json);
-            File.SetAttributes(_settings.GetFilePath(), FileAttributes.ReadOnly);
+            File.WriteAllText(Settings.GetFilePath(), json);
+            File.SetAttributes(Settings.GetFilePath(), FileAttributes.ReadOnly);
         }
 
         #endregion

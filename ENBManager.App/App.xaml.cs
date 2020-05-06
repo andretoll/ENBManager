@@ -1,10 +1,14 @@
 ﻿using ENBManager.Configuration.Interfaces;
 using ENBManager.Configuration.Models;
 using ENBManager.Configuration.Services;
+using ENBManager.Core.Interfaces;
+using ENBManager.Core.Services;
+using ENBManager.Core.ViewModels;
 using ENBManager.Core.Views;
 using ENBManager.Modules.SkyrimSE;
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Services.Dialogs;
 using Prism.Unity;
 using System.Windows;
 
@@ -15,6 +19,13 @@ namespace ENBManager.App
     /// </summary>
     public partial class App : PrismApplication
     {
+        protected override void InitializeShell(Window shell)
+        {
+            RunDiscoverGames();
+
+            base.InitializeShell(shell);
+        }
+
         protected override Window CreateShell()
         {
             return Container.Resolve<Shell>();
@@ -22,12 +33,35 @@ namespace ENBManager.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            _ = containerRegistry.Register<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
+            _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
+            _ = containerRegistry.Register<IGameLocator, GameLocator>();
+            _ = containerRegistry.Register<IGameRegistry, GameRegistry>();
+            containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
+        }
+
+        private void RunDiscoverGames()
+        {
+            var manager = Container.Resolve<IConfigurationManager<AppSettings>>();
+
+            // If app has not yet initialized, run the discover games tool
+            if (!manager.Settings.Initialized)
+            {
+                Container.Resolve<IDialogService>().ShowDialog(nameof(DiscoverGamesDialog), new DialogParameters(), (dr) =>
+                {
+                    if (dr.Result != ButtonResult.OK)
+                        Current.Shutdown();
+                    else
+                    {
+                        manager.Settings.Initialized = true;
+                        manager.SaveSettings();
+                    }
+                });
+            }
         }
     }
 }

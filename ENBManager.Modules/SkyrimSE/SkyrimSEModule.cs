@@ -4,7 +4,6 @@ using System;
 
 namespace ENBManager.Modules.SkyrimSE
 {
-    [Module(ModuleName = "SkyrimSEModule", OnDemand = true)]
     public class SkyrimSEModule : IModule
     {
         public void OnInitialized(IContainerProvider containerProvider)

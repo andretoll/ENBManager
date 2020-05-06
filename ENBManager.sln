@@ -7,19 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.App", "ENBManage
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Localization", "ENBManager.Localization\ENBManager.Localization.csproj", "{526F7E63-4C9A-4579-93AD-EA29977B3627}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Infrastructure", "ENBManager.Infrastructure\ENBManager.Infrastructure.csproj", "{824E5827-C105-4217-A707-3FF4DF834FA3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Core", "ENBManager.Core\ENBManager.Core.csproj", "{2EC6104F-2856-4A72-B70A-816F2191D75F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Core.Tests", "ENBManager.Core.Tests\ENBManager.Core.Tests.csproj", "{AA96D0D1-0522-4101-89DB-215B6130E810}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Modules", "ENBManager.Modules\ENBManager.Modules.csproj", "{7ADEC6FE-E444-44F1-AEF9-3B0DBF0CC36E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENBManager.Configuration", "ENBManager.Configuration\ENBManager.Configuration.csproj", "{E38A7E54-819A-4E53-AAD0-939942486067}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Configuration", "ENBManager.Configuration\ENBManager.Configuration.csproj", "{E38A7E54-819A-4E53-AAD0-939942486067}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENBManager.Configuration.Tests", "ENBManager.Configuration.Tests\ENBManager.Configuration.Tests.csproj", "{86943B0B-D266-411D-9027-823EE7B25EB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Configuration.Tests", "ENBManager.Configuration.Tests\ENBManager.Configuration.Tests.csproj", "{86943B0B-D266-411D-9027-823EE7B25EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENBManager.TestUtils", "ENBManager.TestUtils\ENBManager.TestUtils.csproj", "{6268396A-7388-440E-A467-0254B439FD5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.TestUtils", "ENBManager.TestUtils\ENBManager.TestUtils.csproj", "{6268396A-7388-440E-A467-0254B439FD5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +43,6 @@ Global
 		{526F7E63-4C9A-4579-93AD-EA29977B3627}.Release|Any CPU.Build.0 = Release|Any CPU
 		{526F7E63-4C9A-4579-93AD-EA29977B3627}.Release|x64.ActiveCfg = Release|x64
 		{526F7E63-4C9A-4579-93AD-EA29977B3627}.Release|x64.Build.0 = Release|x64
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Debug|x64.ActiveCfg = Debug|x64
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Debug|x64.Build.0 = Debug|x64
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Release|x64.ActiveCfg = Release|x64
-		{824E5827-C105-4217-A707-3FF4DF834FA3}.Release|x64.Build.0 = Release|x64
 		{2EC6104F-2856-4A72-B70A-816F2191D75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EC6104F-2856-4A72-B70A-816F2191D75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EC6104F-2856-4A72-B70A-816F2191D75F}.Debug|x64.ActiveCfg = Debug|x64

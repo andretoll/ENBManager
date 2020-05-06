@@ -22,8 +22,8 @@ namespace ENBManager.Configuration.Tests.Configuration
         [TearDown]
         public void TearDown()
         {
-            File.SetAttributes(Path.Combine(_configManager.LoadSettings().GetFilePath()), FileAttributes.Normal);
-            Directory.Delete(Path.GetDirectoryName(_configManager.LoadSettings().GetFilePath()), true);
+            File.SetAttributes(Path.Combine(_configManager.Settings.GetFilePath()), FileAttributes.Normal);
+            Directory.Delete(Path.GetDirectoryName(_configManager.Settings.GetFilePath()), true);
         }
 
         [Test]
@@ -34,8 +34,8 @@ namespace ENBManager.Configuration.Tests.Configuration
             var configManager2 = new ConfigurationManager<AppSettingsStub>();
 
             // Act
-            var settings1 = configManager1.LoadSettings();
-            var settings2 = configManager2.LoadSettings();
+            var settings1 = configManager1.Settings;
+            var settings2 = configManager2.Settings;
 
             // Assert
             Assert.That(settings1, Is.TypeOf<AppSettings>());
@@ -49,17 +49,17 @@ namespace ENBManager.Configuration.Tests.Configuration
             _configManager.SaveSettings();
 
             // Assert
-            Assert.That(File.Exists(_configManager.LoadSettings().GetFilePath()), Is.True);
+            Assert.That(File.Exists(_configManager.Settings.GetFilePath()), Is.True);
         }
 
         [Test]
         public void ShouldCreateInitialSettingsFileWhenLoading()
         {
             // Act
-            _ = _configManager.LoadSettings();
+            _configManager.LoadSettings();
 
             // Assert
-            Assert.That(File.Exists(_configManager.LoadSettings().GetFilePath()), Is.True);
+            Assert.That(File.Exists(_configManager.Settings.GetFilePath()), Is.True);
         }
 
         [TestCase(true)]
@@ -67,15 +67,14 @@ namespace ENBManager.Configuration.Tests.Configuration
         public void ShouldSaveAndLoadSettings(bool condition)
         {
             // Arrange
-            var appSettings = _configManager.LoadSettings();
+            var appSettings = _configManager.Settings;
             string name = TestValues.GetRandomString();
             appSettings.Condition = condition;
             appSettings.Name = name;
 
             // Act
-            _configManager.ApplySettings(appSettings);
             _configManager.SaveSettings();
-            appSettings = _configManager.LoadSettings();
+            appSettings = _configManager.Settings;
 
             // Assert
             Assert.That(appSettings.Condition, Is.EqualTo(condition));
@@ -89,7 +88,25 @@ namespace ENBManager.Configuration.Tests.Configuration
             _configManager.SaveSettings();
 
             // Assert
-            Assert.That(File.GetAttributes(_configManager.LoadSettings().GetFilePath()).HasFlag(FileAttributes.ReadOnly));
+            Assert.That(File.GetAttributes(_configManager.Settings.GetFilePath()).HasFlag(FileAttributes.ReadOnly));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ShouldLoadSettingsOnConstruct(bool condition)
+        {
+            // Arrange
+            string random = TestValues.GetRandomString();
+            _configManager.Settings.Condition = condition;
+            _configManager.Settings.Name = random;
+            _configManager.SaveSettings();
+
+            // Act
+            _configManager = new ConfigurationManager<AppSettingsStub>();
+
+            // Assert
+            Assert.That(_configManager.Settings.Condition, Is.EqualTo(condition));
+            Assert.That(_configManager.Settings.Name, Is.EqualTo(random));
         }
     }
 }

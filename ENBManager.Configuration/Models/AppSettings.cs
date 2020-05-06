@@ -12,7 +12,7 @@ namespace ENBManager.Configuration.Models
 
         #region Public Properties
 
-        public bool Initialized { get; }
+        public bool Initialized { get; set; }
 
         #endregion
 

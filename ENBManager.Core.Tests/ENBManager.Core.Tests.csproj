@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ENBManager.Core\ENBManager.Core.csproj" />
+  </ItemGroup>
+
 </Project>
