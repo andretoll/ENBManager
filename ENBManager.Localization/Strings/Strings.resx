@@ -123,7 +123,7 @@
   <data name="CONTINUE" xml:space="preserve">
     <value>Continue</value>
   </data>
-  <data name="DISCOVER_GAMES" xml:space="preserve">
-    <value>Discover Games!</value>
+  <data name="INSTALLED_GAMES" xml:space="preserve">
+    <value>Installed Games</value>
   </data>
 </root>

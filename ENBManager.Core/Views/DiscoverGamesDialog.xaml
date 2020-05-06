@@ -11,7 +11,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              TextElement.FontSize="28"
-             Width="850" Height="550">
+             Width="1000" Height="600">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="{x:Type Window}">
@@ -36,14 +36,15 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <DockPanel LastChildFill="True"
-               Margin="15">
+    <DockPanel LastChildFill="True">
 
         <!-- Title -->
-        <StackPanel DockPanel.Dock="Top">
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="0 20">
 
             <TextBlock Style="{StaticResource MaterialDesignHeadline2TextBlock}" 
-                       Text="{x:Static loc:Strings.DISCOVER_GAMES}"
+                       Text="{x:Static loc:Strings.INSTALLED_GAMES}"
+                       Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
                        HorizontalAlignment="Center" />
 
         </StackPanel>
@@ -51,7 +52,8 @@
         <!-- Actions -->
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    Margin="20">
             
             <!-- Continue -->
             <Button Content="{x:Static loc:Strings.CONTINUE}"

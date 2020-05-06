@@ -15,8 +15,8 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListView ItemsSource="{Binding Games, UpdateSourceTrigger=PropertyChanged}"
-                  ItemTemplate="{StaticResource GameDataTemplate}"/>
+        <ItemsControl ItemsSource="{Binding Games, UpdateSourceTrigger=PropertyChanged}"
+                      ItemTemplate="{StaticResource GameDataTemplate}"/>
     </Grid>
     
 </UserControl>

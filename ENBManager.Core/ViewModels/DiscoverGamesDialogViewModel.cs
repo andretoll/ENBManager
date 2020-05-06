@@ -82,7 +82,7 @@ namespace ENBManager.Core.ViewModels
 
         #region IDialogAware Implementation
 
-        public string Title { get { return Localization.Strings.Strings.DISCOVER_GAMES; } }
+        public string Title { get { return Localization.Strings.Strings.INSTALLED_GAMES; } }
 
         public event Action<IDialogResult> RequestClose;
 

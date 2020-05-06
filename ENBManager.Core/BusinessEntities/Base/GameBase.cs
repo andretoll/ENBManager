@@ -7,7 +7,7 @@ namespace ENBManager.Core.BusinessEntities.Base
         public abstract string Title { get; }
         public abstract string Executable { get; }
         public abstract string InstalledLocation { get; set; }
-        public abstract BitmapImage Icon { get; set; }
+        public abstract BitmapImage Icon { get; }
 
         public bool Installed => !string.IsNullOrEmpty(InstalledLocation);
     }

@@ -79,11 +79,11 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Discover Games!.
+        ///   Looks up a localized string similar to Installed Games.
         /// </summary>
-        public static string DISCOVER_GAMES {
+        public static string INSTALLED_GAMES {
             get {
-                return ResourceManager.GetString("DISCOVER_GAMES", resourceCulture);
+                return ResourceManager.GetString("INSTALLED_GAMES", resourceCulture);
             }
         }
     }
