@@ -7,10 +7,12 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
              xmlns:views="clr-namespace:ENBManager.Core.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             TextElement.FontSize="28"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontSize="26"
              Width="1000" Height="600">
 
     <prism:Dialog.WindowStyle>
@@ -26,6 +28,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/MaterialDesign.xaml" />
+                <ResourceDictionary Source="../Resources/Lists.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -44,7 +47,7 @@
 
             <TextBlock Style="{StaticResource MaterialDesignHeadline2TextBlock}" 
                        Text="{x:Static loc:Strings.INSTALLED_GAMES}"
-                       Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                       FontWeight="DemiBold"
                        HorizontalAlignment="Center" />
 
         </StackPanel>
@@ -54,14 +57,16 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="20">
-            
+
+
             <!-- Continue -->
             <Button Content="{x:Static loc:Strings.CONTINUE}"
                     Command="{Binding ContinueCommand}"
-                    Margin="0 0 10 0"/>
+                    Margin="0 0 10 0" />
 
             <!-- Cancel -->
             <Button Content="{x:Static loc:Strings.CANCEL}"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
                     Command="{Binding CancelCommand}"/>
 
         </StackPanel>
@@ -74,7 +79,10 @@
             </Grid.ColumnDefinitions>
             
             <!-- Games list -->
-            <views:GamesListView DataContext="{Binding GamesListViewModel}" />
+            <Grid Grid.Column="0">
+                <ItemsControl ItemsSource="{Binding Games}"
+                              ItemTemplate="{StaticResource InstalledGameListViewItem}"/>
+            </Grid>
 
             <!-- Game details -->
             

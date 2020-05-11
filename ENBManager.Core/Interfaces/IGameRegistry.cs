@@ -1,4 +1,4 @@
-﻿using ENBManager.Core.BusinessEntities.Base;
+﻿using ENBManager.Core.BusinessEntities;
 using System.Collections.Generic;
 
 namespace ENBManager.Core.Interfaces
@@ -9,6 +9,6 @@ namespace ENBManager.Core.Interfaces
         /// Returns the currently supported games.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<GameBase> GetSupportedGames(); 
+        IEnumerable<InstalledGame> GetSupportedGames(); 
     }
 }

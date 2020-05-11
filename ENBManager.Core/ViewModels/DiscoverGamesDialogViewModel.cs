@@ -1,14 +1,14 @@
-﻿using ENBManager.Core.BusinessEntities.Base;
-using ENBManager.Core.Events;
+﻿using ENBManager.Core.BusinessEntities;
 using ENBManager.Core.Interfaces;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ENBManager.Core.ViewModels
 {
@@ -18,12 +18,23 @@ namespace ENBManager.Core.ViewModels
 
         private readonly IGameLocator _gameLocator;
         private readonly IGameRegistry _gameRegistry;
+        private ObservableCollection<InstalledGame> _games;
+
+        private bool AnyGamesManaged => _games != null && _games.Any(x => x.ShouldManage);
 
         #endregion
 
         #region Public Properties
 
-        public GamesListViewModel GamesListViewModel { get; set; }
+        public ObservableCollection<InstalledGame> Games
+        {
+            get { return _games; }
+            set
+            {
+                _games = value;
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -38,45 +49,43 @@ namespace ENBManager.Core.ViewModels
         #region Constructor
 
         public DiscoverGamesDialogViewModel(
-            IEventAggregator eventAggregator, 
-            IGameLocator gameLocator, 
+            IGameLocator gameLocator,
             IGameRegistry gameRegistry)
         {
             _gameLocator = gameLocator;
             _gameRegistry = gameRegistry;
 
-            eventAggregator.GetEvent<GameSelectedEvent>().Subscribe(OnGameSelected);
-
-            GamesListViewModel = new GamesListViewModel(eventAggregator);
-
-            ContinueCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.OK)));
+            ContinueCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).ObservesCanExecute(() => AnyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
-            GetDataCommand = new DelegateCommand(OnGetDataCommand);
+            GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
+        }
+
+        #endregion
+
+        #region Events
+
+        private void Game_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ContinueCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
 
         #region Private Methods
 
-        private async void OnGetDataCommand()
+        private async Task OnGetDataCommand()
         {
-            var supportedGames = _gameRegistry.GetSupportedGames();
+            Games = new ObservableCollection<InstalledGame>(_gameRegistry.GetSupportedGames());
 
-            foreach (var game in supportedGames)
+            foreach (var game in Games)
             {
+                game.PropertyChanged += Game_PropertyChanged;
                 game.InstalledLocation = await _gameLocator.Find(game.Title);
-                //TODO: Apply icon
             }
 
-            await GamesListViewModel.Initialize(supportedGames);
-
-            //TODO: Show progressbar in the meantime
+            ContinueCommand.RaiseCanExecuteChanged();
         }
 
-        private void OnGameSelected(GameBase game)
-        {
-
-        }
 
         #endregion
 
@@ -90,11 +99,10 @@ namespace ENBManager.Core.ViewModels
 
         public void OnDialogClosed()
         {
+            //TODO: For every game to manage, initialize managed directory via service
         }
 
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
-        } 
+        public void OnDialogOpened(IDialogParameters parameters) { }
 
         #endregion
     }

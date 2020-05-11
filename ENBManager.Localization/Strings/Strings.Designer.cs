@@ -61,6 +61,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string BROWSE {
+            get {
+                return ResourceManager.GetString("BROWSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string CANCEL {
@@ -84,6 +93,15 @@ namespace ENBManager.Localization.Strings {
         public static string INSTALLED_GAMES {
             get {
                 return ResourceManager.GetString("INSTALLED_GAMES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage.
+        /// </summary>
+        public static string MANAGE {
+            get {
+                return ResourceManager.GetString("MANAGE", resourceCulture);
             }
         }
     }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ENBManager.Core\ENBManager.Core.csproj" />
+    <ProjectReference Include="..\ENBManager.TestUtils\ENBManager.TestUtils.csproj" />
   </ItemGroup>
 
 </Project>
