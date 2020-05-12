@@ -8,12 +8,17 @@ namespace ENBManager.Configuration.Services
 {
     public class ConfigurationManager<T> : IConfigurationManager<T> where T : BaseSettings
     {
-        #region Constructor
+        #region Constructors
 
         public ConfigurationManager()
         {
             Settings = (T)Activator.CreateInstance(typeof(T));
             LoadSettings();
+        }
+
+        public ConfigurationManager(BaseSettings settings)
+        {
+            Settings = (T)settings;
         }
 
         #endregion
@@ -25,8 +30,7 @@ namespace ENBManager.Configuration.Services
         public void LoadSettings()
         {
             // If directory or file does not exist, create it
-            if (!Directory.Exists(Path.GetDirectoryName(Settings.GetFilePath())) || !File.Exists(Settings.GetFilePath()))
-                SaveSettings();
+            Initialize();
 
             Settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(Settings.GetFilePath()));
         }
@@ -45,6 +49,14 @@ namespace ENBManager.Configuration.Services
 
             File.WriteAllText(Settings.GetFilePath(), json);
             File.SetAttributes(Settings.GetFilePath(), FileAttributes.ReadOnly);
+        }
+
+        public void Initialize()
+        {
+            if (!File.Exists(Settings.GetFilePath()))
+            {
+                SaveSettings();
+            }
         }
 
         #endregion

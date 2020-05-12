@@ -1,28 +1,29 @@
 ﻿using ENBManager.Configuration.Models.Base;
+using System.IO;
 
 namespace ENBManager.Configuration.Models
 {
-    public class AppSettings : BaseSettings
+    public class GameSettings : BaseSettings
     {
         #region Private Members
 
-        private const string FILE_NAME = "appsettings.json"; 
+        private new const string BASE_DIRECTORY = "Games";
+        private const string FILE_NAME = "gamesettings.json";
 
         #endregion
 
         #region Settings
 
-        public bool Initialized { get; set; }
+
 
         #endregion
 
         #region Constructor
 
-        public AppSettings()
-            : base(FILE_NAME)
+        public GameSettings(string directory)
+            : base(Path.Combine(BASE_DIRECTORY, directory, FILE_NAME))
         {
             // Set factory values
-            Initialized = false;
         }
 
         #endregion

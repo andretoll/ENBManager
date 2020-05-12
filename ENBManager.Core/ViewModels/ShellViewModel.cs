@@ -1,6 +1,4 @@
-﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Configuration.Models;
-using ENBManager.Core.Constants;
+﻿using ENBManager.Core.Constants;
 using ENBManager.Core.Views;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -12,16 +10,14 @@ namespace ENBManager.Core.ViewModels
         #region Private Members
 
         private readonly IRegionManager _regionManager;
-        private readonly IConfigurationManager<AppSettings> _configManager;
 
         #endregion
 
         #region Constructor
 
-        public ShellViewModel(IConfigurationManager<AppSettings> configManager, IRegionManager regionManager)
+        public ShellViewModel(IRegionManager regionManager)
         {
             _regionManager = regionManager;
-            _configManager = configManager;
 
             InitializeViews();
         } 

@@ -1,5 +1,6 @@
 ﻿using ENBManager.Core.BusinessEntities.Base;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ENBManager.Core.BusinessEntities
@@ -20,6 +21,8 @@ namespace ENBManager.Core.BusinessEntities
                 OnPropertyChanged();
             }
         }
+
+        public override string Directory => Executable.Split('.').First();
 
         #region INotifyPropertyChanged Implementation
 

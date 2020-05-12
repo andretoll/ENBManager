@@ -20,5 +20,10 @@ namespace ENBManager.Configuration.Interfaces
         /// </summary>
         /// <param name="settings"></param>
         void SaveSettings();
+
+        /// <summary>
+        /// Initializes the current settings if the JSON file does not exists.
+        /// </summary>
+        void Initialize();
     }
 }

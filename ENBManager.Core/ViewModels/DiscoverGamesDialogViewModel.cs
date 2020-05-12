@@ -1,7 +1,8 @@
-﻿using ENBManager.Core.BusinessEntities;
+﻿using ENBManager.Configuration.Models;
+using ENBManager.Configuration.Services;
+using ENBManager.Core.BusinessEntities;
 using ENBManager.Core.Interfaces;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -22,7 +23,8 @@ namespace ENBManager.Core.ViewModels
         private readonly IGameRegistry _gameRegistry;
         private ObservableCollection<InstalledGame> _games;
 
-        private bool AnyGamesManaged => _games != null && _games.Any(x => x.ShouldManage);
+        private bool _anyGamesManaged => _games != null && _games.Any(x => x.ShouldManage);
+        private bool _aborted;
 
         #endregion
 
@@ -60,7 +62,9 @@ namespace ENBManager.Core.ViewModels
             _gameLocator = gameLocator;
             _gameRegistry = gameRegistry;
 
-            ContinueCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).ObservesCanExecute(() => AnyGamesManaged);
+            RequestClose += (obj) => { _aborted = obj.Result != ButtonResult.OK; };
+            
+            ContinueCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).ObservesCanExecute(() => _anyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
             BrowseGameCommand = new DelegateCommand<InstalledGame>((p) => OnBrowseGameCommand(p));
@@ -105,6 +109,20 @@ namespace ENBManager.Core.ViewModels
             game.OnPropertyChanged(nameof(game.InstalledLocation));
         }
 
+        private void InitializeGames()
+        {
+            if (_aborted)
+                return;
+
+            ConfigurationManager<GameSettings> configManager;
+
+            foreach (var game in _games.Where(x => x.ShouldManage))
+            {
+                configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Directory));
+                configManager.Initialize();
+            }
+        }
+
         #endregion
 
         #region IDialogAware Implementation
@@ -117,7 +135,7 @@ namespace ENBManager.Core.ViewModels
 
         public void OnDialogClosed()
         {
-            //TODO: For every game to manage, initialize managed directory via service
+            InitializeGames();
         }
 
         public void OnDialogOpened(IDialogParameters parameters) { }
