@@ -13,10 +13,7 @@ namespace ENBManager.Core.BusinessEntities
         private bool _shouldManage = true;
         public bool ShouldManage
         {
-            get
-            {
-                return _shouldManage && Installed;
-            }
+            get { return _shouldManage && Installed; }
             set
             {
                 _shouldManage = value;
@@ -28,7 +25,7 @@ namespace ENBManager.Core.BusinessEntities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         } 

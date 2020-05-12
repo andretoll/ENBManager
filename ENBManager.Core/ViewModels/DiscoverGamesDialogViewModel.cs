@@ -7,6 +7,7 @@ using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
+        private readonly IFileService _fileService;
         private readonly IGameLocator _gameLocator;
         private readonly IGameRegistry _gameRegistry;
         private ObservableCollection<InstalledGame> _games;
@@ -43,21 +45,25 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand ContinueCommand { get; set; }
         public DelegateCommand CancelCommand { get; set; }
         public DelegateCommand GetDataCommand { get; set; }
+        public DelegateCommand<InstalledGame> BrowseGameCommand { get; set; }
 
         #endregion
 
         #region Constructor
 
         public DiscoverGamesDialogViewModel(
+            IFileService fileService,
             IGameLocator gameLocator,
             IGameRegistry gameRegistry)
         {
+            _fileService = fileService;
             _gameLocator = gameLocator;
             _gameRegistry = gameRegistry;
 
             ContinueCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).ObservesCanExecute(() => AnyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
+            BrowseGameCommand = new DelegateCommand<InstalledGame>((p) => OnBrowseGameCommand(p));
         }
 
         #endregion
@@ -86,6 +92,18 @@ namespace ENBManager.Core.ViewModels
             ContinueCommand.RaiseCanExecuteChanged();
         }
 
+        private void OnBrowseGameCommand(InstalledGame game)
+        {
+            string filePath = _fileService.BrowseGameExecutable(game.Executable);
+
+            if (string.IsNullOrEmpty(filePath))
+                return;
+            
+            game.InstalledLocation = Path.GetDirectoryName(filePath);
+            game.ShouldManage = true;
+            game.OnPropertyChanged(nameof(game.Installed));
+            game.OnPropertyChanged(nameof(game.InstalledLocation));
+        }
 
         #endregion
 

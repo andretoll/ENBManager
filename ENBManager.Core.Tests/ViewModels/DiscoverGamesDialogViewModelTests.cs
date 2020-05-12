@@ -13,9 +13,10 @@ namespace ENBManager.Core.Tests.ViewModels
         [SetUp]
         public void Setup()
         {
+            var fileService = new FileServiceStub();
             var gameRegistry = new GameRegistryStub();
             var gameLocator = new GameLocatorStub();
-            _viewModel = new DiscoverGamesDialogViewModel(gameLocator, gameRegistry);
+            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, gameRegistry);
         }
 
         [Test]

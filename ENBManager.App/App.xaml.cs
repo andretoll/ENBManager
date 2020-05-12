@@ -36,6 +36,7 @@ namespace ENBManager.App
             _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IGameRegistry, GameRegistry>();
+            _ = containerRegistry.Register<IFileService, FileService>();
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
         }
 
