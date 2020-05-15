@@ -8,6 +8,23 @@ namespace ENBManager.Core.Services
 {
     public class FileService : IFileService
     {
+        #region Private Methods
+
+        private string GetFilter(FileType fileType)
+        {
+            switch (fileType)
+            {
+                case FileType.Executable:
+                    return "Executable files (* .exe) | *.exe";
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        #endregion
+
+        #region IFileService Implementation
+
         public string BrowseFile(FileType fileType)
         {
             OpenFileDialog dialog = new OpenFileDialog()
@@ -37,15 +54,6 @@ namespace ENBManager.Core.Services
             return dialog.FileName;
         }
 
-        private string GetFilter(FileType fileType)
-        {
-            switch(fileType)
-            {
-                case FileType.Executable:
-                    return "Executable files (* .exe) | *.exe";
-                default:
-                    throw new ArgumentException();
-            }
-        }
+        #endregion
     }
 }

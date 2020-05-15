@@ -10,12 +10,19 @@ namespace ENBManager.Configuration.Services
     {
         #region Constructors
 
+        /// <summary>
+        /// Constructor. Creates a new instance of the provided type. Used to read settings directly.
+        /// </summary>
         public ConfigurationManager()
         {
             Settings = (T)Activator.CreateInstance(typeof(T));
             LoadSettings();
         }
 
+        /// <summary>
+        /// Constructor. Sets the provided settings as the current settings.
+        /// </summary>
+        /// <param name="settings"></param>
         public ConfigurationManager(BaseSettings settings)
         {
             Settings = (T)settings;

@@ -35,14 +35,15 @@ namespace ENBManager.App
         {
             _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
-            _ = containerRegistry.Register<IGameRegistry, GameRegistry>();
             _ = containerRegistry.Register<IFileService, FileService>();
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
+            moduleCatalog.AddModule(SkyrimModule.GetModuleInfo());
             moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
+            moduleCatalog.AddModule(Fallout4Module.GetModuleInfo());
         }
 
         private void RunDiscoverGames()

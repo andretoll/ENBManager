@@ -1,9 +1,9 @@
-﻿using ENBManager.Core.BusinessEntities.Base;
+﻿using ENBManager.Infrastructure.BusinessEntities.Base;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace ENBManager.Core.BusinessEntities
+namespace ENBManager.Infrastructure.BusinessEntities
 {
     public abstract class InstalledGame : GameBase, INotifyPropertyChanged
     {

@@ -6,14 +6,14 @@ using System.Windows.Media.Imaging;
 
 namespace ENBManager.Modules.SkyrimSE
 {
-    public class SkyrimSEModule : InstalledGame, IModule
+    public class SkyrimModule : InstalledGame, IModule
     {
         #region InstalledGame Override
 
-        public override string Title => "The Elder Scrolls V: Skyrim Special Edition";
-        public override string Executable => "SkyrimSE.exe";
+        public override string Title => "The Elder Scrolls V: Skyrim";
+        public override string Executable => "Skyrim.exe";
         public override string InstalledLocation { get; set; }
-        public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrimse.png"));
+        public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrim.png"));
 
         #endregion
 
@@ -23,8 +23,8 @@ namespace ENBManager.Modules.SkyrimSE
         {
             return new ModuleInfo()
             {
-                ModuleName = typeof(SkyrimSEModule).Name,
-                ModuleType = typeof(SkyrimSEModule).AssemblyQualifiedName,
+                ModuleName = typeof(SkyrimModule).Name,
+                ModuleType = typeof(SkyrimModule).AssemblyQualifiedName,
                 InitializationMode = InitializationMode.OnDemand
             };
         } 

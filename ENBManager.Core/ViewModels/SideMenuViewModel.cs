@@ -2,5 +2,8 @@
 {
     public class SideMenuViewModel
     {
+        public SideMenuViewModel()
+        {
+        }
     }
 }

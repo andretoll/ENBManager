@@ -1,6 +1,8 @@
 ﻿using ENBManager.Core.Tests.Stubs;
 using ENBManager.Core.ViewModels;
+using ENBManager.Modules.SkyrimSE;
 using NUnit.Framework;
+using Prism.Modularity;
 using System.Linq;
 
 namespace ENBManager.Core.Tests.ViewModels
@@ -14,9 +16,9 @@ namespace ENBManager.Core.Tests.ViewModels
         public void Setup()
         {
             var fileService = new FileServiceStub();
-            var gameRegistry = new GameRegistryStub();
             var gameLocator = new GameLocatorStub();
-            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, gameRegistry);
+            var moduleCatalog = GetModuleCatalog();
+            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, moduleCatalog);
         }
 
         [Test]
@@ -69,6 +71,17 @@ namespace ENBManager.Core.Tests.ViewModels
             Assert.That(expectingTrue, Is.True);
             Assert.That(expectingFalseAgain, Is.False);
             Assert.That(expectingTrueAgain, Is.True);
+        }
+
+        private IModuleCatalog GetModuleCatalog()
+        {
+            ModuleCatalog moduleCatalog = new ModuleCatalog();
+
+            moduleCatalog.AddModule(SkyrimModule.GetModuleInfo());
+            moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
+            moduleCatalog.AddModule(Fallout4Module.GetModuleInfo());
+
+            return moduleCatalog;
         }
     }
 }

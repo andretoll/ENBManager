@@ -1,11 +1,13 @@
 ﻿using ENBManager.Configuration.Models;
 using ENBManager.Configuration.Services;
-using ENBManager.Core.BusinessEntities;
 using ENBManager.Core.Interfaces;
+using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Commands;
+using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -20,7 +22,7 @@ namespace ENBManager.Core.ViewModels
 
         private readonly IFileService _fileService;
         private readonly IGameLocator _gameLocator;
-        private readonly IGameRegistry _gameRegistry;
+        private readonly IModuleCatalog _moduleCatalog;
         private ObservableCollection<InstalledGame> _games;
 
         private bool _anyGamesManaged => _games != null && _games.Any(x => x.ShouldManage);
@@ -56,11 +58,11 @@ namespace ENBManager.Core.ViewModels
         public DiscoverGamesDialogViewModel(
             IFileService fileService,
             IGameLocator gameLocator,
-            IGameRegistry gameRegistry)
+            IModuleCatalog moduleCatalog)
         {
             _fileService = fileService;
             _gameLocator = gameLocator;
-            _gameRegistry = gameRegistry;
+            _moduleCatalog = moduleCatalog;
 
             RequestClose += (obj) => { _aborted = obj.Result != ButtonResult.OK; };
             
@@ -85,7 +87,7 @@ namespace ENBManager.Core.ViewModels
 
         private async Task OnGetDataCommand()
         {
-            Games = new ObservableCollection<InstalledGame>(_gameRegistry.GetSupportedGames());
+            Games = new ObservableCollection<InstalledGame>(GetInstalledGames());
 
             foreach (var game in Games)
             {
@@ -107,6 +109,19 @@ namespace ENBManager.Core.ViewModels
             game.ShouldManage = true;
             game.OnPropertyChanged(nameof(game.Installed));
             game.OnPropertyChanged(nameof(game.InstalledLocation));
+        }
+
+        private IEnumerable<InstalledGame> GetInstalledGames()
+        {
+            var gamesList = new List<InstalledGame>();
+
+            foreach (var module in _moduleCatalog.Modules)
+            {
+                var game = (InstalledGame)Activator.CreateInstance(Type.GetType(module.ModuleType));
+                gamesList.Add(game);
+            }
+
+            return gamesList;
         }
 
         private void InitializeGames()

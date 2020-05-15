@@ -8,9 +8,6 @@
 
   <ItemGroup>
     <None Remove="Resources\Icons\favicon.ico" />
-    <None Remove="Resources\Icons\Games\fallout4.png" />
-    <None Remove="Resources\Icons\Games\skyrim.png" />
-    <None Remove="Resources\Icons\Games\skyrimse.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,14 +19,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ENBManager.Configuration\ENBManager.Configuration.csproj" />
+    <ProjectReference Include="..\ENBManager.Infrastructure\ENBManager.Infrastructure.csproj" />
     <ProjectReference Include="..\ENBManager.Localization\ENBManager.Localization.csproj" />
+    <ProjectReference Include="..\ENBManager.Modules\ENBManager.Modules.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Icons\favicon.ico" />
-    <Resource Include="Resources\Icons\Games\fallout4.png" />
-    <Resource Include="Resources\Icons\Games\skyrim.png" />
-    <Resource Include="Resources\Icons\Games\skyrimse.png" />
   </ItemGroup>
 
 </Project>

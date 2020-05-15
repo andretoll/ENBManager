@@ -20,4 +20,8 @@
     <ProjectReference Include="..\ENBManager.TestUtils\ENBManager.TestUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

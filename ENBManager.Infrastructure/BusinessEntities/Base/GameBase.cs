@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace ENBManager.Core.BusinessEntities.Base
+namespace ENBManager.Infrastructure.BusinessEntities.Base
 {
     public abstract class GameBase
     {
