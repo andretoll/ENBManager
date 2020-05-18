@@ -2,11 +2,11 @@
 
 namespace ENBManager.Configuration.Tests.Stubs
 {
-    public class AppSettingsStub : BaseSettings
+    public class GameSettingsStub : BaseSettings
     {
         #region Private Members
 
-        private const string FILE_PATH = "test_app_settings//appsettings.json"; 
+        private const string FILE_PATH = "test_game_settings//gamesettings.json";
 
         #endregion
 
@@ -19,7 +19,7 @@ namespace ENBManager.Configuration.Tests.Stubs
 
         #region Constructor
 
-        public AppSettingsStub()
+        public GameSettingsStub()
             : base(FILE_PATH)
         { }
 

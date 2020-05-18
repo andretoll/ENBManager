@@ -3,6 +3,7 @@ using ENBManager.Core.ViewModels;
 using ENBManager.Modules.SkyrimSE;
 using NUnit.Framework;
 using Prism.Modularity;
+using System;
 using System.Linq;
 
 namespace ENBManager.Core.Tests.ViewModels
@@ -19,6 +20,12 @@ namespace ENBManager.Core.Tests.ViewModels
             var gameLocator = new GameLocatorStub();
             var moduleCatalog = GetModuleCatalog();
             _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, moduleCatalog);
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+
         }
 
         [Test]

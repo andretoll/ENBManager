@@ -1,16 +1,10 @@
-﻿using System;
+﻿using ENBManager.Infrastructure.Constants;
 using System.IO;
 
 namespace ENBManager.Configuration.Models.Base
 {
     public abstract class BaseSettings
     {
-        #region Protected Constants
-
-        protected const string BASE_DIRECTORY = "ENBManager";
-
-        #endregion
-
         #region Private Members
 
         private string _path;
@@ -21,7 +15,7 @@ namespace ENBManager.Configuration.Models.Base
 
         public BaseSettings(string filePath)
         {
-            _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), BASE_DIRECTORY, filePath);
+            _path = Path.Combine(Paths.GetBaseDirectory(), filePath);
         }
 
         #endregion

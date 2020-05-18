@@ -5,14 +5,14 @@ namespace ENBManager.Core.Tests.Stubs
 {
     public class FileServiceStub : IFileService
     {
-        public string BrowseFile(FileType fileType)
+        public string BrowseGameExecutable(string fileName)
         {
             return TestValues.GetRandomString();
         }
 
-        public string BrowseGameExecutable(string fileName)
+        public string[] GetGameDirectories()
         {
-            return TestValues.GetRandomString();
+            throw new System.NotImplementedException();
         }
     }
 }

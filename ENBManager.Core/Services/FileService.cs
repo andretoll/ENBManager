@@ -1,4 +1,5 @@
 ﻿using ENBManager.Core.Interfaces;
+using ENBManager.Infrastructure.Constants;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -8,33 +9,7 @@ namespace ENBManager.Core.Services
 {
     public class FileService : IFileService
     {
-        #region Private Methods
-
-        private string GetFilter(FileType fileType)
-        {
-            switch (fileType)
-            {
-                case FileType.Executable:
-                    return "Executable files (* .exe) | *.exe";
-                default:
-                    throw new ArgumentException();
-            }
-        }
-
-        #endregion
-
         #region IFileService Implementation
-
-        public string BrowseFile(FileType fileType)
-        {
-            OpenFileDialog dialog = new OpenFileDialog()
-            {
-                Filter = GetFilter(fileType)
-            };
-            dialog.ShowDialog();
-
-            return dialog.FileName;
-        }
 
         public string BrowseGameExecutable(string fileName)
         {
@@ -52,6 +27,15 @@ namespace ENBManager.Core.Services
                 Path.GetFileName(dialog.FileName) != fileName);
 
             return dialog.FileName;
+        }
+
+        public string[] GetGameDirectories()
+        {
+            var baseDirectory = Path.Combine(Paths.GetBaseDirectory(), Paths.GAMES_DIRECTORY);
+
+            var directories = Directory.GetDirectories(baseDirectory);
+
+            return directories;
         }
 
         #endregion

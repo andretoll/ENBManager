@@ -1,17 +1,21 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities.Base;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
     public abstract class InstalledGame : GameBase, INotifyPropertyChanged
     {
-        public abstract string Executable { get; }
-
-        public bool Installed => !string.IsNullOrEmpty(InstalledLocation);
+        #region Private Members
 
         private bool _shouldManage = true;
+
+        #endregion
+
+        #region Public Properties
+
+        public string InstalledLocation { get; set; }
+        public bool Installed => !string.IsNullOrEmpty(InstalledLocation);
         public bool ShouldManage
         {
             get { return _shouldManage && Installed; }
@@ -20,9 +24,16 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 _shouldManage = value;
                 OnPropertyChanged();
             }
-        }
+        } 
 
-        public override string Directory => Executable.Split('.').First();
+        #endregion
+
+        #region Public Abstract Properties
+
+        public abstract string Executable { get; } 
+        public abstract string Module { get; }
+
+        #endregion
 
         #region INotifyPropertyChanged Implementation
 

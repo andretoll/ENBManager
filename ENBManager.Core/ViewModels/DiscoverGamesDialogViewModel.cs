@@ -1,5 +1,6 @@
 ﻿using ENBManager.Configuration.Models;
 using ENBManager.Configuration.Services;
+using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Commands;
@@ -117,14 +118,14 @@ namespace ENBManager.Core.ViewModels
 
             foreach (var module in _moduleCatalog.Modules)
             {
-                var game = (InstalledGame)Activator.CreateInstance(Type.GetType(module.ModuleType));
+                var game = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(module.ModuleType));
                 gamesList.Add(game);
             }
 
             return gamesList;
         }
 
-        private void InitializeGames()
+        private void InitializeGameDirectories()
         {
             if (_aborted)
                 return;
@@ -133,7 +134,7 @@ namespace ENBManager.Core.ViewModels
 
             foreach (var game in _games.Where(x => x.ShouldManage))
             {
-                configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Directory));
+                configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Module));
                 configManager.Initialize();
             }
         }
@@ -150,7 +151,7 @@ namespace ENBManager.Core.ViewModels
 
         public void OnDialogClosed()
         {
-            InitializeGames();
+            InitializeGameDirectories();
         }
 
         public void OnDialogOpened(IDialogParameters parameters) { }

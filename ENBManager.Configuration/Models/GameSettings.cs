@@ -1,4 +1,5 @@
 ﻿using ENBManager.Configuration.Models.Base;
+using ENBManager.Infrastructure.Constants;
 using System.IO;
 
 namespace ENBManager.Configuration.Models
@@ -7,27 +8,22 @@ namespace ENBManager.Configuration.Models
     {
         #region Private Members
 
-        private new const string BASE_DIRECTORY = "Games";
         private const string FILE_NAME = "gamesettings.json";
 
         #endregion
 
         #region Settings
 
-        //TODO: Fill in game-specific settings
+        public bool Managed { get; set; }
 
         #endregion
 
         #region Constructor
 
-        /// <summary>
-        /// Constructor that accepts a directory path corresponding to the game title.
-        /// </summary>
-        /// <param name="directory">Game title.</param>
         public GameSettings(string directory)
-            : base(Path.Combine(BASE_DIRECTORY, directory, FILE_NAME))
+            : base(Path.Combine(Paths.GAMES_DIRECTORY, directory, FILE_NAME))
         {
-            // Set factory values
+            Managed = true;
         }
 
         #endregion

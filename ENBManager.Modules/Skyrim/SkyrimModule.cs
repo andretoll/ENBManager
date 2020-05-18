@@ -1,4 +1,5 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Constants;
 using Prism.Ioc;
 using Prism.Modularity;
 using System;
@@ -6,13 +7,14 @@ using System.Windows.Media.Imaging;
 
 namespace ENBManager.Modules.SkyrimSE
 {
+    [Module(ModuleName = ModuleNames.SKYRIM)]
     public class SkyrimModule : InstalledGame, IModule
     {
         #region InstalledGame Override
 
         public override string Title => "The Elder Scrolls V: Skyrim";
         public override string Executable => "Skyrim.exe";
-        public override string InstalledLocation { get; set; }
+        public override string Module => GetModuleInfo().ModuleName;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrim.png"));
 
         #endregion
@@ -23,7 +25,7 @@ namespace ENBManager.Modules.SkyrimSE
         {
             return new ModuleInfo()
             {
-                ModuleName = typeof(SkyrimModule).Name,
+                ModuleName = ModuleNames.SKYRIM,
                 ModuleType = typeof(SkyrimModule).AssemblyQualifiedName,
                 InitializationMode = InitializationMode.OnDemand
             };

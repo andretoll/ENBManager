@@ -6,22 +6,154 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:views="clr-namespace:ENBManager.Core.Views"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DesignHeight="450" d:DesignWidth="300">
-    
-    <DockPanel Background="DeepSkyBlue"
-               LastChildFill="True">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/MaterialDesign.xaml" />
+                <ResourceDictionary Source="../Resources/Lists.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetDataCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <!-- Menu -->
+    <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
+            BorderThickness="0 0 1 0">
+        <!-- Menu Open/Close animation -->
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsChecked, ElementName=MenuToggleButton}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)">
+                                        <EasingDoubleKeyFrame KeyTime="0" Value="75"/>
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="420"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)">
+                                        <EasingDoubleKeyFrame KeyTime="0" Value="420"/>
+                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="75"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
         
-        <!-- Action bar-->
-        <Grid DockPanel.Dock="Bottom">
-            <views:ActionBarView />
-        </Grid>
+        <!-- Content -->
+        <DockPanel LastChildFill="True">
+
+            <!-- Top -->
+            <materialDesign:ColorZone Mode="PrimaryMid"
+                                      DockPanel.Dock="Top"
+                                      Padding="15"
+                                      Height="70"
+                                      CornerRadius="0 0 15 0"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                      materialDesign:ShadowAssist.ShadowEdges="Bottom">
+
+                <!-- Content -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Toggle menu -->
+                    <ToggleButton Grid.Column="0" 
+                                  Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                  Foreground="{DynamicResource MaterialDesignPaper}"
+                                  IsChecked="True"
+                                  Height="35"
+                                  Width="35"
+                                  HorizontalAlignment="Left"
+                                  x:Name="MenuToggleButton" />
+
+                    <!-- Other buttons -->
+                    <StackPanel Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                        <!-- Fade animation -->
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, ElementName=MenuToggleButton}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard >
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     Duration="0:0:0.5"
+                                                                     From="0" 
+                                                                     To="1" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard >
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                     Duration="0:0:0.5"
+                                                                     From="1" 
+                                                                     To="0" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <StackPanel.Resources>
+                            <ResourceDictionary>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
+                                    <Setter Property="Margin" Value="5 0" />
+                                </Style>
+                            </ResourceDictionary>
+                        </StackPanel.Resources>
+
+                        <Button>
+                            <materialDesign:PackIcon Kind="Settings"
+                                                     Height="24"
+                                                     Width="24"/>
+                        </Button>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </materialDesign:ColorZone>
+
+            <!-- Games list -->
+            <Grid>
+                <ListView ItemsSource="{Binding Games}"
+                          SelectedItem="{Binding SelectedGame}"
+                          ItemTemplate="{StaticResource ManagedGameListViewItem}"
+                          SelectionMode="Single"
+                          ScrollViewer.CanContentScroll="False"
+                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+            </Grid>
+            
+        </DockPanel>
         
-        <!-- Games list -->
-        <Grid>
-        </Grid>
-        
-    </DockPanel>
-    
+    </Border>
+
 </UserControl>

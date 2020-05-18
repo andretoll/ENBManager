@@ -1,12 +1,11 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System;
+using System.Windows.Media.Imaging;
 
 namespace ENBManager.Infrastructure.BusinessEntities.Base
 {
     public abstract class GameBase
     {
         public abstract string Title { get; }
-        public abstract string Directory { get; }
-        public abstract string InstalledLocation { get; set; }
         public abstract BitmapImage Icon { get; }
     }
 }
