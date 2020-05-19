@@ -37,6 +37,7 @@ namespace ENBManager.App
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IFileService, FileService>();
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
+            containerRegistry.RegisterDialog<AppSettingsDialog, AppSettingsViewModel>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

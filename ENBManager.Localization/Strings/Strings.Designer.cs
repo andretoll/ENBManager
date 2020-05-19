@@ -104,5 +104,14 @@ namespace ENBManager.Localization.Strings {
                 return ResourceManager.GetString("MANAGE", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SETTINGS {
+            get {
+                return ResourceManager.GetString("SETTINGS", resourceCulture);
+            }
+        }
     }
 }

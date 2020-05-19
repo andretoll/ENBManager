@@ -28,7 +28,8 @@
 
     <!-- Menu -->
     <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
-            BorderThickness="0 0 1 0">
+            BorderThickness="0 0 1 0"
+            Width="75">
         <!-- Menu Open/Close animation -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
@@ -37,20 +38,18 @@
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)">
-                                        <EasingDoubleKeyFrame KeyTime="0" Value="75"/>
-                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="420"/>
-                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)"
+                                                     Duration="0:0:0.5"
+                                                     To="420" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
                         <DataTrigger.ExitActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)">
-                                        <EasingDoubleKeyFrame KeyTime="0" Value="420"/>
-                                        <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="75"/>
-                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Width)"
+                                                     Duration="0:0:0.5"
+                                                     To="75" />
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.ExitActions>
@@ -85,7 +84,6 @@
                                   IsChecked="True"
                                   Height="35"
                                   Width="35"
-                                  HorizontalAlignment="Left"
                                   x:Name="MenuToggleButton" />
 
                     <!-- Other buttons -->
@@ -130,7 +128,8 @@
                             </ResourceDictionary>
                         </StackPanel.Resources>
 
-                        <Button>
+                        <!-- Settings -->
+                        <Button Command="{Binding OpenSettingsCommand}">
                             <materialDesign:PackIcon Kind="Settings"
                                                      Height="24"
                                                      Width="24"/>

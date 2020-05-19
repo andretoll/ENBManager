@@ -1,9 +1,11 @@
 ﻿using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
+using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Commands;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -15,6 +17,7 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
+        private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
         private readonly IModuleCatalog _moduleCatalog;
         private readonly IModuleManager _moduleManager;
@@ -43,21 +46,25 @@ namespace ENBManager.Core.ViewModels
         #region Commands
 
         public DelegateCommand GetDataCommand { get; set; }
+        public DelegateCommand OpenSettingsCommand { get; set; }
 
         #endregion
 
         #region Constructor
 
         public SideMenuViewModel(
+            IDialogService dialogService,
             IFileService fileService, 
             IModuleCatalog moduleCatalog, 
             IModuleManager moduleManager)
         {
+            _dialogService = dialogService;
             _fileService = fileService;
             _moduleCatalog = moduleCatalog;
             _moduleManager = moduleManager;
 
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
+            OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
         }
 
         #endregion
@@ -78,6 +85,14 @@ namespace ENBManager.Core.ViewModels
             }
 
             RaisePropertyChanged(nameof(Games));
+        }
+
+        private void OnOpenSettingsCommand()
+        {
+            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
+            {
+
+            });
         }
 
         private void ActivateModule(string name)

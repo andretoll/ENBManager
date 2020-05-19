@@ -132,4 +132,7 @@
   <data name="MANAGE" xml:space="preserve">
     <value>Manage</value>
   </data>
+  <data name="SETTINGS" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>
