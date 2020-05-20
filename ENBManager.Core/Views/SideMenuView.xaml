@@ -14,7 +14,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/MaterialDesign.xaml" />
                 <ResourceDictionary Source="../Resources/Lists.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -80,7 +79,7 @@
                     <!-- Toggle menu -->
                     <ToggleButton Grid.Column="0" 
                                   Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                  Foreground="{DynamicResource MaterialDesignPaper}"
+                                  Foreground="{DynamicResource MaterialDesignBody}"
                                   IsChecked="True"
                                   Height="35"
                                   Width="35"

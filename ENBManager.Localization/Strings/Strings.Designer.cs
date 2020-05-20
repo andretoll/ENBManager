@@ -61,6 +61,24 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string APPEARANCE {
+            get {
+                return ResourceManager.GetString("APPEARANCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application.
+        /// </summary>
+        public static string APPLICATION {
+            get {
+                return ResourceManager.GetString("APPLICATION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse.
         /// </summary>
         public static string BROWSE {
@@ -88,6 +106,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark mode.
+        /// </summary>
+        public static string DARK_MODE {
+            get {
+                return ResourceManager.GetString("DARK_MODE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed Games.
         /// </summary>
         public static string INSTALLED_GAMES {
@@ -106,11 +133,29 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string SAVE {
+            get {
+                return ResourceManager.GetString("SAVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string SETTINGS {
             get {
                 return ResourceManager.GetString("SETTINGS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start with last game active.
+        /// </summary>
+        public static string START_WITH_LAST_GAME {
+            get {
+                return ResourceManager.GetString("START_WITH_LAST_GAME", resourceCulture);
             }
         }
     }

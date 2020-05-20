@@ -6,13 +6,16 @@ namespace ENBManager.Configuration.Models
     {
         #region Private Members
 
-        private const string FILE_NAME = "appsettings.json"; 
+        private const string FILE_NAME = "appsettings.json";
 
         #endregion
 
         #region Settings
 
-        public bool Initialized { get; set; }
+        public bool Initialized { get; set; } = false;
+        public bool OpenLastActiveGame { get; set; } = true;
+        public string LastActiveGame { get; set; } = "";
+        public bool DarkMode { get; set; } = false;
 
         #endregion
 
@@ -21,8 +24,6 @@ namespace ENBManager.Configuration.Models
         public AppSettings()
             : base(FILE_NAME)
         {
-            // Set factory values
-            Initialized = false;
         }
 
         #endregion

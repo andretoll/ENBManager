@@ -4,9 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
-             xmlns:views="clr-namespace:ENBManager.Core.Views"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -27,7 +25,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/MaterialDesign.xaml" />
                 <ResourceDictionary Source="../Resources/Lists.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

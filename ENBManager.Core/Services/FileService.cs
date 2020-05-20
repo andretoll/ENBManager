@@ -1,7 +1,6 @@
 ﻿using ENBManager.Core.Interfaces;
 using ENBManager.Infrastructure.Constants;
 using Microsoft.Win32;
-using System;
 using System.IO;
 using System.Linq;
 

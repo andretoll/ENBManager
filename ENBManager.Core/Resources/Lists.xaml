@@ -3,10 +3,6 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="MaterialDesign.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
     <DataTemplate x:Key="InstalledGameListViewItem">
         <Border Padding="10"
                 Height="85">
@@ -75,7 +71,7 @@
                       Margin="10 0 0 0"
                       Visibility="{Binding Installed, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                    <ToggleButton Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
+                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
                                   IsChecked="{Binding ShouldManage}"
                                   ToolTip="{x:Static loc:Strings.MANAGE}"
                                   ToolTipService.InitialShowDelay="0"/>

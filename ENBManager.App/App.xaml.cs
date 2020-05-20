@@ -1,6 +1,7 @@
 ﻿using ENBManager.Configuration.Interfaces;
 using ENBManager.Configuration.Models;
 using ENBManager.Configuration.Services;
+using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Core.Services;
 using ENBManager.Core.ViewModels;
@@ -21,6 +22,8 @@ namespace ENBManager.App
     {
         protected override void InitializeShell(Window shell)
         {
+            ApplyTheme();
+
             RunDiscoverGames();
 
             base.InitializeShell(shell);
@@ -45,6 +48,13 @@ namespace ENBManager.App
             moduleCatalog.AddModule(SkyrimModule.GetModuleInfo());
             moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
             moduleCatalog.AddModule(Fallout4Module.GetModuleInfo());
+        }
+
+        private void ApplyTheme()
+        {
+            var configurationManager = Container.Resolve<IConfigurationManager<AppSettings>>();
+
+            ThemeHelper.UpdateTheme(configurationManager.Settings.DarkMode);
         }
 
         private void RunDiscoverGames()

@@ -14,7 +14,7 @@ namespace ENBManager.Configuration.Models
 
         #region Settings
 
-        public bool Managed { get; set; }
+        public bool Managed { get; set; } = true;
 
         #endregion
 
@@ -23,7 +23,6 @@ namespace ENBManager.Configuration.Models
         public GameSettings(string directory)
             : base(Path.Combine(Paths.GAMES_DIRECTORY, directory, FILE_NAME))
         {
-            Managed = true;
         }
 
         #endregion

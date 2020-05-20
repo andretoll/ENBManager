@@ -6,12 +6,24 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
-             xmlns:views="clr-namespace:ENBManager.Core.Views"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             Height="450" Width="600">
+             Width="300" Height="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/TabControls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="{x:Type Window}">
@@ -22,13 +34,53 @@
         </Style>
     </prism:Dialog.WindowStyle>
 
-    <Grid>
-        <TabControl>
-            <TabItem Header="Application" />
-            <TabItem Header="Appearance" />
-            <TabItem Header="Test" />
-            <TabItem Header="Logging" />
-        </TabControl>
-    </Grid>
+    <Border Padding="10">
+
+        <DockPanel LastChildFill="True">
+            
+            <!-- Actions -->
+            <StackPanel DockPanel.Dock="Bottom"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <!-- Save -->
+                <Button Content="{x:Static loc:Strings.SAVE}"
+                        Command="{Binding SaveCommand}"
+                        Margin="0 0 10 0" />
+
+                <!-- Cancel -->
+                <Button Content="{x:Static loc:Strings.CANCEL}"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding CancelCommand}"/>
+
+            </StackPanel>
+
+            <!-- Settings -->
+            <Grid Margin="0 0 0 20">
+                <TabControl DataContext="{Binding Settings}"
+                            Background="Transparent">
+                    <TabItem Header="{x:Static loc:Strings.APPLICATION}">
+                        <StackPanel>
+
+                            <CheckBox materialDesign:CheckBoxAssist.CheckBoxSize="24"
+                                      IsChecked="{Binding OpenLastActiveGame}"
+                                      Content="{x:Static loc:Strings.START_WITH_LAST_GAME}" />
+
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="{x:Static loc:Strings.APPEARANCE}">
+                        <StackPanel>
+
+                            <CheckBox materialDesign:CheckBoxAssist.CheckBoxSize="24"
+                                      IsChecked="{Binding DarkMode}"
+                                      Content="{x:Static loc:Strings.DARK_MODE}" />
+
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </DockPanel>
+
+    </Border>
     
 </UserControl>

@@ -1,10 +1,10 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Base;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
-    public abstract class InstalledGame : GameBase, INotifyPropertyChanged
+    public abstract class InstalledGame : INotifyPropertyChanged
     {
         #region Private Members
 
@@ -24,12 +24,14 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 _shouldManage = value;
                 OnPropertyChanged();
             }
-        } 
+        }
 
         #endregion
 
         #region Public Abstract Properties
 
+        public abstract string Title { get; }
+        public abstract BitmapImage Icon { get; }
         public abstract string Executable { get; } 
         public abstract string Module { get; }
 

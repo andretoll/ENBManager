@@ -1,4 +1,6 @@
-﻿using ENBManager.Core.Helpers;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Models;
+using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
@@ -17,6 +19,7 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
+        private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
         private readonly IModuleCatalog _moduleCatalog;
@@ -53,11 +56,13 @@ namespace ENBManager.Core.ViewModels
         #region Constructor
 
         public SideMenuViewModel(
+            IConfigurationManager<AppSettings> configurationManager,
             IDialogService dialogService,
             IFileService fileService, 
             IModuleCatalog moduleCatalog, 
             IModuleManager moduleManager)
         {
+            _configurationManager = configurationManager;
             _dialogService = dialogService;
             _fileService = fileService;
             _moduleCatalog = moduleCatalog;
@@ -84,21 +89,25 @@ namespace ENBManager.Core.ViewModels
                 Games.Add(module);
             }
 
+            if (_configurationManager.Settings.OpenLastActiveGame && !string.IsNullOrEmpty(_configurationManager.Settings.LastActiveGame))
+                _selectedGame = Games.FirstOrDefault(x => x.Module == _configurationManager.Settings.LastActiveGame);
+
             RaisePropertyChanged(nameof(Games));
+            RaisePropertyChanged(nameof(SelectedGame));
         }
 
         private void OnOpenSettingsCommand()
         {
-            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
-            {
-
-            });
+            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), null);
         }
 
         private void ActivateModule(string name)
         {
             var module = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == name);
             _moduleManager.LoadModule(module.ModuleName);
+
+            _configurationManager.Settings.LastActiveGame = name;
+            _configurationManager.SaveSettings();
         }
 
         #endregion
