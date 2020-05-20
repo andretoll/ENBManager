@@ -20,6 +20,7 @@
 
             <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
                 <Setter Property="FontSize" Value="16" />
+                <Setter Property="materialDesign:CheckBoxAssist.CheckBoxSize" Value="24" />
             </Style>
             
         </ResourceDictionary>
@@ -45,11 +46,13 @@
 
                 <!-- Save -->
                 <Button Content="{x:Static loc:Strings.SAVE}"
+                        IsDefault="True"
                         Command="{Binding SaveCommand}"
                         Margin="0 0 10 0" />
 
                 <!-- Cancel -->
                 <Button Content="{x:Static loc:Strings.CANCEL}"
+                        IsCancel="True"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Command="{Binding CancelCommand}"/>
 
@@ -62,8 +65,7 @@
                     <TabItem Header="{x:Static loc:Strings.APPLICATION}">
                         <StackPanel>
 
-                            <CheckBox materialDesign:CheckBoxAssist.CheckBoxSize="24"
-                                      IsChecked="{Binding OpenLastActiveGame}"
+                            <CheckBox IsChecked="{Binding OpenLastActiveGame}"
                                       Content="{x:Static loc:Strings.START_WITH_LAST_GAME}" />
 
                         </StackPanel>
@@ -71,9 +73,11 @@
                     <TabItem Header="{x:Static loc:Strings.APPEARANCE}">
                         <StackPanel>
 
-                            <CheckBox materialDesign:CheckBoxAssist.CheckBoxSize="24"
-                                      IsChecked="{Binding DarkMode}"
+                            <CheckBox IsChecked="{Binding DarkMode}"
                                       Content="{x:Static loc:Strings.DARK_MODE}" />
+
+                            <CheckBox IsChecked="{Binding DarkModeShortcut}"
+                                      Content="{x:Static loc:Strings.DARK_MODE_SHORTCUT}" />
 
                         </StackPanel>
                     </TabItem>

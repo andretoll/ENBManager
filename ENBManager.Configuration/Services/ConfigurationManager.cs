@@ -52,10 +52,10 @@ namespace ENBManager.Configuration.Services
 
             // If file exists, unlock it
             if (File.Exists(Settings.GetFilePath()))
-                File.SetAttributes(Settings.GetFilePath(), FileAttributes.Normal);
+                SetReadOnly(false);
 
             File.WriteAllText(Settings.GetFilePath(), json);
-            File.SetAttributes(Settings.GetFilePath(), FileAttributes.ReadOnly);
+            SetReadOnly(true);
         }
 
         public void Initialize()
@@ -64,6 +64,14 @@ namespace ENBManager.Configuration.Services
             {
                 SaveSettings();
             }
+        }
+
+        public void SetReadOnly(bool readOnly)
+        {
+            if (readOnly)
+                File.SetAttributes(Settings.GetFilePath(), FileAttributes.ReadOnly);
+            else
+                File.SetAttributes(Settings.GetFilePath(), FileAttributes.Normal);
         }
 
         #endregion

@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:views="clr-namespace:ENBManager.Core.Views"
+             xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DesignHeight="450" d:DesignWidth="300">
+             d:DesignHeight="450">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -126,7 +126,24 @@
                                 </Style>
                             </ResourceDictionary>
                         </StackPanel.Resources>
+                        
+                        <!-- Light/Dark theme -->
+                        <StackPanel Margin="10 0"
+                                    Visibility="{Binding ShowDarkModeShortcut, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="{x:Static loc:Strings.DARK_MODE}"
+                                       Foreground="{DynamicResource MaterialDesignBody}"
+                                       VerticalAlignment="Center" />
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" 
+                                          IsChecked="{Binding DarkMode}" />
+                        </StackPanel>
 
+                        <!-- Add games -->
+                        <Button Command="{Binding OpenDiscoverGamesCommand}">
+                            <materialDesign:PackIcon Kind="GamepadVariantOutline"
+                                                     Height="24"
+                                                     Width="24"/>
+                        </Button>
+                        
                         <!-- Settings -->
                         <Button Command="{Binding OpenSettingsCommand}">
                             <materialDesign:PackIcon Kind="Settings"

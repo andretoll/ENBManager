@@ -14,5 +14,10 @@
         /// </summary>
         /// <returns></returns>
         string[] GetGameDirectories();
+
+        /// <summary>
+        /// Deletes a game directory from disk.
+        /// </summary>
+        void DeleteGameDirectory(string directoryName);
     }
 }

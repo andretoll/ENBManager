@@ -40,9 +40,27 @@ namespace ENBManager.Core.ViewModels
                 _selectedGame = value;
                 RaisePropertyChanged();
 
-                ActivateModule(value.Module);
+                if (value != null)
+                    ActivateModule(value.Module);
             }
         }
+
+        #endregion
+
+        #region Helper Properties
+
+        public bool DarkMode
+        {
+            get { return _configurationManager.Settings.DarkMode; }
+            set
+            {
+                _configurationManager.Settings.DarkMode = value;
+                _configurationManager.SaveSettings();
+
+                ThemeHelper.UpdateTheme(value);
+            }
+        }
+        public bool ShowDarkModeShortcut => _configurationManager.Settings.DarkModeShortcut;
 
         #endregion
 
@@ -50,6 +68,7 @@ namespace ENBManager.Core.ViewModels
 
         public DelegateCommand GetDataCommand { get; set; }
         public DelegateCommand OpenSettingsCommand { get; set; }
+        public DelegateCommand OpenDiscoverGamesCommand { get; set; }
 
         #endregion
 
@@ -70,6 +89,7 @@ namespace ENBManager.Core.ViewModels
 
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
             OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
+            OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
         }
 
         #endregion
@@ -98,7 +118,19 @@ namespace ENBManager.Core.ViewModels
 
         private void OnOpenSettingsCommand()
         {
-            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), null);
+            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
+            {
+                RaisePropertyChanged(nameof(DarkMode));
+                RaisePropertyChanged(nameof(ShowDarkModeShortcut));
+            });
+        }
+
+        private void OnOpenDiscoverGamesCommand()
+        {
+            _dialogService.ShowDialog(nameof(DiscoverGamesDialog), new DialogParameters(), (dr) =>
+            {
+                OnGetDataCommand();
+            });
         }
 
         private void ActivateModule(string name)

@@ -135,6 +135,9 @@
   <data name="DARK_MODE" xml:space="preserve">
     <value>Dark mode</value>
   </data>
+  <data name="DARK_MODE_SHORTCUT" xml:space="preserve">
+    <value>Dark mode shortcut</value>
+  </data>
   <data name="INSTALLED_GAMES" xml:space="preserve">
     <value>Installed Games</value>
   </data>

@@ -115,6 +115,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark mode shortcut.
+        /// </summary>
+        public static string DARK_MODE_SHORTCUT {
+            get {
+                return ResourceManager.GetString("DARK_MODE_SHORTCUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed Games.
         /// </summary>
         public static string INSTALLED_GAMES {

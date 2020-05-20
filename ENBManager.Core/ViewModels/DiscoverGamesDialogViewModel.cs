@@ -67,7 +67,7 @@ namespace ENBManager.Core.ViewModels
 
             RequestClose += (obj) => { _aborted = obj.Result != ButtonResult.OK; };
             
-            ContinueCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.OK))).ObservesCanExecute(() => _anyGamesManaged);
+            ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => _anyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
             BrowseGameCommand = new DelegateCommand<InstalledGame>((p) => OnBrowseGameCommand(p));
@@ -85,6 +85,11 @@ namespace ENBManager.Core.ViewModels
         #endregion
 
         #region Private Methods
+
+        private void OnContinueCommand()
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+        }
 
         private async Task OnGetDataCommand()
         {
@@ -132,10 +137,27 @@ namespace ENBManager.Core.ViewModels
 
             ConfigurationManager<GameSettings> configManager;
 
+            // For every game to manage
             foreach (var game in _games.Where(x => x.ShouldManage))
             {
                 configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Module));
                 configManager.Initialize();
+            }
+
+            // For every game to not manage
+            foreach (var game in _games.Where(x => !x.ShouldManage))
+            {
+                // If game directory exists, delete it and its content
+                var directories = _fileService.GetGameDirectories();
+                for (int i = 0; i < directories.Length; i++)
+                {
+                    if (new DirectoryInfo(directories[i]).Name == game.Module)
+                    {
+                        configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Module));
+                        configManager.SetReadOnly(false);
+                        _fileService.DeleteGameDirectory(game.Module);
+                    }
+                }
             }
         }
 

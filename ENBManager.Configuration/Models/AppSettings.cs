@@ -16,6 +16,7 @@ namespace ENBManager.Configuration.Models
         public bool OpenLastActiveGame { get; set; } = true;
         public string LastActiveGame { get; set; } = "";
         public bool DarkMode { get; set; } = false;
+        public bool DarkModeShortcut { get; set; } = false;
 
         #endregion
 

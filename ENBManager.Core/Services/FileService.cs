@@ -1,4 +1,5 @@
-﻿using ENBManager.Core.Interfaces;
+﻿using ENBManager.Configuration.Models;
+using ENBManager.Core.Interfaces;
 using ENBManager.Infrastructure.Constants;
 using Microsoft.Win32;
 using System.IO;
@@ -26,6 +27,11 @@ namespace ENBManager.Core.Services
                 Path.GetFileName(dialog.FileName) != fileName);
 
             return dialog.FileName;
+        }
+
+        public void DeleteGameDirectory(string directoryName)
+        {
+            Directory.Delete(Path.Combine(Paths.GetBaseDirectory(), Paths.GAMES_DIRECTORY, directoryName), true);
         }
 
         public string[] GetGameDirectories()
