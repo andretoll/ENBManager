@@ -1,6 +1,6 @@
-﻿using ENBManager.Configuration.Models.Base;
+﻿using ENBManager.Infrastructure.BusinessEntities.Base;
 
-namespace ENBManager.Configuration.Interfaces
+namespace ENBManager.Core.Interfaces
 {
     public interface IConfigurationManager<T> where T : BaseSettings
     {

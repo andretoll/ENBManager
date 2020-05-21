@@ -123,6 +123,7 @@
                             <ResourceDictionary>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFloatingActionMiniAccentButton}">
                                     <Setter Property="Margin" Value="5 0" />
+                                    <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
                                 </Style>
                             </ResourceDictionary>
                         </StackPanel.Resources>
@@ -138,14 +139,16 @@
                         </StackPanel>
 
                         <!-- Add games -->
-                        <Button Command="{Binding OpenDiscoverGamesCommand}">
+                        <Button Command="{Binding OpenDiscoverGamesCommand}"
+                                ToolTip="{x:Static loc:Strings.INSTALLED_GAMES}">
                             <materialDesign:PackIcon Kind="GamepadVariantOutline"
                                                      Height="24"
                                                      Width="24"/>
                         </Button>
                         
                         <!-- Settings -->
-                        <Button Command="{Binding OpenSettingsCommand}">
+                        <Button Command="{Binding OpenSettingsCommand}"
+                                ToolTip="{x:Static loc:Strings.SETTINGS}">
                             <materialDesign:PackIcon Kind="Settings"
                                                      Height="24"
                                                      Width="24"/>

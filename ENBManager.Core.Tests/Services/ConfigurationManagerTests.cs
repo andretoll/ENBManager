@@ -1,12 +1,11 @@
-﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Configuration.Models;
-using ENBManager.Configuration.Services;
-using ENBManager.Configuration.Tests.Stubs;
+﻿using ENBManager.Core.Interfaces;
+using ENBManager.Core.Services;
+using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.TestUtils.Utils;
 using NUnit.Framework;
 using System.IO;
 
-namespace ENBManager.Configuration.Tests.Configuration
+namespace ENBManager.Core.Tests.Services
 {
     [TestFixture]
     public class ConfigurationManagerTests
@@ -85,6 +84,7 @@ namespace ENBManager.Configuration.Tests.Configuration
 
             // Act
             _appConfig.SaveSettings();
+            _appConfig.LoadSettings();
             appSettings = _appConfig.Settings;
 
             // Assert
@@ -140,6 +140,25 @@ namespace ENBManager.Configuration.Tests.Configuration
             // Assert
             Assert.That(_gameConfig.Settings.Name, Is.EqualTo(name));
             Assert.That(_gameConfig.Settings.Condition, Is.EqualTo(condition));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ShouldLoadSettingsWithoutInitializing(bool condition)
+        {
+            // Arrange
+            var appSettings = _appConfig.Settings;
+            string name = TestValues.GetRandomString();
+            appSettings.Condition = condition;
+            appSettings.Name = name;
+
+            // Act
+            _appConfig.SaveSettings();
+            var newAppSettings = ConfigurationManager<AppSettingsStub>.LoadSettings(appSettings.GetFilePath());
+
+            // Assert
+            Assert.That(newAppSettings.Condition, Is.EqualTo(condition));
+            Assert.That(newAppSettings.Name, Is.EqualTo(name));
         }
     }
 }

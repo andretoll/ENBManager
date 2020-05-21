@@ -5,7 +5,7 @@ using Prism.Modularity;
 using System;
 using System.Windows.Media.Imaging;
 
-namespace ENBManager.Modules.SkyrimSE
+namespace ENBManager.Modules.Fallout4
 {
     [Module(ModuleName = ModuleNames.FALLOUT4)]
     public class Fallout4Module : InstalledGame, IModule

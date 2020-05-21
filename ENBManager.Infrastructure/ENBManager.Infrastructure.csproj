@@ -43,6 +43,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessEntities\AppSettings.cs" />
+    <Compile Include="BusinessEntities\Base\BaseSettings.cs" />
+    <Compile Include="BusinessEntities\ColorScheme.cs" />
+    <Compile Include="BusinessEntities\GameSettings.cs" />
     <Compile Include="BusinessEntities\InstalledGame.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
@@ -55,5 +59,6 @@
     <Resource Include="Resources\Icons\fallout4.png" />
     <Resource Include="Resources\Icons\skyrim.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

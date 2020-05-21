@@ -10,6 +10,11 @@ namespace ENBManager.Core.Tests.Stubs
             return TestValues.GetRandomString();
         }
 
+        public void DeleteGameDirectory(string directoryName)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public string[] GetGameDirectories()
         {
             throw new System.NotImplementedException();

@@ -129,6 +129,9 @@
   <data name="CANCEL" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="COLOR_SCHEME" xml:space="preserve">
+    <value>Color scheme</value>
+  </data>
   <data name="CONTINUE" xml:space="preserve">
     <value>Continue</value>
   </data>
@@ -144,6 +147,9 @@
   <data name="MANAGE" xml:space="preserve">
     <value>Manage</value>
   </data>
+  <data name="MISC" xml:space="preserve">
+    <value>Misc</value>
+  </data>
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -152,5 +158,8 @@
   </data>
   <data name="START_WITH_LAST_GAME" xml:space="preserve">
     <value>Start with last game active</value>
+  </data>
+  <data name="UNMANAGING_MANAGED_GAME" xml:space="preserve">
+    <value>Unmanaging a previously managed game will reset its content.</value>
   </data>
 </root>

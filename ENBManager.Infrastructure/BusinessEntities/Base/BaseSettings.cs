@@ -1,7 +1,7 @@
 ﻿using ENBManager.Infrastructure.Constants;
 using System.IO;
 
-namespace ENBManager.Configuration.Models.Base
+namespace ENBManager.Infrastructure.BusinessEntities.Base
 {
     public abstract class BaseSettings
     {

@@ -1,6 +1,6 @@
-﻿using ENBManager.Configuration.Models.Base;
+﻿using ENBManager.Infrastructure.BusinessEntities.Base;
 
-namespace ENBManager.Configuration.Models
+namespace ENBManager.Infrastructure.BusinessEntities
 {
     public class AppSettings : BaseSettings
     {
@@ -17,6 +17,7 @@ namespace ENBManager.Configuration.Models
         public string LastActiveGame { get; set; } = "";
         public bool DarkMode { get; set; } = false;
         public bool DarkModeShortcut { get; set; } = false;
+        public string ColorScheme { get; set; } = "Fire";
 
         #endregion
 

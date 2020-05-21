@@ -1,10 +1,12 @@
-﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Configuration.Models;
-using ENBManager.Core.Helpers;
+﻿using ENBManager.Core.Helpers;
+using ENBManager.Core.Interfaces;
+using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ENBManager.Core.ViewModels
 {
@@ -19,6 +21,8 @@ namespace ENBManager.Core.ViewModels
         #region Public Properties
 
         public AppSettings Settings => _configurationManager.Settings;
+
+        public IEnumerable<string> ColorSchemes { get; set; } = ThemeHelper.GetColorSchemes().Select(x => x.Name);
 
         #endregion
 
@@ -46,6 +50,7 @@ namespace ENBManager.Core.ViewModels
         private void OnSaveCommand()
         {
             UpdateTheme();
+            UpdateColorScheme();
 
             _configurationManager.SaveSettings();
 
@@ -55,6 +60,11 @@ namespace ENBManager.Core.ViewModels
         private void UpdateTheme()
         {
             ThemeHelper.UpdateTheme(_configurationManager.Settings.DarkMode);
+        }
+
+        private void UpdateColorScheme()
+        {
+            ThemeHelper.UpdateColorScheme(_configurationManager.Settings.ColorScheme);
         }
 
         #endregion

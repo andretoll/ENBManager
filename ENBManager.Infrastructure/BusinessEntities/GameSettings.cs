@@ -1,8 +1,8 @@
-﻿using ENBManager.Configuration.Models.Base;
+﻿using ENBManager.Infrastructure.BusinessEntities.Base;
 using ENBManager.Infrastructure.Constants;
 using System.IO;
 
-namespace ENBManager.Configuration.Models
+namespace ENBManager.Infrastructure.BusinessEntities
 {
     public class GameSettings : BaseSettings
     {
@@ -14,7 +14,7 @@ namespace ENBManager.Configuration.Models
 
         #region Settings
 
-        public bool Managed { get; set; } = true;
+        public string InstalledLocation { get; set; }
 
         #endregion
 
@@ -23,6 +23,12 @@ namespace ENBManager.Configuration.Models
         public GameSettings(string directory)
             : base(Path.Combine(Paths.GAMES_DIRECTORY, directory, FILE_NAME))
         {
+        }
+
+        public GameSettings()
+            : base("")
+        {
+
         }
 
         #endregion

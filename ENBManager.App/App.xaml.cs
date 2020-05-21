@@ -1,11 +1,11 @@
-﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Configuration.Models;
-using ENBManager.Configuration.Services;
-using ENBManager.Core.Helpers;
+﻿using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Core.Services;
 using ENBManager.Core.ViewModels;
 using ENBManager.Core.Views;
+using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Modules.Fallout4;
+using ENBManager.Modules.Skyrim;
 using ENBManager.Modules.SkyrimSE;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -55,6 +55,7 @@ namespace ENBManager.App
             var configurationManager = Container.Resolve<IConfigurationManager<AppSettings>>();
 
             ThemeHelper.UpdateTheme(configurationManager.Settings.DarkMode);
+            ThemeHelper.UpdateColorScheme(configurationManager.Settings.ColorScheme);
         }
 
         private void RunDiscoverGames()

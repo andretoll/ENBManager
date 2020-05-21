@@ -8,13 +8,24 @@ namespace ENBManager.Infrastructure.BusinessEntities
     {
         #region Private Members
 
+        private string _installedLocation;
         private bool _shouldManage = true;
+        private GameSettings _settings;
 
         #endregion
 
         #region Public Properties
 
-        public string InstalledLocation { get; set; }
+        public string InstalledLocation
+        {
+            get { return _installedLocation; }
+            set
+            {
+                _installedLocation = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Installed));
+            }
+        }
         public bool Installed => !string.IsNullOrEmpty(InstalledLocation);
         public bool ShouldManage
         {
@@ -23,6 +34,17 @@ namespace ENBManager.Infrastructure.BusinessEntities
             {
                 _shouldManage = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public GameSettings Settings
+        {
+            get { return _settings; }
+            set
+            {
+                _settings = value;
+
+                InstalledLocation = value.InstalledLocation;
             }
         }
 

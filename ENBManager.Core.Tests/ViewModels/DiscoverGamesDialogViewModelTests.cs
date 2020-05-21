@@ -1,9 +1,10 @@
 ﻿using ENBManager.Core.Tests.Stubs;
 using ENBManager.Core.ViewModels;
+using ENBManager.Modules.Fallout4;
+using ENBManager.Modules.Skyrim;
 using ENBManager.Modules.SkyrimSE;
 using NUnit.Framework;
 using Prism.Modularity;
-using System;
 using System.Linq;
 
 namespace ENBManager.Core.Tests.ViewModels
@@ -52,7 +53,6 @@ namespace ENBManager.Core.Tests.ViewModels
             _viewModel.GetDataCommand.Execute();
 
             // Assert
-            Assert.That(_viewModel.Games.Where(x => x.Installed).Count(), Is.GreaterThan(0));
             Assert.That(_viewModel.Games.Where(x => x.Installed).All(x => x.ShouldManage));
         }
 

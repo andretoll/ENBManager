@@ -1,7 +1,6 @@
-﻿using ENBManager.Configuration.Models;
-using ENBManager.Configuration.Services;
-using ENBManager.Core.Helpers;
+﻿using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
+using ENBManager.Core.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Commands;
 using Prism.Modularity;
@@ -24,24 +23,20 @@ namespace ENBManager.Core.ViewModels
         private readonly IFileService _fileService;
         private readonly IGameLocator _gameLocator;
         private readonly IModuleCatalog _moduleCatalog;
-        private ObservableCollection<InstalledGame> _games;
 
-        private bool _anyGamesManaged => _games != null && _games.Any(x => x.ShouldManage);
-        private bool _aborted;
+        private bool _anyGamesManaged => Games != null && Games.Any(x => x.ShouldManage);
 
         #endregion
 
         #region Public Properties
 
-        public ObservableCollection<InstalledGame> Games
-        {
-            get { return _games; }
-            set
-            {
-                _games = value;
-                RaisePropertyChanged();
-            }
-        }
+        public ObservableCollection<InstalledGame> Games { get; set; }
+
+        #endregion
+
+        #region Helper Properties
+
+        public bool ShowUnmanagingWarning { get; set; }
 
         #endregion
 
@@ -65,8 +60,6 @@ namespace ENBManager.Core.ViewModels
             _gameLocator = gameLocator;
             _moduleCatalog = moduleCatalog;
 
-            RequestClose += (obj) => { _aborted = obj.Result != ButtonResult.OK; };
-            
             ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => _anyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
@@ -88,64 +81,20 @@ namespace ENBManager.Core.ViewModels
 
         private void OnContinueCommand()
         {
-            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
-        }
-
-        private async Task OnGetDataCommand()
-        {
-            Games = new ObservableCollection<InstalledGame>(GetInstalledGames());
-
-            foreach (var game in Games)
-            {
-                game.PropertyChanged += Game_PropertyChanged;
-                game.InstalledLocation = await _gameLocator.Find(game.Title);
-            }
-
-            ContinueCommand.RaiseCanExecuteChanged();
-        }
-
-        private void OnBrowseGameCommand(InstalledGame game)
-        {
-            string filePath = _fileService.BrowseGameExecutable(game.Executable);
-
-            if (string.IsNullOrEmpty(filePath))
-                return;
-            
-            game.InstalledLocation = Path.GetDirectoryName(filePath);
-            game.ShouldManage = true;
-            game.OnPropertyChanged(nameof(game.Installed));
-            game.OnPropertyChanged(nameof(game.InstalledLocation));
-        }
-
-        private IEnumerable<InstalledGame> GetInstalledGames()
-        {
-            var gamesList = new List<InstalledGame>();
-
-            foreach (var module in _moduleCatalog.Modules)
-            {
-                var game = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(module.ModuleType));
-                gamesList.Add(game);
-            }
-
-            return gamesList;
-        }
-
-        private void InitializeGameDirectories()
-        {
-            if (_aborted)
-                return;
-
             ConfigurationManager<GameSettings> configManager;
+            GameSettings gameSettings;
 
             // For every game to manage
-            foreach (var game in _games.Where(x => x.ShouldManage))
+            foreach (var game in Games.Where(x => x.ShouldManage))
             {
-                configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Module));
+                gameSettings = new GameSettings(game.Module);
+                gameSettings.InstalledLocation = game.InstalledLocation;
+                configManager = new ConfigurationManager<GameSettings>(gameSettings);
                 configManager.Initialize();
             }
 
             // For every game to not manage
-            foreach (var game in _games.Where(x => !x.ShouldManage))
+            foreach (var game in Games.Where(x => !x.ShouldManage))
             {
                 // If game directory exists, delete it and its content
                 var directories = _fileService.GetGameDirectories();
@@ -159,6 +108,53 @@ namespace ENBManager.Core.ViewModels
                     }
                 }
             }
+
+            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+        }
+
+        private async Task OnGetDataCommand()
+        {
+            if (Games == null)
+                Games = new ObservableCollection<InstalledGame>();
+
+            var supportedGames = await GetSupportedGames();
+
+            foreach (var game in supportedGames)
+            {
+                if (Games.Any(x => x.Module == game.Module))
+                    continue;
+
+                game.PropertyChanged += Game_PropertyChanged;
+                Games.Add(game);
+            }
+
+            RaisePropertyChanged(nameof(Games));
+            ContinueCommand.RaiseCanExecuteChanged();
+        }
+
+        private void OnBrowseGameCommand(InstalledGame game)
+        {
+            string filePath = _fileService.BrowseGameExecutable(game.Executable);
+
+            if (string.IsNullOrEmpty(filePath))
+                return;
+            
+            game.InstalledLocation = Path.GetDirectoryName(filePath);
+            game.ShouldManage = true;
+        }
+
+        private async Task<IEnumerable<InstalledGame>> GetSupportedGames()
+        {
+            var gamesList = new List<InstalledGame>();
+
+            foreach (var module in _moduleCatalog.Modules)
+            {
+                var game = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(module.ModuleType));
+                game.InstalledLocation = await _gameLocator.Find(game.Title);
+                gamesList.Add(game);
+            }
+
+            return gamesList;
         }
 
         #endregion
@@ -171,12 +167,21 @@ namespace ENBManager.Core.ViewModels
 
         public bool CanCloseDialog() => true;
 
-        public void OnDialogClosed()
-        {
-            InitializeGameDirectories();
-        }
+        public void OnDialogClosed() { }
 
-        public void OnDialogOpened(IDialogParameters parameters) { }
+        public void OnDialogOpened(IDialogParameters parameters) 
+        {
+            if (parameters.Count > 0)
+            {
+                ShowUnmanagingWarning = true;
+                RaisePropertyChanged(nameof(ShowUnmanagingWarning));
+                Games = new ObservableCollection<InstalledGame>(parameters.GetValue<IEnumerable<InstalledGame>>("Games"));
+                foreach (var game in Games)
+                {
+                    game.PropertyChanged += Game_PropertyChanged;
+                }
+            }
+        }
 
         #endregion
     }

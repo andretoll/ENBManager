@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ENBManager.Configuration\ENBManager.Configuration.csproj" />
     <ProjectReference Include="..\ENBManager.Core\ENBManager.Core.csproj" />
     <ProjectReference Include="..\ENBManager.Modules\ENBManager.Modules.csproj" />
   </ItemGroup>

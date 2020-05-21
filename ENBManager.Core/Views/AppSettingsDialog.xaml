@@ -76,9 +76,23 @@
                             <CheckBox IsChecked="{Binding DarkMode}"
                                       Content="{x:Static loc:Strings.DARK_MODE}" />
 
+                            <StackPanel Margin="0 5">
+                                <Label Content="{x:Static loc:Strings.COLOR_SCHEME}" />
+                                <ComboBox materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          ItemsSource="{Binding DataContext.ColorSchemes, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                          SelectedItem="{Binding ColorScheme}"
+                                          SelectedValuePath="Name"
+                                          materialDesign:HintAssist.Hint="{x:Static loc:Strings.COLOR_SCHEME}" />
+                            </StackPanel>
+                            
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="{x:Static loc:Strings.MISC}">
+                        <StackPanel>
+                            
                             <CheckBox IsChecked="{Binding DarkModeShortcut}"
                                       Content="{x:Static loc:Strings.DARK_MODE_SHORTCUT}" />
-
+                        
                         </StackPanel>
                     </TabItem>
                 </TabControl>

@@ -97,6 +97,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Color scheme.
+        /// </summary>
+        public static string COLOR_SCHEME {
+            get {
+                return ResourceManager.GetString("COLOR_SCHEME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continue.
         /// </summary>
         public static string CONTINUE {
@@ -142,6 +151,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Misc.
+        /// </summary>
+        public static string MISC {
+            get {
+                return ResourceManager.GetString("MISC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SAVE {
@@ -165,6 +183,15 @@ namespace ENBManager.Localization.Strings {
         public static string START_WITH_LAST_GAME {
             get {
                 return ResourceManager.GetString("START_WITH_LAST_GAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unmanaging a previously managed game will reset its content..
+        /// </summary>
+        public static string UNMANAGING_MANAGED_GAME {
+            get {
+                return ResourceManager.GetString("UNMANAGING_MANAGED_GAME", resourceCulture);
             }
         }
     }

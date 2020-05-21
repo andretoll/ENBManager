@@ -5,7 +5,7 @@ using Prism.Modularity;
 using System;
 using System.Windows.Media.Imaging;
 
-namespace ENBManager.Modules.SkyrimSE
+namespace ENBManager.Modules.Skyrim
 {
     [Module(ModuleName = ModuleNames.SKYRIM)]
     public class SkyrimModule : InstalledGame, IModule

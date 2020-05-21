@@ -1,7 +1,6 @@
-﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Configuration.Models;
-using ENBManager.Core.Helpers;
+﻿using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
+using ENBManager.Core.Services;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
 using Prism.Commands;
@@ -98,15 +97,21 @@ namespace ENBManager.Core.ViewModels
 
         private void OnGetDataCommand()
         {
+            GameSettings gameSettings;
+
             Games = new ObservableCollection<InstalledGame>();
 
             var directories = _fileService.GetGameDirectories();
 
-            foreach (var game in directories)
+            foreach (var directory in directories)
             {
-                var moduleInfo = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == new DirectoryInfo(game).Name);
-                var module = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(moduleInfo.ModuleType));
-                Games.Add(module);
+                var moduleInfo = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == new DirectoryInfo(directory).Name);
+                var game = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(moduleInfo.ModuleType));
+
+                gameSettings = new GameSettings(game.Module);
+                game.Settings = ConfigurationManager<GameSettings>.LoadSettings(gameSettings.GetFilePath());
+
+                Games.Add(game);
             }
 
             if (_configurationManager.Settings.OpenLastActiveGame && !string.IsNullOrEmpty(_configurationManager.Settings.LastActiveGame))
@@ -127,7 +132,10 @@ namespace ENBManager.Core.ViewModels
 
         private void OnOpenDiscoverGamesCommand()
         {
-            _dialogService.ShowDialog(nameof(DiscoverGamesDialog), new DialogParameters(), (dr) =>
+            DialogParameters dp = new DialogParameters();
+            dp.Add("Games", Games);
+
+            _dialogService.ShowDialog(nameof(DiscoverGamesDialog), dp, (dr) =>
             {
                 OnGetDataCommand();
             });

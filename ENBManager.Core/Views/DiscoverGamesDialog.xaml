@@ -6,6 +6,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -55,6 +56,19 @@
                     HorizontalAlignment="Right"
                     Margin="20">
 
+            <!-- Warning -->
+            <StackPanel Orientation="Horizontal"
+                        Margin="20 0"
+                        Visibility="{Binding ShowUnmanagingWarning, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <materialDesign:PackIcon Kind="WarningOutline"
+                                         Foreground="DarkOrange"
+                                         Width="30"
+                                         Height="30"/>
+                <TextBlock Text="{x:Static loc:Strings.UNMANAGING_MANAGED_GAME}"
+                           Foreground="DarkOrange"
+                           VerticalAlignment="Center"
+                           FontSize="16"/>
+            </StackPanel>
 
             <!-- Continue -->
             <Button Content="{x:Static loc:Strings.CONTINUE}"

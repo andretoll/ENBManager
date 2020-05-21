@@ -1,10 +1,10 @@
-﻿using ENBManager.Configuration.Interfaces;
-using ENBManager.Configuration.Models.Base;
+﻿using ENBManager.Core.Interfaces;
+using ENBManager.Infrastructure.BusinessEntities.Base;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 
-namespace ENBManager.Configuration.Services
+namespace ENBManager.Core.Services
 {
     public class ConfigurationManager<T> : IConfigurationManager<T> where T : BaseSettings
     {
@@ -26,6 +26,15 @@ namespace ENBManager.Configuration.Services
         public ConfigurationManager(BaseSettings settings)
         {
             Settings = (T)settings;
+        }
+
+        #endregion
+
+        #region Public Static Methods
+
+        public static T LoadSettings(string path)
+        {
+            return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
         }
 
         #endregion
