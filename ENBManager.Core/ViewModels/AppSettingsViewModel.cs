@@ -1,6 +1,7 @@
 ﻿using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Infrastructure.BusinessEntities;
+using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -13,6 +14,8 @@ namespace ENBManager.Core.ViewModels
     public class AppSettingsViewModel : BindableBase, IDialogAware
     {
         #region Private Members
+
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
 
@@ -49,22 +52,14 @@ namespace ENBManager.Core.ViewModels
 
         private void OnSaveCommand()
         {
-            UpdateTheme();
-            UpdateColorScheme();
+            _logger.Debug(nameof(OnSaveCommand));
+
+            ThemeHelper.UpdateTheme(_configurationManager.Settings.DarkMode);
+            ThemeHelper.UpdateColorScheme(_configurationManager.Settings.ColorScheme);
 
             _configurationManager.SaveSettings();
 
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
-        }
-
-        private void UpdateTheme()
-        {
-            ThemeHelper.UpdateTheme(_configurationManager.Settings.DarkMode);
-        }
-
-        private void UpdateColorScheme()
-        {
-            ThemeHelper.UpdateColorScheme(_configurationManager.Settings.ColorScheme);
         }
 
         #endregion
@@ -79,10 +74,14 @@ namespace ENBManager.Core.ViewModels
 
         public void OnDialogClosed() 
         {
+            _logger.Info(nameof(OnDialogClosed));
             _configurationManager.LoadSettings();
         }
 
-        public void OnDialogOpened(IDialogParameters parameters) { }
+        public void OnDialogOpened(IDialogParameters parameters) 
+        {
+            _logger.Info(nameof(OnDialogOpened));
+        }
 
         #endregion
     }

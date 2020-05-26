@@ -2,6 +2,7 @@
 using ENBManager.Core.Interfaces;
 using ENBManager.Core.Services;
 using ENBManager.Infrastructure.BusinessEntities;
+using NLog;
 using Prism.Commands;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -19,6 +20,8 @@ namespace ENBManager.Core.ViewModels
     public class DiscoverGamesDialogViewModel : BindableBase, IDialogAware
     {
         #region Private Members
+
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IFileService _fileService;
         private readonly IGameLocator _gameLocator;
@@ -81,6 +84,8 @@ namespace ENBManager.Core.ViewModels
 
         private void OnContinueCommand()
         {
+            _logger.Debug(nameof(OnContinueCommand));
+
             ConfigurationManager<GameSettings> configManager;
             GameSettings gameSettings;
 
@@ -114,6 +119,8 @@ namespace ENBManager.Core.ViewModels
 
         private async Task OnGetDataCommand()
         {
+            _logger.Debug(nameof(OnGetDataCommand));
+
             if (Games == null)
                 Games = new ObservableCollection<InstalledGame>();
 
@@ -134,6 +141,8 @@ namespace ENBManager.Core.ViewModels
 
         private void OnBrowseGameCommand(InstalledGame game)
         {
+            _logger.Debug(nameof(OnBrowseGameCommand));
+
             string filePath = _fileService.BrowseGameExecutable(game.Executable);
 
             if (string.IsNullOrEmpty(filePath))
@@ -145,6 +154,8 @@ namespace ENBManager.Core.ViewModels
 
         private async Task<IEnumerable<InstalledGame>> GetSupportedGames()
         {
+            _logger.Debug(nameof(GetSupportedGames));
+
             var gamesList = new List<InstalledGame>();
 
             foreach (var module in _moduleCatalog.Modules)
@@ -167,10 +178,15 @@ namespace ENBManager.Core.ViewModels
 
         public bool CanCloseDialog() => true;
 
-        public void OnDialogClosed() { }
+        public void OnDialogClosed() 
+        {
+            _logger.Info(nameof(OnDialogClosed));
+        }
 
         public void OnDialogOpened(IDialogParameters parameters) 
         {
+            _logger.Info(nameof(OnDialogOpened));
+
             if (parameters.Count > 0)
             {
                 ShowUnmanagingWarning = true;

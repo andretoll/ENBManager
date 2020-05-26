@@ -1,6 +1,7 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
 using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
+using NLog;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +9,22 @@ namespace ENBManager.Core.Helpers
 {
     public static class ThemeHelper
     {
+        #region Private Members
+
+        private static Logger _logger = LogManager.GetCurrentClassLogger(); 
+
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Gets the available color schemes.
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<ColorScheme> GetColorSchemes()
         {
+            _logger.Debug(nameof(GetColorSchemes));
+
             List<ColorScheme> colorSchemes = new List<ColorScheme>();
 
             var swatches = new SwatchesProvider().Swatches;
@@ -31,6 +42,8 @@ namespace ENBManager.Core.Helpers
         /// <param name="darkMode"></param>
         public static void UpdateTheme(bool darkMode)
         {
+            _logger.Info("Theme updated");
+
             var paletteHelper = new PaletteHelper();
 
             IBaseTheme baseTheme;
@@ -52,6 +65,8 @@ namespace ENBManager.Core.Helpers
         /// <param name="secondary"></param>
         public static void UpdateColorScheme(string colorSchemeName)
         {
+            _logger.Info("Color scheme updated");
+
             var colorScheme = GetColorScheme(colorSchemeName);
             var paletteHelper = new PaletteHelper();
             ITheme theme = paletteHelper.GetTheme();
@@ -61,13 +76,21 @@ namespace ENBManager.Core.Helpers
             paletteHelper.SetTheme(theme);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private static ColorScheme GetColorScheme(string colorSchemeName)
         {
+            _logger.Debug(nameof(GetColorScheme));
+
             var colorSchemes = GetColorSchemes();
 
             var selectedColorScheme = colorSchemes.FirstOrDefault(x => x.Name == colorSchemeName);
 
             return selectedColorScheme != null ? selectedColorScheme : colorSchemes.First();
-        }
+        } 
+
+        #endregion
     }
 }

@@ -107,6 +107,7 @@
                     </TabItem>
                 </TabControl>
             </Grid>
+            
         </DockPanel>
 
     </Border>

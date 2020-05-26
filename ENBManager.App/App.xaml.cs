@@ -37,16 +37,18 @@ namespace ENBManager.App
 
         #region Overriden Methods
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnExit(ExitEventArgs e)
         {
-            base.OnStartup(e);
+            _logger.Info($"Exiting {Assembly.GetExecutingAssembly().GetName().Name}");
 
-            _logger.Info($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}");
+            base.OnExit(e);
         }
 
         protected override void InitializeShell(Window shell)
         {
             ConfigureLogging();
+
+            _logger.Info($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}");
 
             ApplyTheme();
 
@@ -83,13 +85,18 @@ namespace ENBManager.App
 
         private void ConfigureLogging()
         {
-            string loggingPath = Path.Combine(Paths.GetBaseDirectory(), "enbmanager.log");
+            string loggingPath = Path.Combine(Paths.GetBaseDirectory(), $"{Assembly.GetExecutingAssembly().GetName().Name}.log");
+            string archivePath = Path.Combine(Paths.GetBaseDirectory(), "archives", $"{Assembly.GetExecutingAssembly().GetName().Name}.log");
+
             var config = new LoggingConfiguration();
 
             var logfile = new FileTarget("logfile")
             {
                 FileName = loggingPath,
-                Layout = "${longdate}|${level:uppercase=true}|${logger}|${message}|${exception:format=tostring}"
+                Layout = "${longdate}|${level:uppercase=true}|${logger}|${message}|${exception:format=tostring}",
+                ArchiveFileName = archivePath,
+                ArchiveAboveSize = 100000000,
+                ArchiveNumbering = ArchiveNumberingMode.DateAndSequence
             };
             config.AddTarget(logfile);
             config.AddRule(GetLogLevel(), LogLevel.Fatal, logfile);
@@ -113,6 +120,7 @@ namespace ENBManager.App
             // If app has not yet initialized, run the discover games tool
             if (!manager.Settings.Initialized)
             {
+                _logger.Info("Running Games Discovery for first time");
                 Container.Resolve<IDialogService>().ShowDialog(nameof(DiscoverGamesDialog), new DialogParameters(), (dr) =>
                 {
                     if (dr.Result != ButtonResult.OK)

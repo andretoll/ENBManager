@@ -3,6 +3,7 @@ using ENBManager.Core.Interfaces;
 using ENBManager.Core.Services;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
+using NLog;
 using Prism.Commands;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -17,6 +18,8 @@ namespace ENBManager.Core.ViewModels
     public class SideMenuViewModel : BindableBase
     {
         #region Private Members
+
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
@@ -89,6 +92,8 @@ namespace ENBManager.Core.ViewModels
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
             OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
             OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
+
+            _logger.Debug($"{nameof(SideMenuViewModel)} initialized");
         }
 
         #endregion
@@ -97,6 +102,8 @@ namespace ENBManager.Core.ViewModels
 
         private void OnGetDataCommand()
         {
+            _logger.Debug(nameof(OnGetDataCommand));
+
             GameSettings gameSettings;
 
             Games = new ObservableCollection<InstalledGame>();
@@ -119,10 +126,14 @@ namespace ENBManager.Core.ViewModels
 
             RaisePropertyChanged(nameof(Games));
             RaisePropertyChanged(nameof(SelectedGame));
+
+            _logger.Info("Game list initialized");
         }
 
         private void OnOpenSettingsCommand()
         {
+            _logger.Debug(nameof(OnOpenSettingsCommand));
+
             _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
             {
                 RaisePropertyChanged(nameof(DarkMode));
@@ -132,6 +143,8 @@ namespace ENBManager.Core.ViewModels
 
         private void OnOpenDiscoverGamesCommand()
         {
+            _logger.Debug(nameof(OnOpenDiscoverGamesCommand));
+
             DialogParameters dp = new DialogParameters();
             dp.Add("Games", Games);
 

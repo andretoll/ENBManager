@@ -1,6 +1,7 @@
 ﻿using ENBManager.Core.Interfaces;
 using ENBManager.Infrastructure.BusinessEntities.Base;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.IO;
 
@@ -8,6 +9,12 @@ namespace ENBManager.Core.Services
 {
     public class ConfigurationManager<T> : IConfigurationManager<T> where T : BaseSettings
     {
+        #region Private Members
+
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -34,6 +41,8 @@ namespace ENBManager.Core.Services
 
         public static T LoadSettings(string path)
         {
+            _logger.Debug(nameof(LoadSettings));
+
             return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
         }
 
@@ -45,6 +54,8 @@ namespace ENBManager.Core.Services
 
         public void LoadSettings()
         {
+            _logger.Info("Loading settings");
+
             // If directory or file does not exist, create it
             Initialize();
 
@@ -53,6 +64,8 @@ namespace ENBManager.Core.Services
 
         public void SaveSettings()
         {
+            _logger.Info("Saving settings");
+
             // If directory does not exist, create it
             if (!Directory.Exists(Path.GetDirectoryName(Settings.GetFilePath())))
                 Directory.CreateDirectory(Path.GetDirectoryName(Settings.GetFilePath()));
@@ -69,6 +82,8 @@ namespace ENBManager.Core.Services
 
         public void Initialize()
         {
+            _logger.Info("Initializing settings");
+
             if (!File.Exists(Settings.GetFilePath()))
             {
                 SaveSettings();
@@ -77,6 +92,8 @@ namespace ENBManager.Core.Services
 
         public void SetReadOnly(bool readOnly)
         {
+            _logger.Debug(nameof(SetReadOnly) + " = " + readOnly);
+
             if (readOnly)
                 File.SetAttributes(Settings.GetFilePath(), FileAttributes.ReadOnly);
             else
