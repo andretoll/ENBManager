@@ -136,8 +136,13 @@ namespace ENBManager.Core.ViewModels
 
             _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
             {
-                RaisePropertyChanged(nameof(DarkMode));
-                RaisePropertyChanged(nameof(ShowDarkModeShortcut));
+                if (dr.Result == ButtonResult.OK)
+                {
+                    _configurationManager.LoadSettings();
+
+                    RaisePropertyChanged(nameof(DarkMode));
+                    RaisePropertyChanged(nameof(ShowDarkModeShortcut));
+                }
             });
         }
 

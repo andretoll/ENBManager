@@ -124,9 +124,13 @@ namespace ENBManager.App
                 Container.Resolve<IDialogService>().ShowDialog(nameof(DiscoverGamesDialog), new DialogParameters(), (dr) =>
                 {
                     if (dr.Result != ButtonResult.OK)
+                    {
+                        _logger.Debug(dr.Result);
                         Current.Shutdown();
+                    }
                     else
                     {
+                        _logger.Debug(dr.Result);
                         manager.Settings.Initialized = true;
                         manager.SaveSettings();
                     }

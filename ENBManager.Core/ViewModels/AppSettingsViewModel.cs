@@ -75,7 +75,6 @@ namespace ENBManager.Core.ViewModels
         public void OnDialogClosed() 
         {
             _logger.Info(nameof(OnDialogClosed));
-            _configurationManager.LoadSettings();
         }
 
         public void OnDialogOpened(IDialogParameters parameters) 

@@ -54,7 +54,7 @@ namespace ENBManager.Core.Services
 
         public void LoadSettings()
         {
-            _logger.Info("Loading settings");
+            _logger.Info($"Loading {Settings.GetType().Name}");
 
             // If directory or file does not exist, create it
             Initialize();
@@ -64,7 +64,7 @@ namespace ENBManager.Core.Services
 
         public void SaveSettings()
         {
-            _logger.Info("Saving settings");
+            _logger.Info($"Saving {Settings.GetType().Name}");
 
             // If directory does not exist, create it
             if (!Directory.Exists(Path.GetDirectoryName(Settings.GetFilePath())))
@@ -82,7 +82,7 @@ namespace ENBManager.Core.Services
 
         public void Initialize()
         {
-            _logger.Info("Initializing settings");
+            _logger.Info($"Initializing {Settings.GetType().Name} if not existing");
 
             if (!File.Exists(Settings.GetFilePath()))
             {
