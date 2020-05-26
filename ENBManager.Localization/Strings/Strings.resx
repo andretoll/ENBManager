@@ -144,6 +144,9 @@
   <data name="INSTALLED_GAMES" xml:space="preserve">
     <value>Installed Games</value>
   </data>
+  <data name="LOG_LEVEL" xml:space="preserve">
+    <value>Log level</value>
+  </data>
   <data name="MANAGE" xml:space="preserve">
     <value>Manage</value>
   </data>

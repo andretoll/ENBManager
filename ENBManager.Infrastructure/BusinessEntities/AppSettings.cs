@@ -1,4 +1,5 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities.Base;
+using ENBManager.Logging.Enums;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
@@ -18,6 +19,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public bool DarkMode { get; set; } = false;
         public bool DarkModeShortcut { get; set; } = false;
         public string ColorScheme { get; set; } = "Fire";
+        public LogLevel LogLevel { get; set; } = LogLevel.Information;
 
         #endregion
 

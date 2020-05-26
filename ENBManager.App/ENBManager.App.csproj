@@ -10,15 +10,23 @@
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Product>ENBManager</Product>
+    <Company>Toll</Company>
+    <Authors>André Toll</Authors>
+    <PackageId>ENBManager</PackageId>
+    <AssemblyName>ENBManager</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.7.2" />
     <PackageReference Include="Prism.Unity" Version="7.2.0.1422" />
     <PackageReference Include="Prism.Wpf" Version="7.2.0.1422" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ENBManager.Core\ENBManager.Core.csproj" />
+    <ProjectReference Include="..\ENBManager.Logging\ENBManager.Logging.csproj" />
     <ProjectReference Include="..\ENBManager.Modules\ENBManager.Modules.csproj" />
   </ItemGroup>
 

@@ -6,6 +6,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:vc="clr-namespace:ENBManager.Core.ValueConverters"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -17,6 +18,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/TabControls.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <vc:EnumToCollectionValueConverter x:Key="EnumToCollectionConverter" />
 
             <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
                 <Setter Property="FontSize" Value="16" />
@@ -68,6 +71,14 @@
                             <CheckBox IsChecked="{Binding OpenLastActiveGame}"
                                       Content="{x:Static loc:Strings.START_WITH_LAST_GAME}" />
 
+                            <StackPanel Margin="0 5">
+                                <Label Content="{x:Static loc:Strings.LOG_LEVEL}" />
+                                <ComboBox materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          ItemsSource="{Binding LogLevel, Mode=OneTime, Converter={StaticResource EnumToCollectionConverter}}"
+                                          SelectedItem="{Binding LogLevel}"
+                                          SelectedValuePath="Name" />
+                            </StackPanel>
+                            
                         </StackPanel>
                     </TabItem>
                     <TabItem Header="{x:Static loc:Strings.APPEARANCE}">
@@ -81,8 +92,7 @@
                                 <ComboBox materialDesign:ComboBoxAssist.ClassicMode="True"
                                           ItemsSource="{Binding DataContext.ColorSchemes, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                           SelectedItem="{Binding ColorScheme}"
-                                          SelectedValuePath="Name"
-                                          materialDesign:HintAssist.Hint="{x:Static loc:Strings.COLOR_SCHEME}" />
+                                          SelectedValuePath="Name" />
                             </StackPanel>
                             
                         </StackPanel>

@@ -142,6 +142,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log level.
+        /// </summary>
+        public static string LOG_LEVEL {
+            get {
+                return ResourceManager.GetString("LOG_LEVEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage.
         /// </summary>
         public static string MANAGE {
