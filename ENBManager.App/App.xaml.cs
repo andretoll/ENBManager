@@ -125,15 +125,15 @@ namespace ENBManager.App
                 {
                     if (dr.Result != ButtonResult.OK)
                     {
-                        _logger.Debug(dr.Result);
                         Current.Shutdown();
                     }
                     else
                     {
-                        _logger.Debug(dr.Result);
                         manager.Settings.Initialized = true;
                         manager.SaveSettings();
                     }
+
+                    _logger.Debug(nameof(RunDiscoverGames) + " - " + dr.Result);
                 });
             }
         }
