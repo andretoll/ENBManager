@@ -9,9 +9,9 @@ using System.Windows.Media.Imaging;
 namespace ENBManager.Modules.Skyrim
 {
     [Module(ModuleName = ModuleNames.SKYRIM)]
-    public class SkyrimModule : InstalledGame, IModule
+    public class SkyrimModule : GameModule, IModule
     {
-        #region InstalledGame Override
+        #region GameModule Override
 
         public override string Title => "The Elder Scrolls V: Skyrim";
         public override string Executable => "Skyrim.exe";

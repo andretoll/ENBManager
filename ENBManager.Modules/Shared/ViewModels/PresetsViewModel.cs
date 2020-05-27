@@ -6,7 +6,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 {
     public class PresetsViewModel : ITabItem
     {
-        public PresetsViewModel(InstalledGame game)
+        public PresetsViewModel(GameModule game)
         {
 
         }

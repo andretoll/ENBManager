@@ -9,9 +9,9 @@ using System.Windows.Media.Imaging;
 namespace ENBManager.Modules.Fallout4
 {
     [Module(ModuleName = ModuleNames.FALLOUT4)]
-    public class Fallout4Module : InstalledGame, IModule
+    public class Fallout4Module : GameModule, IModule
     {
-        #region InstalledGame Override
+        #region GameModule Override
 
         public override string Title => "Fallout 4";
         public override string Executable => "Fallout4.exe";

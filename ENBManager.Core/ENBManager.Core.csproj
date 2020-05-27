@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Icons\favicon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -23,10 +19,6 @@
     <ProjectReference Include="..\ENBManager.Infrastructure\ENBManager.Infrastructure.csproj" />
     <ProjectReference Include="..\ENBManager.Localization\ENBManager.Localization.csproj" />
     <ProjectReference Include="..\ENBManager.Modules\ENBManager.Modules.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Icons\favicon.ico" />
   </ItemGroup>
 
 </Project>

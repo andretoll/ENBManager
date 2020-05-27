@@ -33,7 +33,7 @@ namespace ENBManager.Core.ViewModels
 
         #region Public Properties
 
-        public ObservableCollection<InstalledGame> Games { get; set; }
+        public ObservableCollection<GameModule> Games { get; set; }
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand ContinueCommand { get; set; }
         public DelegateCommand CancelCommand { get; set; }
         public DelegateCommand GetDataCommand { get; set; }
-        public DelegateCommand<InstalledGame> BrowseGameCommand { get; set; }
+        public DelegateCommand<GameModule> BrowseGameCommand { get; set; }
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace ENBManager.Core.ViewModels
             ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => _anyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
-            BrowseGameCommand = new DelegateCommand<InstalledGame>((p) => OnBrowseGameCommand(p));
+            BrowseGameCommand = new DelegateCommand<GameModule>((p) => OnBrowseGameCommand(p));
         }
 
         #endregion
@@ -122,7 +122,7 @@ namespace ENBManager.Core.ViewModels
             _logger.Debug(nameof(OnGetDataCommand));
 
             if (Games == null)
-                Games = new ObservableCollection<InstalledGame>();
+                Games = new ObservableCollection<GameModule>();
 
             var supportedGames = await GetSupportedGames();
 
@@ -139,7 +139,7 @@ namespace ENBManager.Core.ViewModels
             ContinueCommand.RaiseCanExecuteChanged();
         }
 
-        private void OnBrowseGameCommand(InstalledGame game)
+        private void OnBrowseGameCommand(GameModule game)
         {
             _logger.Debug(nameof(OnBrowseGameCommand));
 
@@ -152,15 +152,15 @@ namespace ENBManager.Core.ViewModels
             game.ShouldManage = true;
         }
 
-        private async Task<IEnumerable<InstalledGame>> GetSupportedGames()
+        private async Task<IEnumerable<GameModule>> GetSupportedGames()
         {
             _logger.Debug(nameof(GetSupportedGames));
 
-            var gamesList = new List<InstalledGame>();
+            var gamesList = new List<GameModule>();
 
             foreach (var module in _moduleCatalog.Modules)
             {
-                var game = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(module.ModuleType));
+                var game = (GameModule)InstanceFactory.CreateInstance(Type.GetType(module.ModuleType));
                 game.InstalledLocation = await _gameLocator.Find(game.Title);
                 gamesList.Add(game);
             }
@@ -191,7 +191,7 @@ namespace ENBManager.Core.ViewModels
             {
                 ShowUnmanagingWarning = true;
                 RaisePropertyChanged(nameof(ShowUnmanagingWarning));
-                Games = new ObservableCollection<InstalledGame>(parameters.GetValue<IEnumerable<InstalledGame>>("Games"));
+                Games = new ObservableCollection<GameModule>(parameters.GetValue<IEnumerable<GameModule>>("Games"));
                 foreach (var game in Games)
                 {
                     game.PropertyChanged += Game_PropertyChanged;

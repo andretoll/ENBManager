@@ -1,4 +1,5 @@
 ﻿using ENBManager.Infrastructure.Constants;
+using ENBManager.Modules.Shared.Views;
 using Prism.Regions;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -6,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
-    public abstract class InstalledGame : INotifyPropertyChanged
+    public abstract class GameModule : INotifyPropertyChanged
     {
         #region Private Members
 
@@ -61,10 +62,11 @@ namespace ENBManager.Infrastructure.BusinessEntities
 
         #endregion
 
-        #region Public Abstract Methods
+        #region Public Virtual Methods
 
         public virtual void Activate(IRegionManager regionManager)
         {
+            regionManager.RequestNavigate(RegionNames.MainRegion, nameof(ModuleShell));
             regionManager.Regions[RegionNames.TabRegion].RemoveAll();
         }
 

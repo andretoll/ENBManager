@@ -29,14 +29,14 @@ namespace ENBManager.Core.ViewModels
         private readonly IModuleManager _moduleManager;
         private readonly IRegionManager _regionManager;
 
-        private InstalledGame _selectedGame;
+        private GameModule _selectedGame;
 
         #endregion
 
         #region Public Properties
 
-        public ObservableCollection<InstalledGame> Games { get; set; }
-        public InstalledGame SelectedGame
+        public ObservableCollection<GameModule> Games { get; set; }
+        public GameModule SelectedGame
         {
             get { return _selectedGame; }
             set
@@ -110,14 +110,14 @@ namespace ENBManager.Core.ViewModels
 
             GameSettings gameSettings;
 
-            Games = new ObservableCollection<InstalledGame>();
+            Games = new ObservableCollection<GameModule>();
 
             var directories = _fileService.GetGameDirectories();
 
             foreach (var directory in directories)
             {
                 var moduleInfo = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == new DirectoryInfo(directory).Name);
-                var game = (InstalledGame)InstanceFactory.CreateInstance(Type.GetType(moduleInfo.ModuleType));
+                var game = (GameModule)InstanceFactory.CreateInstance(Type.GetType(moduleInfo.ModuleType));
 
                 gameSettings = new GameSettings(game.Module);
                 game.Settings = ConfigurationManager<GameSettings>.LoadSettings(gameSettings.GetFilePath());

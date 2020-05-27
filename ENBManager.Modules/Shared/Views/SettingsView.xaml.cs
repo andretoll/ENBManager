@@ -9,7 +9,7 @@ namespace ENBManager.Modules.Shared.Views
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        public SettingsView(InstalledGame game)
+        public SettingsView(GameModule game)
         {
             InitializeComponent();
 

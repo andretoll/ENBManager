@@ -10,9 +10,9 @@ using System.Windows.Media.Imaging;
 namespace ENBManager.Modules.SkyrimSE
 {
     [Module(ModuleName = ModuleNames.SKYRIMSE)]
-    public class SkyrimSEModule : InstalledGame, IModule
+    public class SkyrimSEModule : GameModule, IModule
     {
-        #region InstalledGame Override
+        #region GameModule Override
 
         public override string Title => "The Elder Scrolls V: Skyrim Special Edition";
         public override string Executable => "SkyrimSE.exe";
@@ -22,8 +22,6 @@ namespace ENBManager.Modules.SkyrimSE
         public override void Activate(IRegionManager regionManager)
         {
             base.Activate(regionManager);
-            
-            regionManager.RequestNavigate(RegionNames.MainRegion, nameof(ModuleShell));
 
             regionManager.AddToRegion(RegionNames.TabRegion, new PresetsView(this));
             regionManager.AddToRegion(RegionNames.TabRegion, new SettingsView(this));

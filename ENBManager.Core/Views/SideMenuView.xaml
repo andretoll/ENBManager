@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Lists.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Lists.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -27,7 +27,7 @@
 
     <!-- Menu -->
     <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
-            BorderThickness="0 0 1 0"
+            BorderThickness="0 0 2 0"
             Width="420">
         <!-- Menu Open/Close animation -->
         <Border.Style>
@@ -101,6 +101,9 @@
                                                                      Duration="0:0:0.5"
                                                                      From="0" 
                                                                      To="1" />
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                        <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                                                    </ObjectAnimationUsingKeyFrames>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.EnterActions>
@@ -111,6 +114,9 @@
                                                                      Duration="0:0:0.5"
                                                                      From="1" 
                                                                      To="0" />
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                        <DiscreteObjectKeyFrame KeyTime="00:00:0.5" Value="{x:Static Visibility.Collapsed}" />
+                                                    </ObjectAnimationUsingKeyFrames>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>

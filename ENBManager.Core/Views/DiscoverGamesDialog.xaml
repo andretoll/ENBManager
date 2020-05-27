@@ -26,7 +26,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Lists.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Lists.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -92,7 +92,7 @@
             <!-- Games list -->
             <Grid Grid.Column="0">
                 <ItemsControl ItemsSource="{Binding Games}"
-                              ItemTemplate="{StaticResource InstalledGameListViewItem}"/>
+                              ItemTemplate="{StaticResource GameModuleListViewItem}"/>
             </Grid>
 
             <!-- Game details -->

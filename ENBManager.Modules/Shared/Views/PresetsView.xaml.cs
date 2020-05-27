@@ -9,7 +9,7 @@ namespace ENBManager.Modules.Shared.Views
     /// </summary>
     public partial class PresetsView : UserControl
     {
-        public PresetsView(InstalledGame game)
+        public PresetsView(GameModule game)
         {
             InitializeComponent();
 

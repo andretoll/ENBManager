@@ -5,7 +5,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 {
     public class SettingsViewModel : ITabItem
     {
-        public SettingsViewModel(InstalledGame game)
+        public SettingsViewModel(GameModule game)
         {
 
         }

@@ -9,12 +9,30 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <Style TargetType="TabItem">
-            <Setter Property="Header" Value="{Binding DataContext.Name}" />
-        </Style>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/TabControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+        
     </UserControl.Resources>
 
-    <Grid>
-        <TabControl prism:RegionManager.RegionName="{x:Static const:RegionNames.TabRegion}" />
+    <Grid Margin="20">
+        <TabControl prism:RegionManager.RegionName="{x:Static const:RegionNames.TabRegion}"
+                    Background="Transparent"
+                    Foreground="{DynamicResource MaterialDesignBody}"
+                    FontSize="28">
+
+            <TabControl.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+                        <Setter Property="Header" Value="{Binding DataContext.Name}" />
+                    </Style>
+                </ResourceDictionary>
+            </TabControl.Resources>
+
+        </TabControl>
     </Grid>
 </UserControl>
