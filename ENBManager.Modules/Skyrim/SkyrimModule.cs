@@ -2,6 +2,7 @@
 using ENBManager.Infrastructure.Constants;
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Regions;
 using System;
 using System.Windows.Media.Imaging;
 
@@ -16,6 +17,11 @@ namespace ENBManager.Modules.Skyrim
         public override string Executable => "Skyrim.exe";
         public override string Module => GetModuleInfo().ModuleName;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrim.png"));
+
+        public override void Activate(IRegionManager regionManager)
+        {
+            base.Activate(regionManager);
+        }
 
         #endregion
 

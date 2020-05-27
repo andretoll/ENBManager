@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using ENBManager.Infrastructure.Constants;
+using Prism.Regions;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 
@@ -56,6 +58,15 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public abstract BitmapImage Icon { get; }
         public abstract string Executable { get; } 
         public abstract string Module { get; }
+
+        #endregion
+
+        #region Public Abstract Methods
+
+        public virtual void Activate(IRegionManager regionManager)
+        {
+            regionManager.Regions[RegionNames.TabRegion].RemoveAll();
+        }
 
         #endregion
 

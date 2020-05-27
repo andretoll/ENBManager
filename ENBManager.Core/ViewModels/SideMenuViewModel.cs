@@ -7,6 +7,7 @@ using NLog;
 using Prism.Commands;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
@@ -26,6 +27,7 @@ namespace ENBManager.Core.ViewModels
         private readonly IFileService _fileService;
         private readonly IModuleCatalog _moduleCatalog;
         private readonly IModuleManager _moduleManager;
+        private readonly IRegionManager _regionManager;
 
         private InstalledGame _selectedGame;
 
@@ -81,13 +83,15 @@ namespace ENBManager.Core.ViewModels
             IDialogService dialogService,
             IFileService fileService, 
             IModuleCatalog moduleCatalog, 
-            IModuleManager moduleManager)
+            IModuleManager moduleManager,
+            IRegionManager regionManager)
         {
             _configurationManager = configurationManager;
             _dialogService = dialogService;
             _fileService = fileService;
             _moduleCatalog = moduleCatalog;
             _moduleManager = moduleManager;
+            _regionManager = regionManager;
 
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
             OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
@@ -122,7 +126,7 @@ namespace ENBManager.Core.ViewModels
             }
 
             if (_configurationManager.Settings.OpenLastActiveGame && !string.IsNullOrEmpty(_configurationManager.Settings.LastActiveGame))
-                _selectedGame = Games.FirstOrDefault(x => x.Module == _configurationManager.Settings.LastActiveGame);
+                SelectedGame = Games.FirstOrDefault(x => x.Module == _configurationManager.Settings.LastActiveGame);
 
             RaisePropertyChanged(nameof(Games));
             RaisePropertyChanged(nameof(SelectedGame));
@@ -161,11 +165,15 @@ namespace ENBManager.Core.ViewModels
 
         private void ActivateModule(string name)
         {
-            var module = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == name);
-            _moduleManager.LoadModule(module.ModuleName);
+            var moduleInfo = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == name);
+            _moduleManager.LoadModule(moduleInfo.ModuleName);
 
             _configurationManager.Settings.LastActiveGame = name;
             _configurationManager.SaveSettings();
+
+            Games.Single(x => x.Module == name).Activate(_regionManager);
+
+            _logger.Info($"Module '{name}' loaded");
         }
 
         #endregion

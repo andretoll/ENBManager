@@ -2,6 +2,7 @@
 using ENBManager.Infrastructure.Constants;
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Regions;
 using System;
 using System.Windows.Media.Imaging;
 
@@ -15,7 +16,12 @@ namespace ENBManager.Modules.Fallout4
         public override string Title => "Fallout 4";
         public override string Executable => "Fallout4.exe";
         public override string Module => GetModuleInfo().ModuleName;
-        public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/fallout4.png")); 
+        public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/fallout4.png"));
+
+        public override void Activate(IRegionManager regionManager)
+        {
+            base.Activate(regionManager);
+        }
 
         #endregion
 

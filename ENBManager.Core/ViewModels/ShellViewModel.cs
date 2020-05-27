@@ -1,5 +1,6 @@
-﻿using ENBManager.Core.Constants;
-using ENBManager.Core.Views;
+﻿using ENBManager.Core.Views;
+using ENBManager.Infrastructure.Constants;
+using ENBManager.Modules.Shared.Views;
 using NLog;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -35,6 +36,7 @@ namespace ENBManager.Core.ViewModels
 
             _regionManager.RegisterViewWithRegion(RegionNames.SideMenuRegion, typeof(SideMenuView));
             _regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(MainView));
+            _regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(ModuleShell));
         }
 
         #endregion

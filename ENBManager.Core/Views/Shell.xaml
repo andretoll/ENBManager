@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
-        xmlns:const="clr-namespace:ENBManager.Core.Constants"
+        xmlns:const="clr-namespace:ENBManager.Infrastructure.Constants;assembly=ENBManager.Infrastructure"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         prism:ViewModelLocator.AutoWireViewModel="True"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,6 +15,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="ENB Manager"
+        MinHeight="400" MinWidth="600"
         Height="800" Width="1000">
     
     <Grid>

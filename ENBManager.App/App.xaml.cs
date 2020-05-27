@@ -77,7 +77,7 @@ namespace ENBManager.App
             moduleCatalog.AddModule(SkyrimModule.GetModuleInfo());
             moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
             moduleCatalog.AddModule(Fallout4Module.GetModuleInfo());
-        } 
+        }
 
         #endregion
 

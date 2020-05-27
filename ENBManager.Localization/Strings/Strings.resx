@@ -153,8 +153,14 @@
   <data name="MISC" xml:space="preserve">
     <value>Misc</value>
   </data>
+  <data name="PRESETS" xml:space="preserve">
+    <value>Presets</value>
+  </data>
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED" xml:space="preserve">
+    <value>Select a game in the menu to get started!</value>
   </data>
   <data name="SETTINGS" xml:space="preserve">
     <value>Settings</value>

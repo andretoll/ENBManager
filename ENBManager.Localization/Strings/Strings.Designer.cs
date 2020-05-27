@@ -169,11 +169,29 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Presets.
+        /// </summary>
+        public static string PRESETS {
+            get {
+                return ResourceManager.GetString("PRESETS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SAVE {
             get {
                 return ResourceManager.GetString("SAVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a game in the menu to get started!.
+        /// </summary>
+        public static string SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED {
+            get {
+                return ResourceManager.GetString("SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED", resourceCulture);
             }
         }
         
