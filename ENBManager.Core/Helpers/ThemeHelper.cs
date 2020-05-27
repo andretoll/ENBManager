@@ -32,6 +32,7 @@ namespace ENBManager.Core.Helpers
             colorSchemes.Add(new ColorScheme("Earth", "#7a411d", "#7db043"));
             colorSchemes.Add(new ColorScheme("Fire", "#852222", "#ffb300"));
             colorSchemes.Add(new ColorScheme("Ice", "#6f727a", "#26c6da"));
+            colorSchemes.Add(new ColorScheme("Fallout", "#0079c9", "#e0dd02"));
 
             return colorSchemes;
         }

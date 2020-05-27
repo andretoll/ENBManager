@@ -28,7 +28,7 @@
     <!-- Menu -->
     <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
             BorderThickness="0 0 1 0"
-            Width="75">
+            Width="420">
         <!-- Menu Open/Close animation -->
         <Border.Style>
             <Style TargetType="{x:Type Border}">
