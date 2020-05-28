@@ -165,13 +165,12 @@ namespace ENBManager.Core.ViewModels
 
         private void ActivateModule(string name)
         {
-            var moduleInfo = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == name);
-            _moduleManager.LoadModule(moduleInfo.ModuleName);
+            var gameModule = Games.Single(x => x.Module == name);
+            _moduleManager.LoadModule(gameModule.Module);
+            gameModule.Activate(_regionManager);
 
             _configurationManager.Settings.LastActiveGame = name;
             _configurationManager.SaveSettings();
-
-            Games.Single(x => x.Module == name).Activate(_regionManager);
 
             _logger.Info($"Module '{name}' loaded");
         }

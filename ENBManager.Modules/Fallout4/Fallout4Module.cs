@@ -1,5 +1,6 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.Constants;
+using ENBManager.Modules.Shared.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -21,6 +22,9 @@ namespace ENBManager.Modules.Fallout4
         public override void Activate(IRegionManager regionManager)
         {
             base.Activate(regionManager);
+
+            regionManager.AddToRegion(RegionNames.TabRegion, new PresetsView(this));
+            regionManager.AddToRegion(RegionNames.TabRegion, new SettingsView(this));
         }
 
         #endregion

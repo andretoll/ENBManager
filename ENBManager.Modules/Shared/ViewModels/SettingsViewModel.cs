@@ -1,4 +1,5 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Interfaces;
 
 namespace ENBManager.Modules.Shared.ViewModels
@@ -10,6 +11,6 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         }
 
-        public string Name => ENBManager.Localization.Strings.Strings.SETTINGS;
+        public string Name => Strings.SETTINGS;
     }
 }
