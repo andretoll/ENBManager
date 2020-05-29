@@ -2,55 +2,31 @@
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Modules.Shared.Views;
 using Prism.Ioc;
-using Prism.Modularity;
-using Prism.Regions;
 using System;
 using System.Windows.Media.Imaging;
 
 namespace ENBManager.Modules.Fallout4
 {
-    [Module(ModuleName = ModuleNames.FALLOUT4)]
-    public class Fallout4Module : GameModule, IModule
+    public class Fallout4Module : GameModule
     {
+        #region Constructor
+
+        public Fallout4Module(IContainerProvider container)
+            : base(container) { }
+
+        #endregion
+
         #region GameModule Override
 
         public override string Title => "Fallout 4";
         public override string Executable => "Fallout4.exe";
-        public override string Module => GetModuleInfo().ModuleName;
+        public override string Module => ModuleNames.FALLOUT4;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/fallout4.png"));
+        public override string[] Binaries => throw new NotImplementedException();
 
-        public override void Activate(IRegionManager regionManager)
+        public override void Activate()
         {
-            base.Activate(regionManager);
-
-            regionManager.AddToRegion(RegionNames.TabRegion, new PresetsView(this));
-            regionManager.AddToRegion(RegionNames.TabRegion, new SettingsView(this));
-        }
-
-        #endregion
-
-        #region Public Static Methods
-
-        public static ModuleInfo GetModuleInfo()
-        {
-            return new ModuleInfo()
-            {
-                ModuleName = ModuleNames.FALLOUT4,
-                ModuleType = typeof(Fallout4Module).AssemblyQualifiedName,
-                InitializationMode = InitializationMode.OnDemand
-            };
-        } 
-
-        #endregion
-
-        #region IModule Implementation
-
-        public void OnInitialized(IContainerProvider containerProvider)
-        {
-        }
-
-        public void RegisterTypes(IContainerRegistry containerRegistry)
-        {
+            ActivateModule(typeof(DashboardView), typeof(SettingsView));
         }
 
         #endregion

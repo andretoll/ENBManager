@@ -1,4 +1,6 @@
-﻿using ENBManager.Core.Helpers;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Services;
+using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Core.Services;
 using ENBManager.Core.ViewModels;
@@ -7,14 +9,17 @@ using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Logging.Services;
 using ENBManager.Modules.Fallout4;
+using ENBManager.Modules.Shared.Interfaces;
+using ENBManager.Modules.Shared.Services;
+using ENBManager.Modules.Shared.ViewModels;
 using ENBManager.Modules.Skyrim;
 using ENBManager.Modules.SkyrimSE;
+using MaterialDesignThemes.Wpf;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using Prism.Ioc;
 using Prism.Logging;
-using Prism.Modularity;
 using Prism.Services.Dialogs;
 using Prism.Unity;
 using System;
@@ -46,15 +51,17 @@ namespace ENBManager.App
 
         protected override void InitializeShell(Window shell)
         {
-            ConfigureLogging();
+            ConfigureGameModuleCatalog();
 
-            _logger.Info($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}");
+            ConfigureLogging();
 
             ApplyTheme();
 
             RunDiscoverGames();
 
             base.InitializeShell(shell);
+            
+            _logger.Info($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}");
         }
 
         protected override Window CreateShell()
@@ -65,23 +72,31 @@ namespace ENBManager.App
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
+            _ = containerRegistry.RegisterSingleton<IGameModuleCatalog, GameModuleCatalog>();
             _ = containerRegistry.Register<ILoggerFacade, PrismLogger>();
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IFileService, FileService>();
+            _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
             containerRegistry.RegisterDialog<AppSettingsDialog, AppSettingsViewModel>();
-        }
 
-        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
-        {
-            moduleCatalog.AddModule(SkyrimModule.GetModuleInfo());
-            moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
-            moduleCatalog.AddModule(Fallout4Module.GetModuleInfo());
+            containerRegistry.RegisterSingleton<DashboardViewModel>();
+            containerRegistry.RegisterSingleton<PresetsViewModel>();
+            containerRegistry.RegisterSingleton<SettingsViewModel>();
         }
 
         #endregion
 
         #region Private Methods
+
+        private void ConfigureGameModuleCatalog()
+        {
+            var catalog = Container.Resolve<IGameModuleCatalog>();
+
+            catalog.AddModule<Fallout4Module>(Container);
+            catalog.AddModule<SkyrimSEModule>(Container);
+            catalog.AddModule<SkyrimModule>(Container);
+        }
 
         private void ConfigureLogging()
         {

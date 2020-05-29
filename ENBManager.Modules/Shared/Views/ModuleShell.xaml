@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:const="clr-namespace:ENBManager.Infrastructure.Constants;assembly=ENBManager.Infrastructure"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -19,10 +21,13 @@
         
     </UserControl.Resources>
 
-    <Grid Margin="20">
+    <Grid>
+
         <TabControl prism:RegionManager.RegionName="{x:Static const:RegionNames.TabRegion}"
+                    SelectedIndex="0"
                     Background="Transparent"
                     Foreground="{DynamicResource MaterialDesignBody}"
+                    Margin="15"
                     FontSize="28">
 
             <TabControl.Resources>
@@ -34,5 +39,11 @@
             </TabControl.Resources>
 
         </TabControl>
+
+        <materialDesign:Snackbar HorizontalAlignment="Stretch"
+                                 MessageQueue="{Binding MessageQueue}"
+                                 IsActive="{Binding SnackbarActive}"
+                                 x:Name="SnackbarFive" />
+
     </Grid>
 </UserControl>

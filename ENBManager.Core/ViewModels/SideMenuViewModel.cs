@@ -1,15 +1,15 @@
-﻿using ENBManager.Core.Helpers;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Services;
+using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
-using ENBManager.Core.Services;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Modules.Shared.Interfaces;
 using NLog;
 using Prism.Commands;
-using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
-using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -20,13 +20,12 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
         private readonly IFileService _fileService;
-        private readonly IModuleCatalog _moduleCatalog;
-        private readonly IModuleManager _moduleManager;
+        private readonly IGameModuleCatalog _gameModuleCatalog;
         private readonly IRegionManager _regionManager;
 
         private GameModule _selectedGame;
@@ -70,9 +69,9 @@ namespace ENBManager.Core.ViewModels
 
         #region Commands
 
-        public DelegateCommand GetDataCommand { get; set; }
-        public DelegateCommand OpenSettingsCommand { get; set; }
-        public DelegateCommand OpenDiscoverGamesCommand { get; set; }
+        public DelegateCommand GetDataCommand { get; }
+        public DelegateCommand OpenSettingsCommand { get; }
+        public DelegateCommand OpenDiscoverGamesCommand { get; }
 
         #endregion
 
@@ -82,15 +81,13 @@ namespace ENBManager.Core.ViewModels
             IConfigurationManager<AppSettings> configurationManager,
             IDialogService dialogService,
             IFileService fileService, 
-            IModuleCatalog moduleCatalog, 
-            IModuleManager moduleManager,
+            IGameModuleCatalog gameModuleCatalog, 
             IRegionManager regionManager)
         {
             _configurationManager = configurationManager;
             _dialogService = dialogService;
             _fileService = fileService;
-            _moduleCatalog = moduleCatalog;
-            _moduleManager = moduleManager;
+            _gameModuleCatalog = gameModuleCatalog;
             _regionManager = regionManager;
 
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
@@ -116,8 +113,7 @@ namespace ENBManager.Core.ViewModels
 
             foreach (var directory in directories)
             {
-                var moduleInfo = _moduleCatalog.Modules.SingleOrDefault(x => x.ModuleName == new DirectoryInfo(directory).Name);
-                var game = (GameModule)InstanceFactory.CreateInstance(Type.GetType(moduleInfo.ModuleType));
+                var game = _gameModuleCatalog.GameModules.Single(x => x.Module == Path.GetFileName(directory));
 
                 gameSettings = new GameSettings(game.Module);
                 game.Settings = ConfigurationManager<GameSettings>.LoadSettings(gameSettings.GetFilePath());
@@ -166,8 +162,7 @@ namespace ENBManager.Core.ViewModels
         private void ActivateModule(string name)
         {
             var gameModule = Games.Single(x => x.Module == name);
-            _moduleManager.LoadModule(gameModule.Module);
-            gameModule.Activate(_regionManager);
+            gameModule.Activate();
 
             _configurationManager.Settings.LastActiveGame = name;
             _configurationManager.SaveSettings();

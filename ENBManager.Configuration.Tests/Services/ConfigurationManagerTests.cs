@@ -1,11 +1,11 @@
-﻿using ENBManager.Core.Interfaces;
-using ENBManager.Core.Services;
-using ENBManager.Infrastructure.BusinessEntities;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Services;
+using ENBManager.Configuration.Tests.Stubs;
 using ENBManager.TestUtils.Utils;
 using NUnit.Framework;
 using System.IO;
 
-namespace ENBManager.Core.Tests.Services
+namespace ENBManager.Configuration.Tests.Services
 {
     [TestFixture]
     public class ConfigurationManagerTests
@@ -40,16 +40,16 @@ namespace ENBManager.Core.Tests.Services
         public void ShouldInitializeWithAnyDerivedClass()
         {
             // Arrange
-            var configManager1 = new ConfigurationManager<AppSettings>();
-            var configManager2 = new ConfigurationManager<AppSettingsStub>();
+            var configManager1 = new ConfigurationManager<AppSettingsStub>();
+            var configManager2 = new ConfigurationManager<GameSettingsStub>();
 
             // Act
             var settings1 = configManager1.Settings;
             var settings2 = configManager2.Settings;
 
             // Assert
-            Assert.That(settings1, Is.TypeOf<AppSettings>());
-            Assert.That(settings2, Is.TypeOf<AppSettingsStub>());
+            Assert.That(settings1, Is.TypeOf<AppSettingsStub>());
+            Assert.That(settings2, Is.TypeOf<GameSettingsStub>());
         }
 
         [Test]

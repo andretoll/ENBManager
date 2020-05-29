@@ -1,10 +1,9 @@
-﻿using ENBManager.Core.Helpers;
+﻿using ENBManager.Configuration.Services;
 using ENBManager.Core.Interfaces;
-using ENBManager.Core.Services;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Modules.Shared.Interfaces;
 using NLog;
 using Prism.Commands;
-using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -21,11 +20,11 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IFileService _fileService;
         private readonly IGameLocator _gameLocator;
-        private readonly IModuleCatalog _moduleCatalog;
+        private readonly IGameModuleCatalog _gameModuleCatalog;
 
         private bool _anyGamesManaged => Games != null && Games.Any(x => x.ShouldManage);
 
@@ -45,10 +44,10 @@ namespace ENBManager.Core.ViewModels
 
         #region Commands
 
-        public DelegateCommand ContinueCommand { get; set; }
-        public DelegateCommand CancelCommand { get; set; }
-        public DelegateCommand GetDataCommand { get; set; }
-        public DelegateCommand<GameModule> BrowseGameCommand { get; set; }
+        public DelegateCommand ContinueCommand { get; }
+        public DelegateCommand CancelCommand { get; }
+        public DelegateCommand GetDataCommand { get; }
+        public DelegateCommand<GameModule> BrowseGameCommand { get; }
 
         #endregion
 
@@ -57,11 +56,11 @@ namespace ENBManager.Core.ViewModels
         public DiscoverGamesDialogViewModel(
             IFileService fileService,
             IGameLocator gameLocator,
-            IModuleCatalog moduleCatalog)
+            IGameModuleCatalog gameModuleCatalog)
         {
             _fileService = fileService;
             _gameLocator = gameLocator;
-            _moduleCatalog = moduleCatalog;
+            _gameModuleCatalog = gameModuleCatalog;
 
             ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => _anyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
@@ -124,13 +123,14 @@ namespace ENBManager.Core.ViewModels
             if (Games == null)
                 Games = new ObservableCollection<GameModule>();
 
-            var supportedGames = await GetSupportedGames();
+            var supportedGames = _gameModuleCatalog.GameModules;
 
             foreach (var game in supportedGames)
             {
                 if (Games.Any(x => x.Module == game.Module))
                     continue;
 
+                game.InstalledLocation = await _gameLocator.Find(game.Title);
                 game.PropertyChanged += Game_PropertyChanged;
                 Games.Add(game);
             }
@@ -150,22 +150,6 @@ namespace ENBManager.Core.ViewModels
             
             game.InstalledLocation = Path.GetDirectoryName(filePath);
             game.ShouldManage = true;
-        }
-
-        private async Task<IEnumerable<GameModule>> GetSupportedGames()
-        {
-            _logger.Debug(nameof(GetSupportedGames));
-
-            var gamesList = new List<GameModule>();
-
-            foreach (var module in _moduleCatalog.Modules)
-            {
-                var game = (GameModule)InstanceFactory.CreateInstance(Type.GetType(module.ModuleType));
-                game.InstalledLocation = await _gameLocator.Find(game.Title);
-                gamesList.Add(game);
-            }
-
-            return gamesList;
         }
 
         #endregion

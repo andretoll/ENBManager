@@ -11,7 +11,7 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IRegionManager _regionManager;
 

@@ -10,9 +10,9 @@
     <Grid Margin="25">
         <Viewbox MaxWidth="1200">
             <TextBlock Text="{x:Static loc:Strings.SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED}"
-                   Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"/>
+                       Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
         </Viewbox>
     </Grid>
     

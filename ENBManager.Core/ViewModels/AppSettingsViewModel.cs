@@ -1,5 +1,5 @@
-﻿using ENBManager.Core.Helpers;
-using ENBManager.Core.Interfaces;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Core.Helpers;
 using ENBManager.Infrastructure.BusinessEntities;
 using NLog;
 using Prism.Commands;
@@ -15,7 +15,7 @@ namespace ENBManager.Core.ViewModels
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
 
@@ -25,14 +25,14 @@ namespace ENBManager.Core.ViewModels
 
         public AppSettings Settings => _configurationManager.Settings;
 
-        public IEnumerable<string> ColorSchemes { get; set; } = ThemeHelper.GetColorSchemes().Select(x => x.Name);
+        public IEnumerable<string> ColorSchemes => ThemeHelper.GetColorSchemes().Select(x => x.Name);
 
         #endregion
 
         #region Commands
 
-        public DelegateCommand SaveCommand { get; set; }
-        public DelegateCommand CancelCommand { get; set; }
+        public DelegateCommand SaveCommand { get; }
+        public DelegateCommand CancelCommand { get; }
 
         #endregion
 

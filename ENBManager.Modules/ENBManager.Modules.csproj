@@ -71,10 +71,22 @@
   <ItemGroup>
     <Compile Include="Fallout4\Fallout4Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\Events\Events.cs" />
+    <Compile Include="Shared\Interfaces\IGameModuleCatalog.cs" />
+    <Compile Include="Shared\Interfaces\IPresetManager.cs" />
     <Compile Include="Shared\Interfaces\ITabItem.cs" />
     <Compile Include="Shared\Models\GameModule.cs" />
+    <Compile Include="Shared\Models\Preset.cs" />
+    <Compile Include="Shared\Services\GameModuleCatalog.cs" />
+    <Compile Include="Shared\Services\PresetManager.cs" />
+    <Compile Include="Shared\ViewModels\Base\TabItemBase.cs" />
+    <Compile Include="Shared\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Shared\ViewModels\ModuleShellViewModel.cs" />
     <Compile Include="Shared\ViewModels\PresetsViewModel.cs" />
     <Compile Include="Shared\ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Shared\Views\DashboardView.xaml.cs">
+      <DependentUpon>DashboardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared\Views\PresetsView.xaml.cs">
       <DependentUpon>PresetsView.xaml</DependentUpon>
     </Compile>
@@ -102,6 +114,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Shared\Views\DashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Shared\Views\PresetsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

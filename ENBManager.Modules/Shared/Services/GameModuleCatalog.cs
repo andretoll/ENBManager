@@ -1,0 +1,37 @@
+﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Modules.Shared.Interfaces;
+using Prism.Ioc;
+using System;
+using System.Collections.Generic;
+
+namespace ENBManager.Modules.Shared.Services
+{
+    public class GameModuleCatalog : IGameModuleCa+talog
+    {
+        #region Private Members
+
+        private readonly List<GameModule> _gameModules;
+
+        #endregion
+
+        #region Constructor
+
+        public GameModuleCatalog()
+        {
+            _gameModules = new List<GameModule>();
+        } 
+
+        #endregion
+
+        #region IGameModuleCatalog Implementation
+
+        public IEnumerable<GameModule> GameModules => _gameModules;
+
+        public void AddModule<T>(IContainerProvider container) where T : GameModule
+        {
+            _gameModules.Add((GameModule)Activator.CreateInstance(typeof(T), container));
+        }
+
+        #endregion
+    }
+}

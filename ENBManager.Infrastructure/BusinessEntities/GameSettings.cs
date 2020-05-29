@@ -1,4 +1,4 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Base;
+﻿using ENBManager.Configuration.Models;
 using ENBManager.Infrastructure.Constants;
 using System.IO;
 
@@ -8,6 +8,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
     {
         #region Private Members
 
+        private static string FILE_PATH = Path.Combine(Paths.GetBaseDirectory(), Paths.GAMES_DIRECTORY);
         private const string FILE_NAME = "gamesettings.json";
 
         #endregion
@@ -21,7 +22,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         #region Constructor
 
         public GameSettings(string directory)
-            : base(Path.Combine(Paths.GAMES_DIRECTORY, directory, FILE_NAME))
+            : base(Path.Combine(FILE_PATH, directory, FILE_NAME))
         {
         }
 

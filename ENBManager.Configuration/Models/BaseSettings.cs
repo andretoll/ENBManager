@@ -1,7 +1,4 @@
-﻿using ENBManager.Infrastructure.Constants;
-using System.IO;
-
-namespace ENBManager.Infrastructure.BusinessEntities.Base
+﻿namespace ENBManager.Configuration.Models
 {
     public abstract class BaseSettings
     {
@@ -15,7 +12,7 @@ namespace ENBManager.Infrastructure.BusinessEntities.Base
 
         public BaseSettings(string filePath)
         {
-            _path = Path.Combine(Paths.GetBaseDirectory(), filePath);
+            _path = filePath;
         }
 
         #endregion

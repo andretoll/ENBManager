@@ -133,6 +133,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        public static string DASHBOARD {
+            get {
+                return ResourceManager.GetString("DASHBOARD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed Games.
         /// </summary>
         public static string INSTALLED_GAMES {

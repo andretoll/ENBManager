@@ -3,11 +3,11 @@
 namespace ENBManager.Modules.Shared.Views
 {
     /// <summary>
-    /// Interaction logic for SettingsView.xaml
+    /// Interaction logic for DashboardView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class DashboardView : UserControl
     {
-        public SettingsView()
+        public DashboardView()
         {
             InitializeComponent();
         }

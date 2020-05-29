@@ -1,10 +1,11 @@
 ﻿using ENBManager.Core.Tests.Stubs;
 using ENBManager.Core.ViewModels;
 using ENBManager.Modules.Fallout4;
+using ENBManager.Modules.Shared.Interfaces;
+using ENBManager.Modules.Shared.Services;
 using ENBManager.Modules.Skyrim;
 using ENBManager.Modules.SkyrimSE;
 using NUnit.Framework;
-using Prism.Modularity;
 using System.Linq;
 
 namespace ENBManager.Core.Tests.ViewModels
@@ -19,8 +20,8 @@ namespace ENBManager.Core.Tests.ViewModels
         {
             var fileService = new FileServiceStub();
             var gameLocator = new GameLocatorStub();
-            var moduleCatalog = GetModuleCatalog();
-            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, moduleCatalog);
+            var gameModuleCatalog = GetGameModuleCatalog();
+            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, gameModuleCatalog);
         }
 
         [TearDown]
@@ -80,15 +81,15 @@ namespace ENBManager.Core.Tests.ViewModels
             Assert.That(expectingTrueAgain, Is.True);
         }
 
-        private IModuleCatalog GetModuleCatalog()
+        private IGameModuleCatalog GetGameModuleCatalog()
         {
-            ModuleCatalog moduleCatalog = new ModuleCatalog();
+            GameModuleCatalog gameModuleCatalog = new GameModuleCatalog();
 
-            moduleCatalog.AddModule(SkyrimModule.GetModuleInfo());
-            moduleCatalog.AddModule(SkyrimSEModule.GetModuleInfo());
-            moduleCatalog.AddModule(Fallout4Module.GetModuleInfo());
+            gameModuleCatalog.AddModule<SkyrimModule>(null);
+            gameModuleCatalog.AddModule<SkyrimSEModule>(null);
+            gameModuleCatalog.AddModule<Fallout4Module>(null);
 
-            return moduleCatalog;
+            return gameModuleCatalog;
         }
     }
 }

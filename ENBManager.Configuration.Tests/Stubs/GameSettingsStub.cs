@@ -1,6 +1,6 @@
 ﻿using ENBManager.Configuration.Models;
 
-namespace ENBManager.Core.Tests
+namespace ENBManager.Configuration.Tests.Stubs
 {
     public class GameSettingsStub : BaseSettings
     {

@@ -1,4 +1,4 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Base;
+﻿using ENBManager.Configuration.Models;
 
 namespace ENBManager.Core.Tests
 {

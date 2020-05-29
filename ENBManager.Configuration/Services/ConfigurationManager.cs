@@ -1,17 +1,17 @@
-﻿using ENBManager.Core.Interfaces;
-using ENBManager.Infrastructure.BusinessEntities.Base;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Models;
 using Newtonsoft.Json;
 using NLog;
 using System;
 using System.IO;
 
-namespace ENBManager.Core.Services
+namespace ENBManager.Configuration.Services
 {
     public class ConfigurationManager<T> : IConfigurationManager<T> where T : BaseSettings
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 

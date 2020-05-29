@@ -2,55 +2,31 @@
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Modules.Shared.Views;
 using Prism.Ioc;
-using Prism.Modularity;
-using Prism.Regions;
 using System;
 using System.Windows.Media.Imaging;
 
 namespace ENBManager.Modules.SkyrimSE
 {
-    [Module(ModuleName = ModuleNames.SKYRIMSE)]
-    public class SkyrimSEModule : GameModule, IModule
+    public class SkyrimSEModule : GameModule
     {
+        #region Constructor
+
+        public SkyrimSEModule(IContainerProvider container)
+            : base(container) { }
+
+        #endregion
+
         #region GameModule Override
 
         public override string Title => "The Elder Scrolls V: Skyrim Special Edition";
         public override string Executable => "SkyrimSE.exe";
-        public override string Module => GetModuleInfo().ModuleName;
+        public override string Module => ModuleNames.SKYRIMSE;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrimse.png"));
+        public override string[] Binaries => new[] {"d3d11.dll", "d3dcompiler_46e.dll"};
 
-        public override void Activate(IRegionManager regionManager)
+        public override void Activate()
         {
-            base.Activate(regionManager);
-
-            regionManager.AddToRegion(RegionNames.TabRegion, new PresetsView(this));
-            regionManager.AddToRegion(RegionNames.TabRegion, new SettingsView(this));
-        }
-
-        #endregion
-
-        #region Public Static Methods
-
-        public static ModuleInfo GetModuleInfo()
-        {
-            return new ModuleInfo()
-            {
-                ModuleName = ModuleNames.SKYRIMSE,
-                ModuleType = typeof(SkyrimSEModule).AssemblyQualifiedName,
-                InitializationMode = InitializationMode.OnDemand
-            };
-        } 
-
-        #endregion
-
-        #region IModule Implementation
-
-        public void OnInitialized(IContainerProvider containerProvider)
-        {
-        }
-
-        public void RegisterTypes(IContainerRegistry containerRegistry)
-        {
+            ActivateModule(typeof(DashboardView), typeof(PresetsView), typeof(SettingsView));
         }
 
         #endregion

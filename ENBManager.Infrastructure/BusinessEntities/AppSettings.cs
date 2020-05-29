@@ -1,5 +1,7 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Base;
+﻿using ENBManager.Configuration.Models;
+using ENBManager.Infrastructure.Constants;
 using ENBManager.Logging.Enums;
+using System.IO;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
@@ -7,7 +9,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
     {
         #region Private Members
 
-        private const string FILE_NAME = "appsettings.json";
+        private static string FILE_NAME = Path.Combine(Paths.GetBaseDirectory(), "appsettings.json");
 
         #endregion
 

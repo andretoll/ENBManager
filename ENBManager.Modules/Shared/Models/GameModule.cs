@@ -1,6 +1,14 @@
 ﻿using ENBManager.Infrastructure.Constants;
+using ENBManager.Modules.Shared.Events;
+using ENBManager.Modules.Shared.Interfaces;
+using ENBManager.Modules.Shared.Models;
+using ENBManager.Modules.Shared.Services;
 using ENBManager.Modules.Shared.Views;
+using Prism.Events;
+using Prism.Ioc;
 using Prism.Regions;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
@@ -11,9 +19,17 @@ namespace ENBManager.Infrastructure.BusinessEntities
     {
         #region Private Members
 
+        private readonly IPresetManager _presetManager = new PresetManager();
+
         private string _installedLocation;
         private bool _shouldManage = true;
         private GameSettings _settings;
+
+        #endregion
+
+        #region Protected Members
+
+        protected readonly IContainerProvider _container;
 
         #endregion
 
@@ -39,6 +55,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 OnPropertyChanged();
             }
         }
+        public IEnumerable<Preset> Presets { get; set; }
 
         public GameSettings Settings
         {
@@ -59,16 +76,45 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public abstract BitmapImage Icon { get; }
         public abstract string Executable { get; } 
         public abstract string Module { get; }
+        public abstract string[] Binaries { get; }
 
         #endregion
 
-        #region Public Virtual Methods
+        #region Constructor
 
-        public virtual void Activate(IRegionManager regionManager)
+        public GameModule(IContainerProvider container)
         {
+            _container = container;
+        }
+
+        #endregion
+
+        #region Protected Methods
+
+        protected void ActivateModule(params Type[] types)
+        {
+            // Get presets
+            Presets = _presetManager.GetPresets(Paths.GetPresetsDirectory(Module));
+
+            // Register views
+            var regionManager = _container.Resolve<IRegionManager>();
             regionManager.RequestNavigate(RegionNames.MainRegion, nameof(ModuleShell));
             regionManager.Regions[RegionNames.TabRegion].RemoveAll();
+            foreach (var type in types)
+            {
+                regionManager.RegisterViewWithRegion(RegionNames.TabRegion, type);
+            }
+
+            // Publish event
+            var eventAggregator = _container.Resolve<IEventAggregator>();
+            eventAggregator.GetEvent<ModuleActivatedEvent>().Publish(this);
         }
+
+        #endregion
+
+        #region Public Abstract Methods
+
+        public abstract void Activate();
 
         #endregion
 
@@ -79,7 +125,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        } 
+        }
 
         #endregion
     }

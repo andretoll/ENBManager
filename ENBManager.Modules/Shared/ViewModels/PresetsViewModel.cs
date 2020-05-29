@@ -1,16 +1,22 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Localization.Strings;
-using ENBManager.Modules.Shared.Interfaces;
+using ENBManager.Modules.Shared.ViewModels.Base;
+using Prism.Events;
 
 namespace ENBManager.Modules.Shared.ViewModels
 {
-    public class PresetsViewModel : ITabItem
+    public class PresetsViewModel : TabItemBase
     {
-        public PresetsViewModel(GameModule game)
+        public PresetsViewModel(IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
 
         }
 
-        public string Name => Strings.PRESETS;
+        public override string Name => Strings.PRESETS;
+
+        protected override void OnModuleActivated(GameModule game)
+        {
+        }
     }
 }

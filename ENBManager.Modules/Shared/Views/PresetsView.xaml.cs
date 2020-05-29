@@ -1,6 +1,4 @@
-﻿using ENBManager.Infrastructure.BusinessEntities;
-using ENBManager.Modules.Shared.ViewModels;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace ENBManager.Modules.Shared.Views
 {
@@ -9,11 +7,9 @@ namespace ENBManager.Modules.Shared.Views
     /// </summary>
     public partial class PresetsView : UserControl
     {
-        public PresetsView(GameModule game)
+        public PresetsView()
         {
             InitializeComponent();
-
-            DataContext = new PresetsViewModel(game);
         }
     }
 }
