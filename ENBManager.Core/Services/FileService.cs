@@ -11,7 +11,7 @@ namespace ENBManager.Core.Services
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -27,12 +27,16 @@ namespace ENBManager.Core.Services
                 CheckFileExists = true
             };
 
+            bool? cancelled;
             do
             {
-                dialog.ShowDialog();
+                cancelled = !dialog.ShowDialog();
             }
-            while (!string.IsNullOrEmpty(dialog.FileName) &&
+            while (!cancelled.Value && !string.IsNullOrEmpty(dialog.FileName) &&
                 Path.GetFileName(dialog.FileName) != fileName);
+
+            if (cancelled.Value)
+                return null;
 
             return dialog.FileName;
         }
@@ -41,16 +45,14 @@ namespace ENBManager.Core.Services
         {
             _logger.Info($"Deleting directory '{directoryName}'");
 
-            Directory.Delete(Path.Combine(Paths.GetBaseDirectory(), Paths.GAMES_DIRECTORY, directoryName), true);
+            Directory.Delete(Path.Combine(Paths.GetGamesDirectory(), directoryName), true);
         }
 
         public string[] GetGameDirectories()
         {
             _logger.Debug(nameof(GetGameDirectories));
 
-            var baseDirectory = Path.Combine(Paths.GetBaseDirectory(), Paths.GAMES_DIRECTORY);
-
-            var directories = Directory.GetDirectories(baseDirectory);
+            var directories = Directory.GetDirectories(Paths.GetGamesDirectory());
 
             return directories;
         }

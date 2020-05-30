@@ -1,11 +1,8 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
-using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
-using MaterialDesignThemes.Wpf;
 using Prism.Events;
-using System;
 using System.IO;
 
 namespace ENBManager.Modules.Shared.ViewModels

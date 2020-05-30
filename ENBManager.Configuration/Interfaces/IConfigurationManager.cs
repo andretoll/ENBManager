@@ -24,7 +24,7 @@ namespace ENBManager.Configuration.Interfaces
         /// <summary>
         /// Initializes the current settings if the JSON file does not exists.
         /// </summary>
-        void Initialize();
+        void InitializeSettings();
 
         /// <summary>
         /// Sets the read-only attribute of the JSON file.

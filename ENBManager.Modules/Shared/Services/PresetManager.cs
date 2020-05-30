@@ -20,9 +20,11 @@ namespace ENBManager.Modules.Shared.Services
 
             foreach (var dir in dirs)
             {
-                var preset = new Preset();
-                preset.Name = Path.GetFileName(dir);
-                preset.Files = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
+                var preset = new Preset
+                {
+                    Name = Path.GetFileName(dir),
+                    Files = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories)
+                };
 
                 presets.Add(preset);
             }

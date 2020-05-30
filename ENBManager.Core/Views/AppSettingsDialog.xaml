@@ -6,7 +6,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
-             xmlns:vc="clr-namespace:ENBManager.Core.ValueConverters"
+             xmlns:vc="clr-namespace:ENBManager.Infrastructure.ValueConverters;assembly=ENBManager.Infrastructure"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"

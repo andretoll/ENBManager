@@ -11,7 +11,7 @@ namespace ENBManager.Core.Helpers
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger(); 
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace ENBManager.Core.Helpers
 
             var selectedColorScheme = colorSchemes.FirstOrDefault(x => x.Name == colorSchemeName);
 
-            return selectedColorScheme != null ? selectedColorScheme : colorSchemes.First();
+            return selectedColorScheme ?? colorSchemes.First();
         } 
 
         #endregion

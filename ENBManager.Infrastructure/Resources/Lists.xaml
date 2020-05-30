@@ -141,4 +141,78 @@
         </DockPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="PresetListItemTemplate">
+        <Border BorderThickness="0 1 0 0"
+                BorderBrush="Gray"
+                Background="Transparent"
+                Padding="0 15">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Activate preset -->
+                <Grid Grid.Column="0"
+                      Margin="20 0">
+
+                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                  Command="{Binding DataContext.ActivatePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                  CommandParameter="{Binding .}"
+                                  IsChecked="{Binding IsActive}"/>
+                </Grid>
+
+                <!-- Name -->
+                <Grid Grid.Column="1"
+                      Margin="0 0 20 0">
+                    <TextBlock Text="{Binding Name}"
+                               Style="{StaticResource MaterialDesignBody1TextBlock}"
+                               TextTrimming="CharacterEllipsis"
+                               FontSize="18"/>
+                </Grid>
+
+                <!-- Misc -->
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+
+                    <materialDesign:PopupBox DockPanel.Dock="Right"
+                                             Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Border}}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"
+                                             PlacementMode="BottomAndAlignRightEdges">
+
+                        <StackPanel>
+                            
+                            <!-- Rename -->
+                            <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
+                                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Rename"
+                                                             Margin="0 0 10 0"/>
+                                    <TextBlock Text="{x:Static loc:Strings.RENAME}" />
+                                </StackPanel>
+                            </Button>
+                            
+                            <Separator />
+
+                        </StackPanel>
+                        
+                    </materialDesign:PopupBox>
+
+                </StackPanel>
+
+            </Grid>
+
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PresetGridItemTemplate">
+        <Border Padding="0 15">
+
+            <TextBlock Text="{Binding Name}" />
+
+        </Border>
+    </DataTemplate>
+
 </ResourceDictionary>

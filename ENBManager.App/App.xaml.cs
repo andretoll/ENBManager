@@ -36,7 +36,7 @@ namespace ENBManager.App
     {
         #region Private Members
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger(); 
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -71,18 +71,22 @@ namespace ENBManager.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            // Services
             _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
             _ = containerRegistry.RegisterSingleton<IGameModuleCatalog, GameModuleCatalog>();
             _ = containerRegistry.Register<ILoggerFacade, PrismLogger>();
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IFileService, FileService>();
             _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
+
+            // ViewModels
+            _ = containerRegistry.RegisterSingleton<DashboardViewModel>();
+            _ = containerRegistry.RegisterSingleton<PresetsViewModel>();
+            _ = containerRegistry.RegisterSingleton<SettingsViewModel>();
+
+            // Dialogs
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
             containerRegistry.RegisterDialog<AppSettingsDialog, AppSettingsViewModel>();
-
-            containerRegistry.RegisterSingleton<DashboardViewModel>();
-            containerRegistry.RegisterSingleton<PresetsViewModel>();
-            containerRegistry.RegisterSingleton<SettingsViewModel>();
         }
 
         #endregion
@@ -161,17 +165,13 @@ namespace ENBManager.App
         {
             var logLevel = Container.Resolve<ConfigurationManager<AppSettings>>().Settings.LogLevel;
 
-            switch (logLevel)
+            return logLevel switch
             {
-                case Logging.Enums.LogLevel.Debug:
-                    return LogLevel.Debug;
-                case Logging.Enums.LogLevel.Information:
-                    return LogLevel.Info;
-                case Logging.Enums.LogLevel.Error:
-                    return LogLevel.Error;
-                default:
-                    throw new ArgumentException("Unsupported log level.");
-            }
+                Logging.Enums.LogLevel.Debug => LogLevel.Debug,
+                Logging.Enums.LogLevel.Information => LogLevel.Info,
+                Logging.Enums.LogLevel.Error => LogLevel.Error,
+                _ => throw new ArgumentException("Unsupported log level."),
+            };
         }
 
         #endregion

@@ -4,24 +4,29 @@
     {
         #region Private Members
 
-        private string _path;
+        private string _fullPath;
 
         #endregion
 
         #region Constructor
 
-        public BaseSettings(string filePath)
+        public BaseSettings(string fullPath)
         {
-            _path = filePath;
+            _fullPath = fullPath;
         }
 
         #endregion
 
         #region Public Methods
 
-        public string GetFilePath()
+        public string GetFullPath()
         {
-            return _path;
+            return _fullPath;
+        }
+
+        public void SetFullPath(string fullPath)
+        {
+            _fullPath = fullPath;
         }
 
         #endregion

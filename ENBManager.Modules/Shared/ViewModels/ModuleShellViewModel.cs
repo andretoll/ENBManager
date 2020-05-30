@@ -9,7 +9,7 @@ namespace ENBManager.Modules.Shared.ViewModels
     {
         #region Public Properties
 
-        public ISnackbarMessageQueue MessageQueue { get; set; }
+        public ISnackbarMessageQueue MessageQueue { get; }
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void ShowSnackbarMessage(string message)
         {
-            MessageQueue.Enqueue(message); 
+            MessageQueue.Enqueue(message);
         }
 
         #endregion

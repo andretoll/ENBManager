@@ -26,7 +26,7 @@ namespace ENBManager.Core.ViewModels
         private readonly IGameLocator _gameLocator;
         private readonly IGameModuleCatalog _gameModuleCatalog;
 
-        private bool _anyGamesManaged => Games != null && Games.Any(x => x.ShouldManage);
+        private bool AnyGamesManaged => Games != null && Games.Any(x => x.ShouldManage);
 
         #endregion
 
@@ -62,10 +62,12 @@ namespace ENBManager.Core.ViewModels
             _gameLocator = gameLocator;
             _gameModuleCatalog = gameModuleCatalog;
 
-            ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => _anyGamesManaged);
+            ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => AnyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
             BrowseGameCommand = new DelegateCommand<GameModule>((p) => OnBrowseGameCommand(p));
+
+            _logger.Debug($"{nameof(DiscoverGamesDialogViewModel)} initialized");
         }
 
         #endregion
@@ -88,16 +90,18 @@ namespace ENBManager.Core.ViewModels
             ConfigurationManager<GameSettings> configManager;
             GameSettings gameSettings;
 
-            // For every game to manage
+            // For every game to manage, initialize settings
             foreach (var game in Games.Where(x => x.ShouldManage))
             {
-                gameSettings = new GameSettings(game.Module);
-                gameSettings.InstalledLocation = game.InstalledLocation;
+                gameSettings = new GameSettings(game.Module)
+                {
+                    InstalledLocation = game.InstalledLocation
+                };
                 configManager = new ConfigurationManager<GameSettings>(gameSettings);
-                configManager.Initialize();
+                configManager.InitializeSettings();
             }
 
-            // For every game to not manage
+            // For every game to not manage, delete directory
             foreach (var game in Games.Where(x => !x.ShouldManage))
             {
                 // If game directory exists, delete it and its content

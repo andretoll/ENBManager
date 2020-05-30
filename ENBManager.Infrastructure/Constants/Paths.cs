@@ -8,13 +8,8 @@ namespace ENBManager.Infrastructure.Constants
         #region Private Members
 
         private const string BASE_DIRECTORY = "ENBManager";
-
-        #endregion
-
-        #region Public Members
-
-        public const string GAMES_DIRECTORY = "Games"; 
-        public const string PRESETS_DIRECTORY = "Presets";
+        private const string GAMES_DIRECTORY = "Games"; 
+        private const string PRESETS_DIRECTORY = "Presets";
 
         #endregion
 
@@ -24,6 +19,11 @@ namespace ENBManager.Infrastructure.Constants
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), BASE_DIRECTORY);
         } 
+
+        public static string GetGamesDirectory()
+        {
+            return Path.Combine(GetBaseDirectory(), GAMES_DIRECTORY);
+        }
 
         public static string GetPresetsDirectory(string module)
         {

@@ -44,6 +44,8 @@ namespace ENBManager.Core.ViewModels
 
             SaveCommand = new DelegateCommand(OnSaveCommand);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
+
+            _logger.Debug($"{nameof(AppSettingsViewModel)} initialized");
         }
 
         #endregion

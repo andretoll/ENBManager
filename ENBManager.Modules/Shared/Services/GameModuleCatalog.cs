@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ENBManager.Modules.Shared.Services
 {
-    public class GameModuleCatalog : IGameModuleCa+talog
+    public class GameModuleCatalog : IGameModuleCatalog
     {
         #region Private Members
 

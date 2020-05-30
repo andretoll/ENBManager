@@ -7,7 +7,7 @@ namespace ENBManager.Core.Services
 {
     public class GameLocator : IGameLocator
     {
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public async Task<string> Find(string title)
         {

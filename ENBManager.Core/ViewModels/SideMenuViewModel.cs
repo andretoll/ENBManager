@@ -105,8 +105,6 @@ namespace ENBManager.Core.ViewModels
         {
             _logger.Debug(nameof(OnGetDataCommand));
 
-            GameSettings gameSettings;
-
             Games = new ObservableCollection<GameModule>();
 
             var directories = _fileService.GetGameDirectories();
@@ -115,8 +113,9 @@ namespace ENBManager.Core.ViewModels
             {
                 var game = _gameModuleCatalog.GameModules.Single(x => x.Module == Path.GetFileName(directory));
 
-                gameSettings = new GameSettings(game.Module);
-                game.Settings = ConfigurationManager<GameSettings>.LoadSettings(gameSettings.GetFilePath());
+                game.Settings = 
+                    ConfigurationManager<GameSettings>.LoadSettings(
+                        new GameSettings(game.Module).GetFullPath());
 
                 Games.Add(game);
             }
@@ -150,8 +149,10 @@ namespace ENBManager.Core.ViewModels
         {
             _logger.Debug(nameof(OnOpenDiscoverGamesCommand));
 
-            DialogParameters dp = new DialogParameters();
-            dp.Add("Games", Games);
+            DialogParameters dp = new DialogParameters
+            {
+                { "Games", Games }
+            };
 
             _dialogService.ShowDialog(nameof(DiscoverGamesDialog), dp, (dr) =>
             {

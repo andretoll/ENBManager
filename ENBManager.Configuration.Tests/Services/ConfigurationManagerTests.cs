@@ -10,96 +10,106 @@ namespace ENBManager.Configuration.Tests.Services
     [TestFixture]
     public class ConfigurationManagerTests
     {
-        private IConfigurationManager<AppSettingsStub> _appConfig;
-        private IConfigurationManager<GameSettingsStub> _gameConfig;
+        private IConfigurationManager<SettingsAStub> _settingsAConfig;
+        private IConfigurationManager<SettingsBStub> _settingsBConfig;
 
         [SetUp]
         public void Setup()
         {
-            _appConfig = new ConfigurationManager<AppSettingsStub>();
-            _gameConfig = new ConfigurationManager<GameSettingsStub>(new GameSettingsStub());
+            TearDown();
+
+            _settingsAConfig = new ConfigurationManager<SettingsAStub>();
         }
 
         [TearDown]
         public void TearDown()
         {
-            if (File.Exists(Path.Combine(_appConfig.Settings.GetFilePath())))
+            _settingsAConfig = new ConfigurationManager<SettingsAStub>();
+            _settingsBConfig = new ConfigurationManager<SettingsBStub>();
+
+            if (File.Exists(_settingsAConfig.Settings.GetFullPath()))
             {
-                File.SetAttributes(Path.Combine(_appConfig.Settings.GetFilePath()), FileAttributes.Normal);
-                Directory.Delete(Path.GetDirectoryName(_appConfig.Settings.GetFilePath()), true);
+                File.SetAttributes(Path.Combine(_settingsAConfig.Settings.GetFullPath()), FileAttributes.Normal);
+                Directory.Delete(Path.GetDirectoryName(_settingsAConfig.Settings.GetFullPath()), true);
             }
 
-            if (File.Exists(Path.Combine(_gameConfig.Settings.GetFilePath())))
+            if (File.Exists(_settingsBConfig.Settings.GetFullPath()))
             {
-                File.SetAttributes(Path.Combine(_gameConfig.Settings.GetFilePath()), FileAttributes.Normal);
-                Directory.Delete(Path.GetDirectoryName(_gameConfig.Settings.GetFilePath()), true);
+                File.SetAttributes(Path.Combine(_settingsBConfig.Settings.GetFullPath()), FileAttributes.Normal);
+                Directory.Delete(Path.GetDirectoryName(_settingsBConfig.Settings.GetFullPath()), true);
             }
         }
 
         [Test]
-        public void ShouldInitializeWithAnyDerivedClass()
+        public void ShouldCreateSettingsInstanceOfAnyDerivedType()
         {
             // Arrange
-            var configManager1 = new ConfigurationManager<AppSettingsStub>();
-            var configManager2 = new ConfigurationManager<GameSettingsStub>();
+            _settingsAConfig = new ConfigurationManager<SettingsAStub>();
+            _settingsBConfig = new ConfigurationManager<SettingsBStub>();
 
             // Act
-            var settings1 = configManager1.Settings;
-            var settings2 = configManager2.Settings;
+            var settingsA = _settingsAConfig.Settings;
+            var settingsB = _settingsBConfig.Settings;
 
             // Assert
-            Assert.That(settings1, Is.TypeOf<AppSettingsStub>());
-            Assert.That(settings2, Is.TypeOf<GameSettingsStub>());
+            Assert.That(settingsA.GetType(), Is.EqualTo(typeof(SettingsAStub)));
+            Assert.That(settingsB.GetType(), Is.EqualTo(typeof(SettingsBStub)));
         }
 
         [Test]
-        public void ShouldCreateInitialSettingsFileWhenSaving()
+        public void ShouldCreateFileWhenSavingIfNotExisting()
         {
+            // Arrange
+            _settingsAConfig = new ConfigurationManager<SettingsAStub>();
+
             // Act
-            _appConfig.SaveSettings();
+            _settingsAConfig.SaveSettings();
 
             // Assert
-            Assert.That(File.Exists(_appConfig.Settings.GetFilePath()), Is.True);
+            Assert.That(File.Exists(_settingsAConfig.Settings.GetFullPath()));
         }
 
         [Test]
-        public void ShouldCreateInitialSettingsFileWhenLoading()
-        {
-            // Act
-            _appConfig.LoadSettings();
-
-            // Assert
-            Assert.That(File.Exists(_appConfig.Settings.GetFilePath()), Is.True);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ShouldSaveAndLoadSettings(bool condition)
+        public void ShouldCreateFileWhenLoadingIfNotExisting()
         {
             // Arrange
-            var appSettings = _appConfig.Settings;
-            string name = TestValues.GetRandomString();
-            appSettings.Condition = condition;
-            appSettings.Name = name;
+            _settingsAConfig = new ConfigurationManager<SettingsAStub>();
 
             // Act
-            _appConfig.SaveSettings();
-            _appConfig.LoadSettings();
-            appSettings = _appConfig.Settings;
+            _settingsAConfig.LoadSettings();
 
             // Assert
-            Assert.That(appSettings.Condition, Is.EqualTo(condition));
-            Assert.That(appSettings.Name, Is.EqualTo(name));
+            Assert.That(File.Exists(_settingsAConfig.Settings.GetFullPath()));
         }
 
         [Test]
         public void ShouldMakeFileReadonlyOnSave()
         {
             // Act
-            _appConfig.SaveSettings();
+            _settingsAConfig.SaveSettings();
 
             // Assert
-            Assert.That(File.GetAttributes(_appConfig.Settings.GetFilePath()).HasFlag(FileAttributes.ReadOnly));
+            Assert.That(File.GetAttributes(_settingsAConfig.Settings.GetFullPath()).HasFlag(FileAttributes.ReadOnly));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ShouldSaveAndLoadSettingsCorrectly(bool condition)
+        {
+            // Arrange
+            var appSettings = _settingsAConfig.Settings;
+            string text = TestValues.GetRandomString();
+            appSettings.Condition = condition;
+            appSettings.Text = text;
+
+            // Act
+            _settingsAConfig.SaveSettings();
+            _settingsAConfig.LoadSettings();
+            appSettings = _settingsAConfig.Settings;
+
+            // Assert
+            Assert.That(appSettings.Condition, Is.EqualTo(condition));
+            Assert.That(appSettings.Text, Is.EqualTo(text));
         }
 
         [TestCase(true)]
@@ -107,39 +117,17 @@ namespace ENBManager.Configuration.Tests.Services
         public void ShouldLoadSettingsOnConstruct(bool condition)
         {
             // Arrange
-            string random = TestValues.GetRandomString();
-            _appConfig.Settings.Condition = condition;
-            _appConfig.Settings.Name = random;
-            _appConfig.SaveSettings();
+            string text = TestValues.GetRandomString();
+            _settingsAConfig.Settings.Condition = condition;
+            _settingsAConfig.Settings.Text = text;
+            _settingsAConfig.SaveSettings();
 
             // Act
-            _appConfig = new ConfigurationManager<AppSettingsStub>();
+            _settingsAConfig = new ConfigurationManager<SettingsAStub>();
 
             // Assert
-            Assert.That(_appConfig.Settings.Condition, Is.EqualTo(condition));
-            Assert.That(_appConfig.Settings.Name, Is.EqualTo(random));
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ShouldInitializeOnlyIfFileDoesNotExist(bool condition)
-        {
-            // Arrange
-            string wrongValue = TestValues.GetRandomString();
-            string name = TestValues.GetRandomString();
-            _gameConfig.Settings.Name = name;
-            _gameConfig.Settings.Condition = condition;
-            _gameConfig.Initialize();
-
-            // Act
-            _gameConfig.LoadSettings();
-            _gameConfig.Settings.Name = wrongValue;
-            _gameConfig.Initialize();
-            _gameConfig.LoadSettings();
-
-            // Assert
-            Assert.That(_gameConfig.Settings.Name, Is.EqualTo(name));
-            Assert.That(_gameConfig.Settings.Condition, Is.EqualTo(condition));
+            Assert.That(_settingsAConfig.Settings.Condition, Is.EqualTo(condition));
+            Assert.That(_settingsAConfig.Settings.Text, Is.EqualTo(text));
         }
 
         [TestCase(true)]
@@ -147,18 +135,18 @@ namespace ENBManager.Configuration.Tests.Services
         public void ShouldLoadSettingsWithoutInitializing(bool condition)
         {
             // Arrange
-            var appSettings = _appConfig.Settings;
-            string name = TestValues.GetRandomString();
+            var appSettings = _settingsAConfig.Settings;
+            string text = TestValues.GetRandomString();
             appSettings.Condition = condition;
-            appSettings.Name = name;
+            appSettings.Text = text;
 
             // Act
-            _appConfig.SaveSettings();
-            var newAppSettings = ConfigurationManager<AppSettingsStub>.LoadSettings(appSettings.GetFilePath());
+            _settingsAConfig.SaveSettings();
+            var newAppSettings = ConfigurationManager<SettingsAStub>.LoadSettings(appSettings.GetFullPath());
 
             // Assert
             Assert.That(newAppSettings.Condition, Is.EqualTo(condition));
-            Assert.That(newAppSettings.Name, Is.EqualTo(name));
+            Assert.That(newAppSettings.Text, Is.EqualTo(text));
         }
     }
 }

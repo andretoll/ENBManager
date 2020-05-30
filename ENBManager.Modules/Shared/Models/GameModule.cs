@@ -8,6 +8,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Regions;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -19,17 +20,12 @@ namespace ENBManager.Infrastructure.BusinessEntities
     {
         #region Private Members
 
+        private readonly IContainerProvider _container;
         private readonly IPresetManager _presetManager = new PresetManager();
 
         private string _installedLocation;
         private bool _shouldManage = true;
         private GameSettings _settings;
-
-        #endregion
-
-        #region Protected Members
-
-        protected readonly IContainerProvider _container;
 
         #endregion
 
@@ -93,8 +89,15 @@ namespace ENBManager.Infrastructure.BusinessEntities
 
         protected void ActivateModule(params Type[] types)
         {
-            // Get presets
+            // Get presets and active preset
             Presets = _presetManager.GetPresets(Paths.GetPresetsDirectory(Module));
+            if (Presets != null && Presets.Count() > 0)
+            {
+                var activePreset = Presets.FirstOrDefault(x => x.Name == Settings.ActivePreset);
+
+                if (activePreset != null)
+                    activePreset.IsActive = true;
+            }
 
             // Register views
             var regionManager = _container.Resolve<IRegionManager>();

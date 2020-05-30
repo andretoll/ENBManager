@@ -9,7 +9,7 @@ namespace ENBManager.TestUtils.Utils
 {
     public static class TestValues
     {
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         public static string GetRandomString()
         {

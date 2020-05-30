@@ -9,7 +9,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
     {
         #region Private Members
 
-        private static string FILE_NAME = Path.Combine(Paths.GetBaseDirectory(), "appsettings.json");
+        private static readonly string PATH = Path.Combine(Paths.GetBaseDirectory(), "appsettings.json");
 
         #endregion
 
@@ -22,13 +22,14 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public bool DarkModeShortcut { get; set; } = false;
         public string ColorScheme { get; set; } = "Fire";
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
+        public bool DefaultPresetView { get; set; } = true;
 
         #endregion
 
         #region Constructor
 
         public AppSettings()
-            : base(FILE_NAME)
+            : base(PATH)
         {
         }
 

@@ -2,10 +2,11 @@
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
 using Prism.Events;
+using Prism.Mvvm;
 
 namespace ENBManager.Modules.Shared.ViewModels.Base
 {
-    public abstract class TabItemBase : ITabItem
+    public abstract class TabItemBase : BindableBase, ITabItem
     {
         #region Constructor
 

@@ -61,6 +61,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new preset.
+        /// </summary>
+        public static string ADD_NEW_PRESET {
+            get {
+                return ResourceManager.GetString("ADD_NEW_PRESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Appearance.
         /// </summary>
         public static string APPEARANCE {
@@ -142,6 +151,33 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DELETE {
+            get {
+                return ResourceManager.GetString("DELETE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty..
+        /// </summary>
+        public static string EMPTY {
+            get {
+                return ResourceManager.GetString("EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grid.
+        /// </summary>
+        public static string GRID {
+            get {
+                return ResourceManager.GetString("GRID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed Games.
         /// </summary>
         public static string INSTALLED_GAMES {
@@ -178,11 +214,38 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No preset active..
+        /// </summary>
+        public static string NO_PRESET_ACTIVE {
+            get {
+                return ResourceManager.GetString("NO_PRESET_ACTIVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to activated..
+        /// </summary>
+        public static string PRESET_ACTIVATED {
+            get {
+                return ResourceManager.GetString("PRESET_ACTIVATED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Presets.
         /// </summary>
         public static string PRESETS {
             get {
                 return ResourceManager.GetString("PRESETS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        public static string RENAME {
+            get {
+                return ResourceManager.GetString("RENAME", resourceCulture);
             }
         }
         
@@ -228,6 +291,15 @@ namespace ENBManager.Localization.Strings {
         public static string UNMANAGING_MANAGED_GAME {
             get {
                 return ResourceManager.GetString("UNMANAGING_MANAGED_GAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical list.
+        /// </summary>
+        public static string VERTICAL_LIST {
+            get {
+                return ResourceManager.GetString("VERTICAL_LIST", resourceCulture);
             }
         }
     }

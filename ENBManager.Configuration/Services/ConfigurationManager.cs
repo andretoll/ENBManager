@@ -39,12 +39,14 @@ namespace ENBManager.Configuration.Services
 
         #region Public Static Methods
 
-        public static T LoadSettings(string path)
+        public static T LoadSettings(string fullPath)
         {
-            _logger.Debug(nameof(LoadSettings));
+            var settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(fullPath));
 
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
-        }
+            settings.SetFullPath(fullPath);
+
+            return settings;
+        } 
 
         #endregion
 
@@ -57,9 +59,9 @@ namespace ENBManager.Configuration.Services
             _logger.Info($"Loading {Settings.GetType().Name}");
 
             // If directory or file does not exist, create it
-            Initialize();
+            InitializeSettings();
 
-            Settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(Settings.GetFilePath()));
+            Settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(Settings.GetFullPath()));
         }
 
         public void SaveSettings()
@@ -67,25 +69,24 @@ namespace ENBManager.Configuration.Services
             _logger.Info($"Saving {Settings.GetType().Name}");
 
             // If directory does not exist, create it
-            if (!Directory.Exists(Path.GetDirectoryName(Settings.GetFilePath())))
-                Directory.CreateDirectory(Path.GetDirectoryName(Settings.GetFilePath()));
-
-            string json = JsonConvert.SerializeObject(Settings);
+            Directory.CreateDirectory(Path.GetDirectoryName(Settings.GetFullPath()));
 
             // If file exists, unlock it
-            if (File.Exists(Settings.GetFilePath()))
+            if (File.Exists(Settings.GetFullPath()))
                 SetReadOnly(false);
 
-            File.WriteAllText(Settings.GetFilePath(), json);
+            string json = JsonConvert.SerializeObject(Settings);
+            File.WriteAllText(Settings.GetFullPath(), json);
+
             SetReadOnly(true);
         }
 
-        public void Initialize()
+        public void InitializeSettings()
         {
-            _logger.Info($"Initializing {Settings.GetType().Name} if not existing");
-
-            if (!File.Exists(Settings.GetFilePath()))
+            if (!File.Exists(Settings.GetFullPath()))
             {
+                _logger.Info($"Initializing {Settings.GetType().Name}");
+
                 SaveSettings();
             }
         }
@@ -94,10 +95,7 @@ namespace ENBManager.Configuration.Services
         {
             _logger.Debug(nameof(SetReadOnly) + " = " + readOnly);
 
-            if (readOnly)
-                File.SetAttributes(Settings.GetFilePath(), FileAttributes.ReadOnly);
-            else
-                File.SetAttributes(Settings.GetFilePath(), FileAttributes.Normal);
+            File.SetAttributes(Settings.GetFullPath(), readOnly ? FileAttributes.ReadOnly : FileAttributes.Normal);
         }
 
         #endregion

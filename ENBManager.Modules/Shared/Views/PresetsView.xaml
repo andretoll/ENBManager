@@ -4,10 +4,139 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:vc="clr-namespace:ENBManager.Infrastructure.ValueConverters;assembly=ENBManager.Infrastructure"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="PresetsView" />
-    </Grid>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Lists.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <vc:EmptyCollectionToVisibilityValueConverter x:Key="EmptyCollectionToVisibilityValueConverter" />
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+
+        <!-- Top bar -->
+        <Border DockPanel.Dock="Top">
+
+            <!-- Actions -->
+            <Grid>
+
+                <!-- Left -->
+                <Grid HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                Height="35">
+
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Plus"
+                                                         Height="24"
+                                                         Width="24"
+                                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="{x:Static loc:Strings.ADD_NEW_PRESET}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
+
+                <!-- Right -->
+                <Grid HorizontalAlignment="Right">
+                    <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}">
+                        <ListBoxItem ToolTip="{x:Static loc:Strings.VERTICAL_LIST}"
+                                     IsSelected="{Binding ListPresetView}">
+                            <materialDesign:PackIcon Kind="FormatListChecks" />
+                        </ListBoxItem>
+                        <ListBoxItem ToolTip="{x:Static loc:Strings.GRID}"
+                                     IsSelected="{Binding GridPresetView}">
+                            <materialDesign:PackIcon Kind="Apps" />
+                        </ListBoxItem>
+                    </ListBox>
+                </Grid>
+            </Grid>
+
+        </Border>
+
+        <!-- Preset list -->
+        <Grid Margin="0 10 0 0">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding Presets}">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Setter Property="ItemsPanel">
+                                <Setter.Value>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.GridPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                                    <Setter Property="ItemsPanel">
+                                        <Setter.Value>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel />
+                                            </ItemsPanelTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                                    <Setter Property="ItemsPanel">
+                                        <Setter.Value>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel />
+                                            </ItemsPanelTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+
+                            <Setter Property="ContentTemplate"
+                                Value="{StaticResource PresetListItemTemplate}"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="false">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource PresetGridItemTemplate}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource PresetListItemTemplate}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Grid HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding Presets, Converter={StaticResource EmptyCollectionToVisibilityValueConverter}}">
+
+                <TextBlock Text="{x:Static loc:Strings.EMPTY}"
+                           Style="{StaticResource MaterialDesignHeadline2TextBlock}"/>
+
+            </Grid>
+
+        </Grid>
+
+    </DockPanel>
+
 </UserControl>

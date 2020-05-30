@@ -41,9 +41,7 @@
         </TabControl>
 
         <materialDesign:Snackbar HorizontalAlignment="Stretch"
-                                 MessageQueue="{Binding MessageQueue}"
-                                 IsActive="{Binding SnackbarActive}"
-                                 x:Name="SnackbarFive" />
+                                 MessageQueue="{Binding MessageQueue}" />
 
     </Grid>
 </UserControl>
