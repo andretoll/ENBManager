@@ -18,9 +18,9 @@
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
-        
-    </UserControl.Resources>
 
+    </UserControl.Resources>
+    
     <Grid>
 
         <TabControl prism:RegionManager.RegionName="{x:Static const:RegionNames.TabRegion}"

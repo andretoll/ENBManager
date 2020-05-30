@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="BusinessEntities\AppSettings.cs" />
     <Compile Include="BusinessEntities\ColorScheme.cs" />
+    <Compile Include="BusinessEntities\Dialogs\EnterTextDialog.cs" />
     <Compile Include="BusinessEntities\GameSettings.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
@@ -125,6 +126,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Resources\Dialogs\RenameDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Lists.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

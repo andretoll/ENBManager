@@ -17,25 +17,38 @@
         Title="ENB Manager"
         MinHeight="400" MinWidth="600"
         Height="800" Width="1000">
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        
-        <!-- Side menu -->
-        <Grid Grid.Column="0">
-            <ContentControl x:Name="SideMenu"
-                            prism:RegionManager.RegionName="{x:Static const:RegionNames.SideMenuRegion}" />
+
+    <materialDesign:DialogHost CloseOnClickAway="True"
+                               Identifier="{x:Static const:RegionNames.RootDialogHost}">
+
+        <materialDesign:DialogHost.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Dialogs/RenameDialog.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </materialDesign:DialogHost.Resources>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Side menu -->
+            <Grid Grid.Column="0">
+                <ContentControl x:Name="SideMenu"
+                                prism:RegionManager.RegionName="{x:Static const:RegionNames.SideMenuRegion}" />
+            </Grid>
+
+            <!-- Main -->
+            <Grid Grid.Column="1">
+                <ContentControl x:Name="Main"
+                                prism:RegionManager.RegionName="{x:Static const:RegionNames.MainRegion}" />
+            </Grid>
+
         </Grid>
-        
-        <!-- Main -->
-        <Grid Grid.Column="1">
-            <ContentControl x:Name="Main"
-                            prism:RegionManager.RegionName="{x:Static const:RegionNames.MainRegion}" />
-        </Grid>
-        
-    </Grid>
+
+    </materialDesign:DialogHost>
     
 </Window>

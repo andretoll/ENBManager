@@ -158,7 +158,7 @@
                 <Grid Grid.Column="0"
                       Margin="20 0">
 
-                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                    <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
                                   Command="{Binding DataContext.ActivatePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                   CommandParameter="{Binding .}"
                                   IsChecked="{Binding IsActive}"/>
@@ -179,14 +179,14 @@
                             HorizontalAlignment="Left">
 
                     <materialDesign:PopupBox DockPanel.Dock="Right"
-                                             Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Border}}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"
                                              PlacementMode="BottomAndAlignRightEdges">
 
                         <StackPanel>
                             
                             <!-- Rename -->
-                            <Button Style="{DynamicResource MaterialDesignFlatAccentButton}"
-                                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                            <Button Style="{StaticResource MaterialDesignFlatAccentButton}" 
+                                    Command="{Binding DataContext.RenamePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding .}">
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="Rename"
                                                              Margin="0 0 10 0"/>

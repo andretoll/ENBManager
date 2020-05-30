@@ -1,14 +1,19 @@
 ﻿using ENBManager.Configuration.Interfaces;
 using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.BusinessEntities.Dialogs;
+using ENBManager.Infrastructure.Constants;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
+using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
+using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Events;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ENBManager.Modules.Shared.ViewModels
 {
@@ -18,6 +23,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IPresetManager _presetManager;
 
         private GameModule _game;
 
@@ -67,18 +73,24 @@ namespace ENBManager.Modules.Shared.ViewModels
         #region Commands
 
         public DelegateCommand<Preset> ActivatePresetCommand { get; }
+        public DelegateCommand<Preset> RenamePresetCommand { get; }
 
         #endregion
 
         #region Constructor
 
-        public PresetsViewModel(IConfigurationManager<AppSettings> configurationManager, IEventAggregator eventAggregator)
+        public PresetsViewModel(
+            IConfigurationManager<AppSettings> configurationManager, 
+            IEventAggregator eventAggregator,
+            IPresetManager presetManager)
             : base(eventAggregator)
         {
             _configurationManager = configurationManager;
             _eventAggregator = eventAggregator;
+            _presetManager = presetManager;
 
             ActivatePresetCommand = new DelegateCommand<Preset>(OnActivatePresetCommand);
+            RenamePresetCommand = new DelegateCommand<Preset>(async (x) => await OnRenamePresetCommand(x));
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
             _gridPresetView = !_listPresetView;
@@ -107,6 +119,23 @@ namespace ENBManager.Modules.Shared.ViewModels
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
             else
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
+        }
+
+        private async Task OnRenamePresetCommand(Preset preset)
+        {
+            var dialog = new EnterTextDialog
+            {
+                Message = Strings.RENAME,
+                Value = preset.Name
+            };
+
+            var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
+
+            if ((bool)result)
+            {
+                _presetManager.RenamePreset(preset, dialog.Value);
+                preset.Name = dialog.Value;
+            }
         }
 
         #endregion

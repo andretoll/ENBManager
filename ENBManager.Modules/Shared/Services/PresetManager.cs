@@ -1,5 +1,6 @@
 ﻿using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,6 +23,7 @@ namespace ENBManager.Modules.Shared.Services
             {
                 var preset = new Preset
                 {
+                    FullPath = dir,
                     Name = Path.GetFileName(dir),
                     Files = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories)
                 };
@@ -30,7 +32,28 @@ namespace ENBManager.Modules.Shared.Services
             }
 
             return presets;
-        } 
+        }
+
+        public void RenamePreset(Preset preset, string newName)
+        {
+            var oldDirectory = new DirectoryInfo(preset.FullPath);
+
+            // Make sure new name has a value
+            if (string.IsNullOrEmpty(newName))
+                throw new ArgumentNullException($"New name is null or empty.");
+
+            // Make sure directory exists
+            if (!Directory.Exists(preset.FullPath))
+                throw new ArgumentException($"Preset with name {preset.Name} does not exist.");
+
+            // Make sure new name is a different name
+            if (preset.Name == newName)
+                throw new ArgumentException("New name is identical to old name.");
+
+            string newDirectory = Path.Combine(oldDirectory.Parent.FullName, newName);
+
+            oldDirectory.MoveTo(newDirectory);
+        }
 
         #endregion
     }

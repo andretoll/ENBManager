@@ -21,7 +21,6 @@ namespace ENBManager.Infrastructure.BusinessEntities
         #region Private Members
 
         private readonly IContainerProvider _container;
-        private readonly IPresetManager _presetManager = new PresetManager();
 
         private string _installedLocation;
         private bool _shouldManage = true;
@@ -90,7 +89,8 @@ namespace ENBManager.Infrastructure.BusinessEntities
         protected void ActivateModule(params Type[] types)
         {
             // Get presets and active preset
-            Presets = _presetManager.GetPresets(Paths.GetPresetsDirectory(Module));
+            var presetManager = _container.Resolve<IPresetManager>();
+            Presets = presetManager.GetPresets(Paths.GetPresetsDirectory(Module));
             if (Presets != null && Presets.Count() > 0)
             {
                 var activePreset = Presets.FirstOrDefault(x => x.Name == Settings.ActivePreset);

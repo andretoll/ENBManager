@@ -78,6 +78,7 @@ namespace ENBManager.App
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IFileService, FileService>();
             _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
+            _ = containerRegistry.Register<IPresetManager, PresetManager>();
 
             // ViewModels
             _ = containerRegistry.RegisterSingleton<DashboardViewModel>();

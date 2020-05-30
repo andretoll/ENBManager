@@ -8,13 +8,24 @@ namespace ENBManager.Modules.Shared.Models
     {
         #region Private Members
 
+        private string _name;
         private bool _isActive;
 
         #endregion
 
         #region Public Properties
 
-        public string Name { get; set; }
+        public string FullPath { get; set; }
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsActive
         {
