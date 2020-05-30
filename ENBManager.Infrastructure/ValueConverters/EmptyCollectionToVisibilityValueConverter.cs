@@ -15,8 +15,7 @@ namespace ENBManager.Infrastructure.ValueConverters
 
             else
             {
-                ICollection list = value as ICollection;
-                if (list != null)
+                if (value is ICollection list)
                 {
                     if (list.Count == 0)
                         return Visibility.Visible;
