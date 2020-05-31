@@ -2,7 +2,6 @@
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
-using ENBManager.Modules.Shared.Services;
 using ENBManager.Modules.Shared.Views;
 using Prism.Events;
 using Prism.Ioc;

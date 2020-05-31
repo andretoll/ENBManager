@@ -169,6 +169,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter a new name:.
+        /// </summary>
+        public static string ENTER_A_NEW_NAME {
+            get {
+                return ResourceManager.GetString("ENTER_A_NEW_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grid.
         /// </summary>
         public static string GRID {
@@ -210,6 +219,15 @@ namespace ENBManager.Localization.Strings {
         public static string MISC {
             get {
                 return ResourceManager.GetString("MISC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string NO {
+            get {
+                return ResourceManager.GetString("NO", resourceCulture);
             }
         }
         
@@ -300,6 +318,24 @@ namespace ENBManager.Localization.Strings {
         public static string VERTICAL_LIST {
             get {
                 return ResourceManager.GetString("VERTICAL_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string YES {
+            get {
+                return ResourceManager.GetString("YES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are about to delete this item, are you sure?.
+        /// </summary>
+        public static string YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE {
+            get {
+                return ResourceManager.GetString("YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE", resourceCulture);
             }
         }
     }

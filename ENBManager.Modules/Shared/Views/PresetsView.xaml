@@ -15,10 +15,85 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Lists.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <vc:EmptyCollectionToVisibilityValueConverter x:Key="EmptyCollectionToVisibilityValueConverter" />
+            <vc:BoolToBoolValueConverter x:Key="BoolToBoolValueConverter" />
+
+            <DataTemplate x:Key="PresetListItemTemplate">
+                <Border BorderThickness="0 1 0 0"
+                        BorderBrush="Gray"
+                        Background="Transparent"
+                        Padding="0 15">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Activate preset -->
+                        <Grid Grid.Column="0"
+                              Margin="20 0">
+
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
+                                          Command="{Binding DataContext.ActivatePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                          CommandParameter="{Binding .}"
+                                          IsChecked="{Binding IsActive}"/>
+                        </Grid>
+
+                        <!-- Name -->
+                        <Grid Grid.Column="1"
+                              Margin="0 0 20 0">
+                            <TextBlock Text="{Binding Name}"
+                                       Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                       TextTrimming="CharacterEllipsis"
+                                       FontSize="18"/>
+                        </Grid>
+
+                        <!-- Misc -->
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+
+                            <!-- Rename -->
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" 
+                                    ToolTip="{x:Static loc:Strings.RENAME}"
+                                    Margin="5 0"
+                                    Command="{Binding DataContext.RenamePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding .}">
+                                <materialDesign:PackIcon Kind="PencilBoxMultiple"
+                                                         Height="20"
+                                                         Width="20"/>
+                            </Button>
+
+                            <!-- Delete -->
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                    IsEnabled="{Binding IsActive, Converter={StaticResource BoolToBoolValueConverter}}"
+                                    ToolTip="{x:Static loc:Strings.DELETE}"
+                                    Margin="5 0"
+                                    Command="{Binding DataContext.DeletePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding .}">
+                                <materialDesign:PackIcon Kind="DeleteOutline"
+                                                         Height="20"
+                                                         Width="20"/>
+                            </Button>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="PresetGridItemTemplate">
+                <Border Padding="0 15">
+
+                    <TextBlock Text="{Binding Name}" />
+
+                </Border>
+            </DataTemplate>
 
         </ResourceDictionary>
     </UserControl.Resources>

@@ -24,12 +24,6 @@ namespace ENBManager.Core.Tests.ViewModels
             _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, gameModuleCatalog);
         }
 
-        [TearDown]
-        public void Teardown()
-        {
-
-        }
-
         [Test]
         public void ShouldHaveDialogTitle()
         {

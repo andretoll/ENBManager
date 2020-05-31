@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Modules", "ENBMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENBManager.Configuration.Tests", "ENBManager.Configuration.Tests\ENBManager.Configuration.Tests.csproj", "{6E2BE2DE-FB8E-452E-858F-8C9C69B42295}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENBManager.Modules.Tests", "ENBManager.Modules.Tests\ENBManager.Modules.Tests.csproj", "{52E279F5-2DB3-4032-A4E4-65997C5A5635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,14 @@ Global
 		{6E2BE2DE-FB8E-452E-858F-8C9C69B42295}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6E2BE2DE-FB8E-452E-858F-8C9C69B42295}.Release|x64.ActiveCfg = Release|Any CPU
 		{6E2BE2DE-FB8E-452E-858F-8C9C69B42295}.Release|x64.Build.0 = Release|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Debug|x64.Build.0 = Debug|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Release|x64.ActiveCfg = Release|Any CPU
+		{52E279F5-2DB3-4032-A4E4-65997C5A5635}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

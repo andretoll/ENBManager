@@ -23,14 +23,6 @@
         </Style>
     </prism:Dialog.WindowStyle>
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Lists.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetDataCommand}" />
@@ -91,12 +83,91 @@
             
             <!-- Games list -->
             <Grid Grid.Column="0">
-                <ItemsControl ItemsSource="{Binding Games}"
-                              ItemTemplate="{StaticResource GameModuleListViewItem}"/>
+                <ItemsControl ItemsSource="{Binding Games}">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="10"
+                                    Height="85">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Icon -->
+                                    <Grid Grid.Column="0"
+                                          Margin="5 0">
+
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Installed}" Value="false">
+                                                        <Setter Property="Opacity" Value="0.5" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+
+                                        <Image Source="{Binding Icon}"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               Width="50" 
+                                               Height="50"/>
+                                    </Grid>
+
+                                    <!-- Title -->
+                                    <StackPanel Grid.Column="1">
+
+                                        <TextBlock Text="{Binding Title}"
+                                                   VerticalAlignment="Center">
+
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Installed}" Value="false">
+                                                            <Setter Property="Opacity" Value="0.5" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+
+                                        </TextBlock>
+
+                                        <TextBlock Text="{Binding InstalledLocation}"
+                                                   Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                   Visibility="{Binding Installed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <Button Content="{x:Static loc:Strings.BROWSE}"
+                                                Command="{Binding DataContext.BrowseGameCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding .}"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Margin="0 5 0 0"
+                                                HorizontalAlignment="Left"
+                                                Visibility="{Binding Installed, Converter={StaticResource InverseBoolToVisConverter}}"/>
+
+                                    </StackPanel>
+
+                                    <!-- Managed -->
+                                    <Grid Grid.Column="2"
+                                          VerticalAlignment="Center"
+                                          Margin="10 0 0 0"
+                                          Visibility="{Binding Installed, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                                      IsChecked="{Binding ShouldManage}"
+                                                      ToolTip="{x:Static loc:Strings.MANAGE}"
+                                                      ToolTipService.InitialShowDelay="0"/>
+                                    </Grid>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
             </Grid>
 
-            <!-- Game details -->
-            
         </Grid>
         
     </DockPanel>

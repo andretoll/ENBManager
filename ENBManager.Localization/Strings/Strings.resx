@@ -153,6 +153,9 @@
   <data name="EMPTY" xml:space="preserve">
     <value>Empty.</value>
   </data>
+  <data name="ENTER_A_NEW_NAME" xml:space="preserve">
+    <value>Enter a new name:</value>
+  </data>
   <data name="GRID" xml:space="preserve">
     <value>Grid</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="MISC" xml:space="preserve">
     <value>Misc</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>No</value>
   </data>
   <data name="NO_PRESET_ACTIVE" xml:space="preserve">
     <value>No preset active.</value>
@@ -197,5 +203,11 @@
   </data>
   <data name="VERTICAL_LIST" xml:space="preserve">
     <value>Vertical list</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE" xml:space="preserve">
+    <value>You are about to delete this item, are you sure?</value>
   </data>
 </root>

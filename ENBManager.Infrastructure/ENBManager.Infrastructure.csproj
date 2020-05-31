@@ -92,12 +92,14 @@
   <ItemGroup>
     <Compile Include="BusinessEntities\AppSettings.cs" />
     <Compile Include="BusinessEntities\ColorScheme.cs" />
-    <Compile Include="BusinessEntities\Dialogs\EnterTextDialog.cs" />
+    <Compile Include="BusinessEntities\Dialogs\InputDialog.cs" />
+    <Compile Include="BusinessEntities\Dialogs\MessageDialog.cs" />
     <Compile Include="BusinessEntities\GameSettings.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
     <Compile Include="Constants\RegionNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueConverters\BoolToBoolValueConverter.cs" />
     <Compile Include="ValueConverters\EmptyCollectionToVisibilityValueConverter.cs" />
     <Compile Include="ValueConverters\EnumToCollectionValueConverter.cs" />
   </ItemGroup>
@@ -126,11 +128,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Resources\Dialogs\RenameDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Lists.xaml">
+    <Page Include="Resources\Dialogs\Dialogs.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -51,9 +51,9 @@ namespace ENBManager.App
 
         protected override void InitializeShell(Window shell)
         {
-            ConfigureGameModuleCatalog();
-
             ConfigureLogging();
+
+            ConfigureGameModuleCatalog();
 
             ApplyTheme();
 

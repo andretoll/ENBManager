@@ -4,7 +4,7 @@
                     xmlns:models="clr-namespace:ENBManager.Infrastructure.BusinessEntities.Dialogs"
                     xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization">
 
-    <DataTemplate DataType="{x:Type models:EnterTextDialog}">
+    <DataTemplate DataType="{x:Type models:InputDialog}">
         <StackPanel Margin="16"
                     Width="300">
             <TextBlock Text="{Binding Message}" />
@@ -16,6 +16,7 @@
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         Content="{x:Static loc:Strings.SAVE}"
                         IsDefault="True"
+                        IsEnabled="{Binding Valid}"
                         Margin="0 8 8 0"
                         Command="materialDesign:DialogHost.CloseDialogCommand">
                     <Button.CommandParameter>
@@ -38,5 +39,37 @@
             </StackPanel>
         </StackPanel>
     </DataTemplate>
-    
+
+    <DataTemplate DataType="{x:Type models:MessageDialog}">
+        <StackPanel Margin="16"
+                    Width="300">
+            <TextBlock Text="{Binding Message}" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Content="{x:Static loc:Strings.YES}"
+                        IsDefault="True"
+                        Margin="0 8 8 0"
+                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            True
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Content="{x:Static loc:Strings.NO}"
+                        IsCancel="True"
+                        Margin="0 8 8 0"
+                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            False
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

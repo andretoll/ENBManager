@@ -24,7 +24,7 @@
         <materialDesign:DialogHost.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Dialogs/RenameDialog.xaml" />
+                    <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Dialogs/Dialogs.xaml" />
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </materialDesign:DialogHost.Resources>

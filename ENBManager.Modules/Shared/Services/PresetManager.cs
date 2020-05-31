@@ -34,7 +34,7 @@ namespace ENBManager.Modules.Shared.Services
             return presets;
         }
 
-        public void RenamePreset(Preset preset, string newName)
+        public string RenamePreset(Preset preset, string newName)
         {
             var oldDirectory = new DirectoryInfo(preset.FullPath);
 
@@ -44,7 +44,7 @@ namespace ENBManager.Modules.Shared.Services
 
             // Make sure directory exists
             if (!Directory.Exists(preset.FullPath))
-                throw new ArgumentException($"Preset with name {preset.Name} does not exist.");
+                throw new DirectoryNotFoundException($"Preset with name {preset.Name} does not exist.");
 
             // Make sure new name is a different name
             if (preset.Name == newName)
@@ -53,6 +53,17 @@ namespace ENBManager.Modules.Shared.Services
             string newDirectory = Path.Combine(oldDirectory.Parent.FullName, newName);
 
             oldDirectory.MoveTo(newDirectory);
+
+            return newDirectory;
+        }
+
+        public void DeletePreset(Preset preset)
+        {
+            // Make sure directory exists
+            if (!Directory.Exists(preset.FullPath))
+                throw new DirectoryNotFoundException($"Preset with name {preset.Name} does not exist.");
+
+            Directory.Delete(preset.FullPath, true);
         }
 
         #endregion

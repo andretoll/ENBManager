@@ -12,10 +12,17 @@ namespace ENBManager.Modules.Shared.Interfaces
         IEnumerable<Preset> GetPresets(string path);
 
         /// <summary>
-        /// Renames a preset in folder.
+        /// Renames a preset in folder and returns the new full path.
         /// </summary>
         /// <param name="preset"></param>
         /// <param name="newName"></param>
-        void RenamePreset(Preset preset, string newName);
+        /// <returns></returns>
+        string RenamePreset(Preset preset, string newName);
+
+        /// <summary>
+        /// Deletes a preset in folder.
+        /// </summary>
+        /// <param name="preset"></param>
+        void DeletePreset(Preset preset);
     }
 }

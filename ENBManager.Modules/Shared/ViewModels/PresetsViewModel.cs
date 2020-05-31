@@ -9,9 +9,12 @@ using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
 using MaterialDesignThemes.Wpf;
+using NLog;
 using Prism.Commands;
 using Prism.Events;
-using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +23,8 @@ namespace ENBManager.Modules.Shared.ViewModels
     public class PresetsViewModel : TabItemBase
     {
         #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IEventAggregator _eventAggregator;
@@ -31,7 +36,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Public Properties
 
-        public IEnumerable<Preset> Presets => _game?.Presets;
+        public ObservableCollection<Preset> Presets { get; set; }
 
         #endregion
 
@@ -74,6 +79,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         public DelegateCommand<Preset> ActivatePresetCommand { get; }
         public DelegateCommand<Preset> RenamePresetCommand { get; }
+        public DelegateCommand<Preset> DeletePresetCommand { get; }
 
         #endregion
 
@@ -91,9 +97,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             ActivatePresetCommand = new DelegateCommand<Preset>(OnActivatePresetCommand);
             RenamePresetCommand = new DelegateCommand<Preset>(async (x) => await OnRenamePresetCommand(x));
+            DeletePresetCommand = new DelegateCommand<Preset>(async (x) => await OnDeletePresetCommand(x));
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
             _gridPresetView = !_listPresetView;
+
+            _logger.Debug($"{nameof(PresetsViewModel)} initialized");
         }
 
         #endregion
@@ -119,13 +128,17 @@ namespace ENBManager.Modules.Shared.ViewModels
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
             else
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
+
+            //TODO: Copy files to game directory
+
+            _logger.Info("Preset activated");
         }
 
         private async Task OnRenamePresetCommand(Preset preset)
         {
-            var dialog = new EnterTextDialog
+            var dialog = new InputDialog
             {
-                Message = Strings.RENAME,
+                Message = Strings.ENTER_A_NEW_NAME,
                 Value = preset.Name
             };
 
@@ -133,8 +146,51 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             if ((bool)result)
             {
-                _presetManager.RenamePreset(preset, dialog.Value);
-                preset.Name = dialog.Value;
+                try
+                {
+                    preset.FullPath = _presetManager.RenamePreset(preset, dialog.Value);
+                    preset.Name = dialog.Value;
+
+                    _logger.Info("Preset renamed");
+                }
+                catch (ArgumentNullException ex)
+                {
+                    _logger.Warn(ex);
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    _logger.Warn(ex);
+                }
+                catch (ArgumentException ex)
+                {
+                    _logger.Debug(ex);
+                    return;
+                }
+            }
+        }
+
+        private async Task OnDeletePresetCommand(Preset preset)
+        {
+            var dialog = new MessageDialog()
+            {
+                Message = Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE
+            };
+
+            var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
+
+            if ((bool)result)
+            {
+                try
+                {
+                    _presetManager.DeletePreset(preset);
+                    _logger.Info("Preset deleted");
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    _logger.Warn(ex);
+                }
+
+                Presets.Remove(preset);
             }
         }
 
@@ -147,6 +203,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         protected override void OnModuleActivated(GameModule game)
         {
             _game = game;
+            Presets = new ObservableCollection<Preset>(game.Presets);
             RaisePropertyChanged(nameof(Presets));
         } 
 
