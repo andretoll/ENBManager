@@ -45,11 +45,24 @@
 
                         <!-- Name -->
                         <Grid Grid.Column="1"
+                              VerticalAlignment="Center"
                               Margin="0 0 20 0">
                             <TextBlock Text="{Binding Name}"
-                                       Style="{StaticResource MaterialDesignBody1TextBlock}"
                                        TextTrimming="CharacterEllipsis"
-                                       FontSize="18"/>
+                                       FontSize="18">
+
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                
+                            </TextBlock>
                         </Grid>
 
                         <!-- Misc -->
@@ -88,11 +101,111 @@
             </DataTemplate>
 
             <DataTemplate x:Key="PresetGridItemTemplate">
-                <Border Padding="0 15">
+                <materialDesign:Card Width="200"
+                                     Height="200"
+                                     Margin="10"
+                                     materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Text="{Binding Name}" />
+                        <Grid Grid.Row="0">
 
-                </Border>
+                            <TextBlock Text="{Binding Name}"
+                                       TextWrapping="Wrap"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="18">
+
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline5TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+
+                            </TextBlock>
+
+                            <!-- Activate preset -->
+                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
+                                          Command="{Binding DataContext.ActivatePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                          CommandParameter="{Binding .}"
+                                          IsChecked="{Binding IsActive}"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Top"
+                                          Margin="20"/>
+
+                        </Grid>
+
+                        <Grid Grid.Row="1"
+                              Height="0"
+                              Background="{DynamicResource AttentionToActionBrush}">
+
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type materialDesign:Card}}}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                                                         Duration="0:0:0.25"
+                                                                         To="50" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                                                         Duration="0:0:0.25"
+                                                                         To="0" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
+
+                                <!-- Rename -->
+                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" 
+                                        ToolTip="{x:Static loc:Strings.RENAME}"
+                                        Margin="5 0"
+                                        Command="{Binding DataContext.RenamePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding .}">
+                                    <materialDesign:PackIcon Kind="PencilBoxMultiple"
+                                                         Height="20"
+                                                         Width="20"/>
+                                </Button>
+
+                                <!-- Delete -->
+                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                        IsEnabled="{Binding IsActive, Converter={StaticResource BoolToBoolValueConverter}}"
+                                        ToolTip="{x:Static loc:Strings.DELETE}"
+                                        Margin="5 0"
+                                        Command="{Binding DataContext.DeletePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding .}">
+                                    <materialDesign:PackIcon Kind="DeleteOutline"
+                                                         Height="20"
+                                                         Width="20"/>
+                                </Button>
+
+                            </StackPanel>
+                            
+                        </Grid>
+                        
+                    </Grid>
+                </materialDesign:Card>
             </DataTemplate>
 
         </ResourceDictionary>
@@ -145,7 +258,7 @@
         </Border>
 
         <!-- Preset list -->
-        <Grid Margin="0 10 0 0">
+        <Grid Margin="0 20 0 0">
 
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
@@ -201,14 +314,15 @@
                 </ItemsControl>
             </ScrollViewer>
 
-            <Grid HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  Visibility="{Binding Presets, Converter={StaticResource EmptyCollectionToVisibilityValueConverter}}">
+            <Viewbox HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     MaxWidth="200"
+                     Visibility="{Binding Presets, Converter={StaticResource EmptyCollectionToVisibilityValueConverter}}">
 
                 <TextBlock Text="{x:Static loc:Strings.EMPTY}"
                            Style="{StaticResource MaterialDesignHeadline2TextBlock}"/>
 
-            </Grid>
+            </Viewbox>
 
         </Grid>
 

@@ -125,11 +125,15 @@ namespace ENBManager.Modules.Shared.ViewModels
             configManager.SaveSettings();
 
             if (preset.IsActive)
+            {
+                //TODO: Copy files to game directory
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
+            }
             else
+            {
+                //TODO: Remove files from game directory
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
-
-            //TODO: Copy files to game directory
+            }
 
             _logger.Info("Preset activated");
         }
