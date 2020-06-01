@@ -95,7 +95,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             _eventAggregator = eventAggregator;
             _presetManager = presetManager;
 
-            ActivatePresetCommand = new DelegateCommand<Preset>(OnActivatePresetCommand);
+            ActivatePresetCommand = new DelegateCommand<Preset>(async (x) => await OnActivatePresetCommand(x));
             RenamePresetCommand = new DelegateCommand<Preset>(async (x) => await OnRenamePresetCommand(x));
             DeletePresetCommand = new DelegateCommand<Preset>(async (x) => await OnDeletePresetCommand(x));
 
@@ -109,11 +109,15 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Private Methods
 
-        private void OnActivatePresetCommand(Preset preset)
+        private async Task OnActivatePresetCommand(Preset preset)
         {
             foreach (var other in Presets.Where(x => x.Name != preset.Name))
             {
-                other.IsActive = false;
+                if (other.IsActive)
+                {
+                    await _presetManager.DeactivatePreset(_game, other);
+                    other.IsActive = false;
+                }
             }
 
             if (preset.IsActive)
@@ -126,12 +130,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             if (preset.IsActive)
             {
-                //TODO: Copy files to game directory
+                await _presetManager.ActivatePreset(_game, preset);
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
             }
             else
             {
-                //TODO: Remove files from game directory
+                await _presetManager.DeactivatePreset(_game, preset);
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
             }
 

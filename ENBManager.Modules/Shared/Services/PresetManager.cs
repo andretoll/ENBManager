@@ -1,8 +1,11 @@
-﻿using ENBManager.Modules.Shared.Interfaces;
+﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ENBManager.Modules.Shared.Services
 {
@@ -64,6 +67,44 @@ namespace ENBManager.Modules.Shared.Services
                 throw new DirectoryNotFoundException($"Preset with name {preset.Name} does not exist.");
 
             Directory.Delete(preset.FullPath, true);
+        }
+
+        public async Task ActivatePreset(GameModule gameModule, Preset preset)
+        {
+            // Create all directories
+            foreach (var dir in Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories))
+            {
+                if (!Directory.Exists(dir.Replace(preset.FullPath, gameModule.InstalledLocation)))
+                    Directory.CreateDirectory(dir.Replace(preset.FullPath, gameModule.InstalledLocation));
+            }
+
+            // Copy all files
+            foreach (var file in Directory.GetFiles(preset.FullPath, "*", SearchOption.AllDirectories))
+            {
+                File.Copy(file, file.Replace(preset.FullPath, gameModule.InstalledLocation), true);
+            }
+
+            await Task.Delay(500);
+        }
+
+        public Task DeactivatePreset(GameModule gameModule, Preset preset)
+        {
+            // Delete all files
+            foreach (var file in Directory.GetFiles(gameModule.InstalledLocation, "*", SearchOption.AllDirectories))
+            {
+                if (preset.Files.Contains(file.Replace(gameModule.InstalledLocation, preset.FullPath)))
+                {
+                    File.Delete(file);
+                }
+            }
+
+            // TODO: Delete all directories if setting available
+            //var source = Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories);
+            //foreach (var dir in Directory.GetDirectories(gameModule.InstalledLocation))
+            //{
+            //}
+
+            return Task.CompletedTask;
         }
 
         #endregion

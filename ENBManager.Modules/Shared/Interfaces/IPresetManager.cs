@@ -1,5 +1,7 @@
-﻿using ENBManager.Modules.Shared.Models;
+﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Modules.Shared.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ENBManager.Modules.Shared.Interfaces
 {
@@ -24,5 +26,17 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// </summary>
         /// <param name="preset"></param>
         void DeletePreset(Preset preset);
+
+        /// <summary>
+        /// Activates a preset.
+        /// </summary>
+        /// <param name="preset"></param>
+        Task ActivatePreset(GameModule gameModule, Preset preset);
+
+        /// <summary>
+        /// Deactivates a preset.
+        /// </summary>
+        /// <param name="preset"></param>
+        Task DeactivatePreset(GameModule gameModule, Preset preset);
     }
 }
