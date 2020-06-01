@@ -98,11 +98,16 @@ namespace ENBManager.Modules.Shared.Services
                 }
             }
 
-            // TODO: Delete all directories if setting available
-            //var source = Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories);
-            //foreach (var dir in Directory.GetDirectories(gameModule.InstalledLocation))
-            //{
-            //}
+            // Delete all empty directories
+            var sourceDirs = Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories);
+            foreach (var dir in Directory.GetDirectories(gameModule.InstalledLocation))
+            {
+                if (sourceDirs.Contains(dir.Replace(gameModule.InstalledLocation, preset.FullPath)) && 
+                    Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Length == 0)
+                {
+                    Directory.Delete(dir, true);
+                }
+            }
 
             return Task.CompletedTask;
         }
