@@ -72,4 +72,13 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type models:ProgressDialog}">
+        <Grid Width="150"
+              Height="150">
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                         IsIndeterminate="{Binding IsIndeterminate}"
+                         Value="{Binding Progress}"/>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>

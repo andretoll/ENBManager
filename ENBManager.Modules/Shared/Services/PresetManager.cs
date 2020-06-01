@@ -87,7 +87,7 @@ namespace ENBManager.Modules.Shared.Services
             await Task.Delay(500);
         }
 
-        public Task DeactivatePreset(GameModule gameModule, Preset preset)
+        public async Task DeactivatePreset(GameModule gameModule, Preset preset)
         {
             // Delete all files
             foreach (var file in Directory.GetFiles(gameModule.InstalledLocation, "*", SearchOption.AllDirectories))
@@ -109,7 +109,7 @@ namespace ENBManager.Modules.Shared.Services
                 }
             }
 
-            return Task.CompletedTask;
+            await Task.Delay(500);
         }
 
         #endregion

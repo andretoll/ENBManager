@@ -94,6 +94,7 @@
     <Compile Include="BusinessEntities\ColorScheme.cs" />
     <Compile Include="BusinessEntities\Dialogs\InputDialog.cs" />
     <Compile Include="BusinessEntities\Dialogs\MessageDialog.cs" />
+    <Compile Include="BusinessEntities\Dialogs\ProgressDialog.cs" />
     <Compile Include="BusinessEntities\GameSettings.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />

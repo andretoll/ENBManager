@@ -18,7 +18,7 @@
         MinHeight="400" MinWidth="600"
         Height="800" Width="1000">
 
-    <materialDesign:DialogHost CloseOnClickAway="True"
+    <materialDesign:DialogHost CloseOnClickAway="False"
                                Identifier="{x:Static const:RegionNames.RootDialogHost}">
 
         <materialDesign:DialogHost.Resources>

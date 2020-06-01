@@ -111,6 +111,9 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnActivatePresetCommand(Preset preset)
         {
+            var dialog = new ProgressDialog(true);
+            _ = DialogHost.Show(dialog, RegionNames.RootDialogHost);
+
             foreach (var other in Presets.Where(x => x.Name != preset.Name))
             {
                 if (other.IsActive)
@@ -139,6 +142,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
             }
 
+            dialog.CloseDialog();
             _logger.Info("Preset activated");
         }
 
@@ -152,7 +156,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
 
-            if ((bool)result)
+            if (result != null && (bool)result)
             {
                 try
                 {
@@ -186,7 +190,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
 
-            if ((bool)result)
+            if (result != null && (bool)result)
             {
                 try
                 {
