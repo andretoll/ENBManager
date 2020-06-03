@@ -1,6 +1,6 @@
 ﻿namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 {
-    public class MessageDialog
+    public class ConfirmDialog
     {
         #region Public Properties
 
@@ -10,7 +10,7 @@
 
         #region Constructor
 
-        public MessageDialog(string message)
+        public ConfirmDialog(string message)
         {
             Message = message;
         }

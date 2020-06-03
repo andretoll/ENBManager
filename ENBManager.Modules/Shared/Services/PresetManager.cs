@@ -1,4 +1,6 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using System;
@@ -37,6 +39,13 @@ namespace ENBManager.Modules.Shared.Services
             return presets;
         }
 
+        public Task<Preset> GetPresetAsync(GameModule gameModule, string preset)
+        {
+            var presets = GetPresets(Paths.GetPresetsDirectory(gameModule.Module));
+
+            return Task.FromResult(presets.Single(x => x.Name == preset));
+        }
+
         public string RenamePreset(Preset preset, string newName)
         {
             var oldDirectory = new DirectoryInfo(preset.FullPath);
@@ -69,7 +78,7 @@ namespace ENBManager.Modules.Shared.Services
             Directory.Delete(preset.FullPath, true);
         }
 
-        public async Task ActivatePreset(GameModule gameModule, Preset preset)
+        public async Task ActivatePresetAsync(GameModule gameModule, Preset preset)
         {
             // Create all directories
             foreach (var dir in Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories))
@@ -87,7 +96,7 @@ namespace ENBManager.Modules.Shared.Services
             await Task.Delay(500);
         }
 
-        public async Task DeactivatePreset(GameModule gameModule, Preset preset)
+        public async Task DeactivatePresetAsync(GameModule gameModule, Preset preset)
         {
             // Delete all files
             foreach (var file in Directory.GetFiles(gameModule.InstalledLocation, "*", SearchOption.AllDirectories))
@@ -107,6 +116,57 @@ namespace ENBManager.Modules.Shared.Services
                 {
                     Directory.Delete(dir, true);
                 }
+            }
+            
+            await Task.Delay(500);
+        }
+
+        public Preset CreateExistingPreset(GameModule gameModule)
+        {
+            List<string> enbFiles = Directory.GetFiles(gameModule.InstalledLocation, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
+            var enbDirs = Directory.GetDirectories(gameModule.InstalledLocation, "*enb*", SearchOption.TopDirectoryOnly);
+
+            foreach (var dir in enbDirs)
+            {
+                var files = Directory.GetFiles(dir, "*", SearchOption.AllDirectories);
+                foreach (var file in files)
+                {
+                    enbFiles.Add(file);
+                }
+            }
+
+            var preset = new Preset()
+            {
+                Files = enbFiles
+            };
+
+            return preset;
+        }
+
+        public async Task SavePresetAsync(GameModule gameModule, Preset preset)
+        {
+            var presetsDir = Paths.GetPresetsDirectory(gameModule.Module);
+
+            if (Directory.Exists(Path.Combine(presetsDir, preset.Name)))
+            {
+                throw new IdenticalNameException("Preset with this name already exists.");
+            }
+
+            // Create root folder
+            preset.FullPath = Directory.CreateDirectory(Path.Combine(presetsDir, preset.Name)).FullName;
+
+            foreach (var file in preset.Files)
+            {
+                var parentDir = Directory.GetParent(file.Replace(gameModule.InstalledLocation, preset.FullPath));
+
+                // Create subfolder
+                if (!Directory.Exists(parentDir.FullName))
+                {
+                    Directory.CreateDirectory(parentDir.FullName);
+                }
+
+                // Copy file
+                File.Copy(file, file.Replace(gameModule.InstalledLocation, preset.FullPath));
             }
 
             await Task.Delay(500);

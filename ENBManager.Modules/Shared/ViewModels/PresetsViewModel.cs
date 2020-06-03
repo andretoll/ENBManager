@@ -3,6 +3,7 @@ using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
@@ -80,6 +81,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         public DelegateCommand<Preset> ActivatePresetCommand { get; }
         public DelegateCommand<Preset> RenamePresetCommand { get; }
         public DelegateCommand<Preset> DeletePresetCommand { get; }
+        public DelegateCommand SaveCurrentPresetCommand { get; }
 
         #endregion
 
@@ -98,6 +100,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             ActivatePresetCommand = new DelegateCommand<Preset>(async (x) => await OnActivatePresetCommand(x));
             RenamePresetCommand = new DelegateCommand<Preset>(async (x) => await OnRenamePresetCommand(x));
             DeletePresetCommand = new DelegateCommand<Preset>(async (x) => await OnDeletePresetCommand(x));
+            SaveCurrentPresetCommand = new DelegateCommand(async () => await OnSaveCurrentPresetCommand());
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
             _gridPresetView = !_listPresetView;
@@ -118,7 +121,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 if (other.IsActive)
                 {
-                    await _presetManager.DeactivatePreset(_game, other);
+                    await _presetManager.DeactivatePresetAsync(_game, other);
                     other.IsActive = false;
                 }
             }
@@ -133,12 +136,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             if (preset.IsActive)
             {
-                await _presetManager.ActivatePreset(_game, preset);
+                await _presetManager.ActivatePresetAsync(_game, preset);
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
             }
             else
             {
-                await _presetManager.DeactivatePreset(_game, preset);
+                await _presetManager.DeactivatePresetAsync(_game, preset);
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
             }
 
@@ -148,9 +151,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnRenamePresetCommand(Preset preset)
         {
-            var dialog = new InputDialog
+            var dialog = new InputDialog(Strings.ENTER_A_NEW_NAME)
             {
-                Message = Strings.ENTER_A_NEW_NAME,
                 Value = preset.Name
             };
 
@@ -183,10 +185,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnDeletePresetCommand(Preset preset)
         {
-            var dialog = new MessageDialog()
-            {
-                Message = Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE
-            };
+            var dialog = new ConfirmDialog(Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE);
 
             var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
 
@@ -203,6 +202,54 @@ namespace ENBManager.Modules.Shared.ViewModels
                 }
 
                 Presets.Remove(preset);
+            }
+        }
+
+        private async Task OnSaveCurrentPresetCommand()
+        {
+            try
+            {
+                // Create preset
+                var newPreset = _presetManager.CreateExistingPreset(_game);
+
+                // Validate file count
+                if (newPreset.Files.Count() == 0)
+                {
+                    var messageDialog = new MessageDialog(Strings.INVALID_PRESET_NO_FILES);
+                    await DialogHost.Show(messageDialog);
+
+                    return;
+                }
+
+                // Prompt name
+                var inputDialog = new InputDialog(Strings.ENTER_A_NEW_NAME);
+                var result = await DialogHost.Show(inputDialog);
+
+                if (result != null && (bool)result && inputDialog.Valid)
+                {
+                    var dialog = new ProgressDialog(true);
+
+                    // Save preset
+                    newPreset.Name = inputDialog.Value;
+
+                    _ = DialogHost.Show(dialog);
+                    await _presetManager.SavePresetAsync(_game, newPreset);
+                    dialog.CloseDialog();
+
+                    // Reload preset to update files
+                    newPreset = await _presetManager.GetPresetAsync(_game, newPreset.Name);
+                    Presets.Add(newPreset);
+                }
+            }
+            catch (IdenticalNameException ex)
+            {
+                //TODO: Notify user
+                _logger.Info(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw ex;
             }
         }
 

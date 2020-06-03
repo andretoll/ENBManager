@@ -14,6 +14,13 @@ namespace ENBManager.Modules.Shared.Interfaces
         IEnumerable<Preset> GetPresets(string path);
 
         /// <summary>
+        /// Gets a specific preset in folder.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        Task<Preset> GetPresetAsync(GameModule gameModule, string path);
+
+        /// <summary>
         /// Renames a preset in folder and returns the new full path.
         /// </summary>
         /// <param name="preset"></param>
@@ -31,12 +38,27 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// Activates a preset.
         /// </summary>
         /// <param name="preset"></param>
-        Task ActivatePreset(GameModule gameModule, Preset preset);
+        Task ActivatePresetAsync(GameModule gameModule, Preset preset);
 
         /// <summary>
         /// Deactivates a preset.
         /// </summary>
         /// <param name="preset"></param>
-        Task DeactivatePreset(GameModule gameModule, Preset preset);
+        Task DeactivatePresetAsync(GameModule gameModule, Preset preset);
+
+        /// <summary>
+        /// Creates a preset based on current ENB files.
+        /// </summary>
+        /// <param name="gameModule"></param>
+        /// <returns></returns>
+        Preset CreateExistingPreset(GameModule gameModule);
+
+        /// <summary>
+        /// Saves a new preset to folder.
+        /// </summary>
+        /// <param name="gameModule"></param>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        Task SavePresetAsync(GameModule gameModule, Preset preset);
     }
 }

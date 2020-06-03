@@ -32,8 +32,10 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 
         #region Constructor
 
-        public ProgressDialog(bool isIndeterminate)
+        public ProgressDialog(bool isIndeterminate, string message = "")
         {
+            Message = message;
+
             IsIndeterminate = isIndeterminate;
 
             if (isIndeterminate)

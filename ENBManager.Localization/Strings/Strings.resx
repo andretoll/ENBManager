@@ -162,6 +162,9 @@
   <data name="INSTALLED_GAMES" xml:space="preserve">
     <value>Installed Games</value>
   </data>
+  <data name="INVALID_PRESET_NO_FILES" xml:space="preserve">
+    <value>Invalid preset: No eligible files were found.</value>
+  </data>
   <data name="LOG_LEVEL" xml:space="preserve">
     <value>Log level</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="NO_PRESET_ACTIVE" xml:space="preserve">
     <value>No preset active.</value>
   </data>
+  <data name="OK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="PRESETS" xml:space="preserve">
     <value>Presets</value>
   </data>
@@ -188,6 +194,12 @@
   </data>
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SAVE_CURRENT" xml:space="preserve">
+    <value>Save current</value>
+  </data>
+  <data name="SAVE_CURRENT_TOOLTIP_TEXT" xml:space="preserve">
+    <value>Attempts to create a preset based on current ENB preset files in game directory.</value>
   </data>
   <data name="SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED" xml:space="preserve">
     <value>Select a game in the menu to get started!</value>

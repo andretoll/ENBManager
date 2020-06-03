@@ -28,6 +28,15 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 
         #endregion
 
+        #region Constructor
+
+        public InputDialog(string message)
+        {
+            Message = message;
+        }
+
+        #endregion
+
         #region INotifyPropertyChanged Implementation
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -216,26 +216,56 @@
         <!-- Top bar -->
         <Border DockPanel.Dock="Top">
 
-            <!-- Actions -->
             <Grid>
 
                 <!-- Left -->
                 <Grid HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
 
-                        <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                Height="35">
+                        <StackPanel.Resources>
+                            <ResourceDictionary>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                    <Setter Property="Height" Value="35" />
+                                </Style>
+                            </ResourceDictionary>
+                        </StackPanel.Resources>
+                        
+                        <!-- Add new preset -->
+                        <Button>
 
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Plus"
+                                <materialDesign:PackIcon Kind="OpenInApp"
                                                          Height="24"
                                                          Width="24"
-                                                         VerticalAlignment="Center"/>
+                                                         VerticalAlignment="Center"
+                                                         Margin="0 0 10 0"/>
                                 <TextBlock Text="{x:Static loc:Strings.ADD_NEW_PRESET}"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
 
                         </Button>
+
+                        <!-- Save current -->
+                        <materialDesign:Badged Badge="{materialDesign:PackIcon Kind=Flask}"
+                                               BadgeColorZoneMode="Accent"
+                                               BadgePlacementMode="TopRight"
+                                               ToolTip="{x:Static loc:Strings.SAVE_CURRENT_TOOLTIP_TEXT}"
+                                               ToolTipService.InitialShowDelay="0"
+                                               Margin="20 0">
+                            <Button Command="{Binding SaveCurrentPresetCommand}">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="ContentSaveOutline"
+                                                         Height="24"
+                                                         Width="24"
+                                                         VerticalAlignment="Center"
+                                                         Margin="0 0 10 0"/>
+                                    <TextBlock Text="{x:Static loc:Strings.SAVE_CURRENT}"
+                                           VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                            </Button>
+                        </materialDesign:Badged>
 
                     </StackPanel>
                 </Grid>

@@ -92,13 +92,15 @@
   <ItemGroup>
     <Compile Include="BusinessEntities\AppSettings.cs" />
     <Compile Include="BusinessEntities\ColorScheme.cs" />
-    <Compile Include="BusinessEntities\Dialogs\InputDialog.cs" />
     <Compile Include="BusinessEntities\Dialogs\MessageDialog.cs" />
+    <Compile Include="BusinessEntities\Dialogs\InputDialog.cs" />
+    <Compile Include="BusinessEntities\Dialogs\ConfirmDialog.cs" />
     <Compile Include="BusinessEntities\Dialogs\ProgressDialog.cs" />
     <Compile Include="BusinessEntities\GameSettings.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
     <Compile Include="Constants\RegionNames.cs" />
+    <Compile Include="Exceptions\IdenticalNameException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueConverters\BoolToBoolValueConverter.cs" />
     <Compile Include="ValueConverters\EmptyCollectionToVisibilityValueConverter.cs" />

@@ -196,6 +196,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid preset: No eligible files were found..
+        /// </summary>
+        public static string INVALID_PRESET_NO_FILES {
+            get {
+                return ResourceManager.GetString("INVALID_PRESET_NO_FILES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log level.
         /// </summary>
         public static string LOG_LEVEL {
@@ -241,6 +250,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to activated..
         /// </summary>
         public static string PRESET_ACTIVATED {
@@ -273,6 +291,24 @@ namespace ENBManager.Localization.Strings {
         public static string SAVE {
             get {
                 return ResourceManager.GetString("SAVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save current.
+        /// </summary>
+        public static string SAVE_CURRENT {
+            get {
+                return ResourceManager.GetString("SAVE_CURRENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempts to create a preset based on current ENB preset files in game directory..
+        /// </summary>
+        public static string SAVE_CURRENT_TOOLTIP_TEXT {
+            get {
+                return ResourceManager.GetString("SAVE_CURRENT_TOOLTIP_TEXT", resourceCulture);
             }
         }
         
