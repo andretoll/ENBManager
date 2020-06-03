@@ -1,10 +1,8 @@
-﻿using MaterialDesignThemes.Wpf;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using ENBManager.Infrastructure.BusinessEntities.Dialogs.Base;
 
 namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 {
-    public class ProgressDialog : INotifyPropertyChanged
+    public class ProgressDialog : BaseDialog
     {
         #region Private Members
 
@@ -13,8 +11,6 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
         #endregion
 
         #region Public Properties
-
-        public string Message { get; set; }
 
         public int Progress
         {
@@ -33,33 +29,12 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
         #region Constructor
 
         public ProgressDialog(bool isIndeterminate, string message = "")
+            : base (message)
         {
-            Message = message;
-
             IsIndeterminate = isIndeterminate;
 
             if (isIndeterminate)
                 Progress = 0;
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public void CloseDialog()
-        {
-            DialogHost.CloseDialogCommand.Execute(null, null);
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         #endregion

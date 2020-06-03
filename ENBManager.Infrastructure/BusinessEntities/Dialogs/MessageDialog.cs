@@ -1,19 +1,13 @@
-﻿namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
+﻿using ENBManager.Infrastructure.BusinessEntities.Dialogs.Base;
+
+namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 {
-    public class MessageDialog
+    public class MessageDialog : BaseDialog
     {
-        #region Public Properties
-
-        public string Message { get; set; }
-
-        #endregion
-
         #region Constructor
 
         public MessageDialog(string message)
-        {
-            Message = message;
-        }
+            : base (message) { }
 
         #endregion
     }

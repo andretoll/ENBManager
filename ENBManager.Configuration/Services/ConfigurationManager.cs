@@ -41,6 +41,8 @@ namespace ENBManager.Configuration.Services
 
         public static T LoadSettings(string fullPath)
         {
+            _logger.Debug($"Loading settings from {fullPath}");
+
             var settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(fullPath));
 
             settings.SetFullPath(fullPath);
@@ -56,7 +58,7 @@ namespace ENBManager.Configuration.Services
 
         public void LoadSettings()
         {
-            _logger.Info($"Loading {Settings.GetType().Name}");
+            _logger.Debug($"Loading {Settings.GetType().Name}");
 
             // If directory or file does not exist, create it
             InitializeSettings();
@@ -66,7 +68,7 @@ namespace ENBManager.Configuration.Services
 
         public void SaveSettings()
         {
-            _logger.Info($"Saving {Settings.GetType().Name}");
+            _logger.Debug($"Saving {Settings.GetType().Name}");
 
             // If directory does not exist, create it
             Directory.CreateDirectory(Path.GetDirectoryName(Settings.GetFullPath()));
@@ -85,7 +87,7 @@ namespace ENBManager.Configuration.Services
         {
             if (!File.Exists(Settings.GetFullPath()))
             {
-                _logger.Info($"Initializing {Settings.GetType().Name}");
+                _logger.Debug($"Initializing {Settings.GetType().Name}");
 
                 SaveSettings();
             }

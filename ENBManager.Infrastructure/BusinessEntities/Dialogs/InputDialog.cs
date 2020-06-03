@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using ENBManager.Infrastructure.BusinessEntities.Dialogs.Base;
+using System.ComponentModel;
 
 namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 {
-    public class InputDialog : INotifyPropertyChanged
+    public class InputDialog : BaseDialog, INotifyPropertyChanged
     {
         #region Private Members
 
@@ -13,7 +13,6 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 
         #region Public Properties
 
-        public string Message { get; set; }
         public string Value
         {
             get { return _value; }
@@ -30,20 +29,10 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 
         #region Constructor
 
-        public InputDialog(string message)
+        public InputDialog(string message, string value = "")
+            : base (message) 
         {
-            Message = message;
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            Value = value;
         }
 
         #endregion

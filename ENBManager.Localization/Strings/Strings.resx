@@ -120,6 +120,9 @@
   <data name="ADD_NEW_PRESET" xml:space="preserve">
     <value>Add new preset</value>
   </data>
+  <data name="AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS" xml:space="preserve">
+    <value>An item with this this name already exists.</value>
+  </data>
   <data name="APPEARANCE" xml:space="preserve">
     <value>Appearance</value>
   </data>

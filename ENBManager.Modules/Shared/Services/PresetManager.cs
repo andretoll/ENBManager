@@ -64,6 +64,10 @@ namespace ENBManager.Modules.Shared.Services
 
             string newDirectory = Path.Combine(oldDirectory.Parent.FullName, newName);
 
+            // Make sure no other preset with new name exists
+            if (Directory.Exists(newDirectory))
+                throw new IdenticalNameException("Rename preset failed. Preset with name already exists.");
+
             oldDirectory.MoveTo(newDirectory);
 
             return newDirectory;

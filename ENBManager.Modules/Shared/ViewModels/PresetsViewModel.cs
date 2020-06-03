@@ -2,14 +2,13 @@
 using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
-using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
+using ENBManager.Infrastructure.Helpers;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
-using MaterialDesignThemes.Wpf;
 using NLog;
 using Prism.Commands;
 using Prism.Events;
@@ -115,7 +114,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         private async Task OnActivatePresetCommand(Preset preset)
         {
             var dialog = new ProgressDialog(true);
-            _ = DialogHost.Show(dialog, RegionNames.RootDialogHost);
+            _ = dialog.OpenAsync();
 
             foreach (var other in Presets.Where(x => x.Name != preset.Name))
             {
@@ -138,27 +137,26 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 await _presetManager.ActivatePresetAsync(_game, preset);
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
+
+                _logger.Info($"Preset {preset.Name} activated");
             }
             else
             {
                 await _presetManager.DeactivatePresetAsync(_game, preset);
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
+
+                _logger.Info($"No preset activated");
             }
 
-            dialog.CloseDialog();
-            _logger.Info("Preset activated");
+            dialog.Close();
         }
 
         private async Task OnRenamePresetCommand(Preset preset)
         {
-            var dialog = new InputDialog(Strings.ENTER_A_NEW_NAME)
-            {
-                Value = preset.Name
-            };
+            var dialog = new InputDialog(Strings.ENTER_A_NEW_NAME, preset.Name);
+            var result = await dialog.OpenAsync();
 
-            var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
-
-            if (result != null && (bool)result)
+            if (result)
             {
                 try
                 {
@@ -180,16 +178,20 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _logger.Debug(ex);
                     return;
                 }
+                catch (IdenticalNameException ex)
+                {
+                    _logger.Debug(ex.Message);
+                    await DialogHelper.ShowDialogAsync(new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS));
+                }
             }
         }
 
         private async Task OnDeletePresetCommand(Preset preset)
         {
             var dialog = new ConfirmDialog(Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE);
+            var result = await dialog.OpenAsync();
 
-            var result = await DialogHost.Show(dialog, RegionNames.RootDialogHost);
-
-            if (result != null && (bool)result)
+            if (result)
             {
                 try
                 {
@@ -207,49 +209,50 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnSaveCurrentPresetCommand()
         {
-            try
+            // Create preset
+            var newPreset = _presetManager.CreateExistingPreset(_game);
+
+            // Validate file count
+            if (newPreset.Files.Count() == 0)
             {
-                // Create preset
-                var newPreset = _presetManager.CreateExistingPreset(_game);
+                var messageDialog = new MessageDialog(Strings.INVALID_PRESET_NO_FILES);
+                await messageDialog.OpenAsync();
 
-                // Validate file count
-                if (newPreset.Files.Count() == 0)
+                _logger.Debug($"OnSaveCurrentPresetCommand: {Strings.INVALID_PRESET_NO_FILES}");
+                return;
+            }
+
+            // Prompt name
+            var inputDialog = new InputDialog(Strings.ENTER_A_NEW_NAME);
+            var result = await inputDialog.OpenAsync();
+
+            if (result)
+            {
+                var dialog = new ProgressDialog(true);
+
+                try
                 {
-                    var messageDialog = new MessageDialog(Strings.INVALID_PRESET_NO_FILES);
-                    await DialogHost.Show(messageDialog);
-
-                    return;
-                }
-
-                // Prompt name
-                var inputDialog = new InputDialog(Strings.ENTER_A_NEW_NAME);
-                var result = await DialogHost.Show(inputDialog);
-
-                if (result != null && (bool)result && inputDialog.Valid)
-                {
-                    var dialog = new ProgressDialog(true);
+                    _ = dialog.OpenAsync();
 
                     // Save preset
                     newPreset.Name = inputDialog.Value;
-
-                    _ = DialogHost.Show(dialog);
                     await _presetManager.SavePresetAsync(_game, newPreset);
-                    dialog.CloseDialog();
 
-                    // Reload preset to update files
+                    // Reload preset
                     newPreset = await _presetManager.GetPresetAsync(_game, newPreset.Name);
                     Presets.Add(newPreset);
+
+                    _logger.Info($"Preset {newPreset.Name} added");
                 }
-            }
-            catch (IdenticalNameException ex)
-            {
-                //TODO: Notify user
-                _logger.Info(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                throw ex;
+                catch (IdenticalNameException ex)
+                {
+                    await DialogHelper.ShowDialogAsync(new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS));
+                    _logger.Debug(ex.Message);
+                }
+                finally
+                {
+                    dialog.Close();
+                }
             }
         }
 
@@ -264,6 +267,8 @@ namespace ENBManager.Modules.Shared.ViewModels
             _game = game;
             Presets = new ObservableCollection<Preset>(game.Presets);
             RaisePropertyChanged(nameof(Presets));
+
+            _logger.Debug($"Module {game.Module} activated");
         } 
 
         #endregion

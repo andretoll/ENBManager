@@ -1,19 +1,13 @@
-﻿namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
+﻿using ENBManager.Infrastructure.BusinessEntities.Dialogs.Base;
+
+namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 {
-    public class ConfirmDialog
+    public class ConfirmDialog : BaseDialog
     {
-        #region Public Properties
-
-        public string Message { get; set; }
-
-        #endregion
-
         #region Constructor
 
         public ConfirmDialog(string message)
-        {
-            Message = message;
-        }
+            : base(message) { }
 
         #endregion
     }

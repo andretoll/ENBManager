@@ -70,6 +70,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An item with this this name already exists..
+        /// </summary>
+        public static string AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS {
+            get {
+                return ResourceManager.GetString("AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Appearance.
         /// </summary>
         public static string APPEARANCE {
