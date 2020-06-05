@@ -1,4 +1,4 @@
-﻿using ENBManager.Infrastructure.Helpers;
+﻿using MaterialDesignThemes.Wpf;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -7,6 +7,12 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs.Base
 {
     public abstract class BaseDialog
     {
+        #region Private Members
+
+        private string _hostIdentifier;
+
+        #endregion
+
         #region Public Properties
 
         public string Message { get; set; } 
@@ -24,19 +30,40 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs.Base
 
         #region Public Methods
 
+        /// <summary>
+        /// Sets the target <see cref="DialogHost"/> unique identifier.
+        /// </summary>
+        /// <param name="hostIdentifier"></param>
+        public void SetHost(string hostIdentifier)
+        {
+            _hostIdentifier = hostIdentifier;
+        }
+
         public bool Open()
         {
-            return DialogHelper.ShowDialog(this);
+            Close();
+            var result = DialogHost.Show(this, _hostIdentifier).Result;
+
+            return result != null && (bool)result;
         }
 
         public async Task<bool> OpenAsync()
         {
-            return await DialogHelper.ShowDialogAsync(this);
+            await CloseAsync();
+            var result = await DialogHost.Show(this, _hostIdentifier);
+
+            return result != null && (bool)result;
         }
 
         public void Close()
         {
-            DialogHelper.CloseDialog();
+            DialogHost.CloseDialogCommand.Execute(null, null);
+        }
+
+        public Task CloseAsync()
+        {
+            DialogHost.CloseDialogCommand.Execute(null, null);
+            return Task.CompletedTask;
         }
 
         #endregion

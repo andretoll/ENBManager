@@ -7,5 +7,6 @@
         public static string TabRegion = "TabRegion";
 
         public static string RootDialogHost = "RootDialogHost";
+        public static string AddPresetDialogHost = "AddPresetDialogHost";
     }
 }

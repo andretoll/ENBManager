@@ -231,7 +231,7 @@
                         </StackPanel.Resources>
                         
                         <!-- Add new preset -->
-                        <Button>
+                        <Button Command="{Binding AddPresetCommand}">
 
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="OpenInApp"

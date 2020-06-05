@@ -147,7 +147,7 @@ namespace ENBManager.Modules.Shared.Services
             return preset;
         }
 
-        public async Task SavePresetAsync(GameModule gameModule, Preset preset)
+        public async Task SaveCurrentPresetAsync(GameModule gameModule, Preset preset)
         {
             var presetsDir = Paths.GetPresetsDirectory(gameModule.Module);
 
@@ -171,6 +171,41 @@ namespace ENBManager.Modules.Shared.Services
 
                 // Copy file
                 File.Copy(file, file.Replace(gameModule.InstalledLocation, preset.FullPath));
+            }
+
+            await Task.Delay(500);
+        }
+
+        public async Task SaveNewPresetAsync(GameModule gameModule, Preset preset)
+        {
+            string originRoot = preset.FullPath;
+
+            var presetsDir = Paths.GetPresetsDirectory(gameModule.Module);
+
+            if (Directory.Exists(Path.Combine(presetsDir, preset.Name)))
+            {
+                throw new IdenticalNameException("Preset with this name already exists.");
+            }
+
+            // Create root folder
+            preset.FullPath = Directory.CreateDirectory(Path.Combine(presetsDir, preset.Name)).FullName;
+
+            foreach (var file in preset.Files)
+            {
+                var parentDir = Directory.GetParent(file.Replace(originRoot, preset.FullPath));
+
+                // Create subfolder
+                if (!Directory.Exists(parentDir.FullName))
+                {
+                    Directory.CreateDirectory(parentDir.FullName);
+                }
+
+                // Copy file
+                if (File.Exists(file))
+                    File.Copy(file, file.Replace(originRoot, preset.FullPath));
+                // Create empty folder
+                else if (Directory.Exists(file))
+                    Directory.CreateDirectory(file.Replace(originRoot, preset.FullPath));
             }
 
             await Task.Delay(500);

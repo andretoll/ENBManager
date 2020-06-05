@@ -2,16 +2,18 @@
 using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
+using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
-using ENBManager.Infrastructure.Helpers;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
+using ENBManager.Modules.Shared.Views;
 using NLog;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -27,6 +29,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
+        private readonly IDialogService _dialogService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IPresetManager _presetManager;
 
@@ -81,18 +84,21 @@ namespace ENBManager.Modules.Shared.ViewModels
         public DelegateCommand<Preset> RenamePresetCommand { get; }
         public DelegateCommand<Preset> DeletePresetCommand { get; }
         public DelegateCommand SaveCurrentPresetCommand { get; }
+        public DelegateCommand AddPresetCommand { get; }
 
         #endregion
 
         #region Constructor
 
         public PresetsViewModel(
-            IConfigurationManager<AppSettings> configurationManager, 
+            IConfigurationManager<AppSettings> configurationManager,
+            IDialogService dialogService,
             IEventAggregator eventAggregator,
             IPresetManager presetManager)
             : base(eventAggregator)
         {
             _configurationManager = configurationManager;
+            _dialogService = dialogService;
             _eventAggregator = eventAggregator;
             _presetManager = presetManager;
 
@@ -100,6 +106,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             RenamePresetCommand = new DelegateCommand<Preset>(async (x) => await OnRenamePresetCommand(x));
             DeletePresetCommand = new DelegateCommand<Preset>(async (x) => await OnDeletePresetCommand(x));
             SaveCurrentPresetCommand = new DelegateCommand(async () => await OnSaveCurrentPresetCommand());
+            AddPresetCommand = new DelegateCommand(async () => await OnAddPresetCommand());
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
             _gridPresetView = !_listPresetView;
@@ -113,42 +120,42 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnActivatePresetCommand(Preset preset)
         {
-            var dialog = new ProgressDialog(true);
-            _ = dialog.OpenAsync();
-
-            foreach (var other in Presets.Where(x => x.Name != preset.Name))
+            using (var dialog = new ProgressDialog(true))
             {
-                if (other.IsActive)
+                _ = dialog.OpenAsync();
+
+                foreach (var other in Presets.Where(x => x.Name != preset.Name))
                 {
-                    await _presetManager.DeactivatePresetAsync(_game, other);
-                    other.IsActive = false;
+                    if (other.IsActive)
+                    {
+                        await _presetManager.DeactivatePresetAsync(_game, other);
+                        other.IsActive = false;
+                    }
                 }
+
+                if (preset.IsActive)
+                    _game.Settings.ActivePreset = preset.Name;
+                else
+                    _game.Settings.ActivePreset = string.Empty;
+
+                var configManager = new ConfigurationManager<GameSettings>(_game.Settings);
+                configManager.SaveSettings();
+
+                if (preset.IsActive)
+                {
+                    await _presetManager.ActivatePresetAsync(_game, preset);
+                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
+
+                    _logger.Info($"Preset {preset.Name} activated");
+                }
+                else
+                {
+                    await _presetManager.DeactivatePresetAsync(_game, preset);
+                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
+
+                    _logger.Info($"No preset activated");
+                } 
             }
-
-            if (preset.IsActive)
-                _game.Settings.ActivePreset = preset.Name;
-            else
-                _game.Settings.ActivePreset = string.Empty;
-
-            var configManager = new ConfigurationManager<GameSettings>(_game.Settings);
-            configManager.SaveSettings();
-
-            if (preset.IsActive)
-            {
-                await _presetManager.ActivatePresetAsync(_game, preset);
-                _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
-
-                _logger.Info($"Preset {preset.Name} activated");
-            }
-            else
-            {
-                await _presetManager.DeactivatePresetAsync(_game, preset);
-                _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
-
-                _logger.Info($"No preset activated");
-            }
-
-            dialog.Close();
         }
 
         private async Task OnRenamePresetCommand(Preset preset)
@@ -181,7 +188,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 catch (IdenticalNameException ex)
                 {
                     _logger.Debug(ex.Message);
-                    await DialogHelper.ShowDialogAsync(new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS));
+                    await new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS).OpenAsync();
                 }
             }
         }
@@ -196,6 +203,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 try
                 {
                     _presetManager.DeletePreset(preset);
+                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_DELETED);
                     _logger.Info("Preset deleted");
                 }
                 catch (DirectoryNotFoundException ex)
@@ -228,32 +236,55 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             if (result)
             {
-                var dialog = new ProgressDialog(true);
-
-                try
+                using (var dialog = new ProgressDialog(true))
                 {
-                    _ = dialog.OpenAsync();
+                    try
+                    {
+                        _ = dialog.OpenAsync();
 
-                    // Save preset
-                    newPreset.Name = inputDialog.Value;
-                    await _presetManager.SavePresetAsync(_game, newPreset);
+                        // Save preset
+                        newPreset.Name = inputDialog.Value;
+                        await _presetManager.SaveCurrentPresetAsync(_game, newPreset);
 
-                    // Reload preset
-                    newPreset = await _presetManager.GetPresetAsync(_game, newPreset.Name);
-                    Presets.Add(newPreset);
+                        // Reload preset
+                        newPreset = await _presetManager.GetPresetAsync(_game, newPreset.Name);
+                        Presets.Add(newPreset);
 
-                    _logger.Info($"Preset {newPreset.Name} added");
-                }
-                catch (IdenticalNameException ex)
-                {
-                    await DialogHelper.ShowDialogAsync(new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS));
-                    _logger.Debug(ex.Message);
-                }
-                finally
-                {
-                    dialog.Close();
+                        _logger.Info($"Preset {newPreset.Name} added");
+
+                        _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
+                    }
+                    catch (IdenticalNameException ex)
+                    {
+                        await new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS).OpenAsync();
+                        _logger.Debug(ex.Message);
+                    }
                 }
             }
+        }
+
+        private async Task OnAddPresetCommand()
+        {
+            _logger.Debug(nameof(OnAddPresetCommand));
+
+            var dp = new DialogParameters();
+            dp.Add("GameModule", _game);
+            _dialogService.ShowDialog(nameof(AddPresetDialog), dp, (dr) =>
+            {
+                if (dr.Result == ButtonResult.OK)
+                {
+                    Presets = new ObservableCollection<Preset>(_presetManager.GetPresets(Paths.GetPresetsDirectory(_game.Module)));
+                    var activePreset = Presets.FirstOrDefault(x => x.Name == _game.Settings.ActivePreset);
+                    if (activePreset != null)
+                        activePreset.IsActive = true;
+
+                    RaisePropertyChanged(nameof(Presets));
+                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
+                    _logger.Info($"Preset added");
+                }
+            });
+
+            await Task.CompletedTask;
         }
 
         #endregion

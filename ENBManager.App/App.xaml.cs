@@ -12,6 +12,7 @@ using ENBManager.Modules.Fallout4;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Services;
 using ENBManager.Modules.Shared.ViewModels;
+using ENBManager.Modules.Shared.Views;
 using ENBManager.Modules.Skyrim;
 using ENBManager.Modules.SkyrimSE;
 using MaterialDesignThemes.Wpf;
@@ -88,6 +89,7 @@ namespace ENBManager.App
             // Dialogs
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
             containerRegistry.RegisterDialog<AppSettingsDialog, AppSettingsViewModel>();
+            containerRegistry.RegisterDialog<AddPresetDialog, AddPresetDialogViewModel>();
         }
 
         #endregion

@@ -187,6 +187,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Files.
+        /// </summary>
+        public static string FILES {
+            get {
+                return ResourceManager.GetString("FILES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grid.
         /// </summary>
         public static string GRID {
@@ -277,6 +286,24 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preset added..
+        /// </summary>
+        public static string PRESET_ADDED {
+            get {
+                return ResourceManager.GetString("PRESET_ADDED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset deleted..
+        /// </summary>
+        public static string PRESET_DELETED {
+            get {
+                return ResourceManager.GetString("PRESET_DELETED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Presets.
         /// </summary>
         public static string PRESETS {
@@ -313,7 +340,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attempts to create a preset based on current ENB preset files in game directory..
+        ///   Looks up a localized string similar to EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory..
         /// </summary>
         public static string SAVE_CURRENT_TOOLTIP_TEXT {
             get {
@@ -327,6 +354,24 @@ namespace ENBManager.Localization.Strings {
         public static string SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED {
             get {
                 return ResourceManager.GetString("SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set root.
+        /// </summary>
+        public static string SET_ROOT {
+            get {
+                return ResourceManager.GetString("SET_ROOT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the selected folder as the top-level directory..
+        /// </summary>
+        public static string SET_ROOT_TOOLTIP_TEXT {
+            get {
+                return ResourceManager.GetString("SET_ROOT_TOOLTIP_TEXT", resourceCulture);
             }
         }
         

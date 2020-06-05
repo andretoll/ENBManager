@@ -1,8 +1,9 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities.Dialogs.Base;
+using System;
 
 namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 {
-    public class ProgressDialog : BaseDialog
+    public class ProgressDialog : BaseDialog, IDisposable
     {
         #region Private Members
 
@@ -35,6 +36,15 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
 
             if (isIndeterminate)
                 Progress = 0;
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        public void Dispose()
+        {
+            Close();
         }
 
         #endregion

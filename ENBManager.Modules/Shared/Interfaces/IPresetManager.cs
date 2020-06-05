@@ -54,11 +54,19 @@ namespace ENBManager.Modules.Shared.Interfaces
         Preset CreateExistingPreset(GameModule gameModule);
 
         /// <summary>
+        /// Saves the current preset to folder.
+        /// </summary>
+        /// <param name="gameModule"></param>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        Task SaveCurrentPresetAsync(GameModule gameModule, Preset preset);
+
+        /// <summary>
         /// Saves a new preset to folder.
         /// </summary>
         /// <param name="gameModule"></param>
         /// <param name="preset"></param>
         /// <returns></returns>
-        Task SavePresetAsync(GameModule gameModule, Preset preset);
+        Task SaveNewPresetAsync(GameModule gameModule, Preset preset);
     }
 }

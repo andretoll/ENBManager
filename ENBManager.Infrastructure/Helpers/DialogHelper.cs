@@ -1,44 +1,20 @@
-﻿using ENBManager.Infrastructure.BusinessEntities.Dialogs.Base;
-using MaterialDesignThemes.Wpf;
-using System.Threading.Tasks;
+﻿using System.Windows.Forms;
 
 namespace ENBManager.Infrastructure.Helpers
 {
     public static class DialogHelper
     {
-        /// <summary>
-        /// Shows the current dialog and returns the result.
-        /// </summary>
-        /// <param name="dialog"></param>
-        /// <returns></returns>
-        public static bool ShowDialog(BaseDialog dialog)
+        public static bool OpenFolderDialog(out string path)
         {
-            CloseDialog();
-            return (bool)DialogHost.Show(dialog).Result;
-        }
+            path = null;
 
-        /// <summary>
-        /// Shows the current dialog and returns the result asynchronously.
-        /// </summary>
-        /// <param name="dialog"></param>
-        /// <returns></returns>
-        public async static Task<bool> ShowDialogAsync(BaseDialog dialog)
-        {
-            CloseDialog();
-            var result = await DialogHost.Show(dialog);
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
 
-            if (result == null)
+            if (dialog.ShowDialog() != DialogResult.OK)
                 return false;
 
-            return (bool)result;
-        }
-
-        /// <summary>
-        /// Closes the current dialog.
-        /// </summary>
-        public static void CloseDialog()
-        {
-            DialogHost.CloseDialogCommand.Execute(null, null);
+            path = dialog.SelectedPath;
+            return true;
         }
     }
 }
