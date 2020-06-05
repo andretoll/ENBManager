@@ -1,6 +1,6 @@
 ﻿namespace ENBManager.Core.Interfaces
 {
-    public interface IFileService
+    public interface IGameService
     {
         /// <summary>
         /// Prompts user to browse the computer for a specific file.

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ENBManager.Core.Services
 {
-    public class FileService : IFileService
+    public class GameService : IGameService
     {
         #region Private Members
 

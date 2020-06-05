@@ -120,10 +120,13 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnActivatePresetCommand(Preset preset)
         {
+            _logger.Debug(nameof(OnActivatePresetCommand));
+
             using (var dialog = new ProgressDialog(true))
             {
                 _ = dialog.OpenAsync();
 
+                // Deactivate all other presets
                 foreach (var other in Presets.Where(x => x.Name != preset.Name))
                 {
                     if (other.IsActive)
@@ -133,6 +136,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
                 }
 
+                // Save active preset
                 if (preset.IsActive)
                     _game.Settings.ActivePreset = preset.Name;
                 else
@@ -141,6 +145,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 var configManager = new ConfigurationManager<GameSettings>(_game.Settings);
                 configManager.SaveSettings();
 
+                // If preset was activated
                 if (preset.IsActive)
                 {
                     await _presetManager.ActivatePresetAsync(_game, preset);
@@ -148,6 +153,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
                     _logger.Info($"Preset {preset.Name} activated");
                 }
+                // If preset was deactivated
                 else
                 {
                     await _presetManager.DeactivatePresetAsync(_game, preset);
@@ -160,6 +166,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnRenamePresetCommand(Preset preset)
         {
+            _logger.Debug(nameof(OnRenamePresetCommand));
+
             var dialog = new InputDialog(Strings.ENTER_A_NEW_NAME, preset.Name);
             var result = await dialog.OpenAsync();
 
@@ -175,6 +183,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 catch (ArgumentNullException ex)
                 {
                     _logger.Warn(ex);
+                    throw ex;
                 }
                 catch (DirectoryNotFoundException ex)
                 {
@@ -195,6 +204,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnDeletePresetCommand(Preset preset)
         {
+            _logger.Debug(nameof(OnDeletePresetCommand));
+
             var dialog = new ConfirmDialog(Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE);
             var result = await dialog.OpenAsync();
 
@@ -217,6 +228,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnSaveCurrentPresetCommand()
         {
+            _logger.Debug(nameof(OnSaveCurrentPresetCommand));
+
             // Create preset
             var newPreset = _presetManager.CreateExistingPreset(_game);
 

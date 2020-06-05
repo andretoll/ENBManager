@@ -18,7 +18,7 @@
 
     <UserControl.Resources>
 
-        <HierarchicalDataTemplate DataType="{x:Type models:DirectoryItem}"
+        <HierarchicalDataTemplate DataType="{x:Type models:DirectoryNode}"
                                   ItemsSource="{Binding Items}">
             <StackPanel Orientation="Horizontal"
                         IsHitTestVisible="False">
@@ -31,7 +31,7 @@
             </StackPanel>
         </HierarchicalDataTemplate>
 
-        <DataTemplate DataType="{x:Type models:FileItem}">
+        <DataTemplate DataType="{x:Type models:FileNode}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon Kind="FileOutline"
                                          Width="20"

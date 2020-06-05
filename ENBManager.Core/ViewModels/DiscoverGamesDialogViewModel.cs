@@ -22,15 +22,15 @@ namespace ENBManager.Core.ViewModels
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IFileService _fileService;
+        private readonly IGameService _fileService;
         private readonly IGameLocator _gameLocator;
         private readonly IGameModuleCatalog _gameModuleCatalog;
-
-        private bool AnyGamesManaged => Games != null && Games.Any(x => x.ShouldManage);
 
         #endregion
 
         #region Public Properties
+
+        public bool AnyGamesManaged => Games != null && Games.Any(x => x.ShouldManage);
 
         public ObservableCollection<GameModule> Games { get; set; }
 
@@ -38,7 +38,16 @@ namespace ENBManager.Core.ViewModels
 
         #region Helper Properties
 
-        public bool ShowUnmanagingWarning { get; set; }
+        private bool _showUnmanagingWarning;
+        public bool ShowUnmanagingWarning
+        {
+            get { return _showUnmanagingWarning; }
+            set
+            {
+                _showUnmanagingWarning = value;
+                RaisePropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -54,7 +63,7 @@ namespace ENBManager.Core.ViewModels
         #region Constructor
 
         public DiscoverGamesDialogViewModel(
-            IFileService fileService,
+            IGameService fileService,
             IGameLocator gameLocator,
             IGameModuleCatalog gameModuleCatalog)
         {
@@ -93,10 +102,7 @@ namespace ENBManager.Core.ViewModels
             // For every game to manage, initialize settings
             foreach (var game in Games.Where(x => x.ShouldManage))
             {
-                gameSettings = new GameSettings(game.Module)
-                {
-                    InstalledLocation = game.InstalledLocation
-                };
+                gameSettings = new GameSettings(game.Module) { InstalledLocation = game.InstalledLocation };
                 configManager = new ConfigurationManager<GameSettings>(gameSettings);
                 configManager.InitializeSettings();
             }
@@ -178,7 +184,6 @@ namespace ENBManager.Core.ViewModels
             if (parameters.Count > 0)
             {
                 ShowUnmanagingWarning = true;
-                RaisePropertyChanged(nameof(ShowUnmanagingWarning));
                 Games = new ObservableCollection<GameModule>(parameters.GetValue<IEnumerable<GameModule>>("Games"));
                 foreach (var game in Games)
                 {

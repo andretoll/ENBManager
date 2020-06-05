@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ENBManager.Modules.Shared.Models
+namespace ENBManager.Modules.Shared.Models.Base
 {
-    public abstract class Item : INotifyPropertyChanged
+    public abstract class Node : INotifyPropertyChanged
     {
         #region Private Members
 

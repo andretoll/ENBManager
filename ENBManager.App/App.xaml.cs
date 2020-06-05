@@ -77,7 +77,7 @@ namespace ENBManager.App
             _ = containerRegistry.RegisterSingleton<IGameModuleCatalog, GameModuleCatalog>();
             _ = containerRegistry.Register<ILoggerFacade, PrismLogger>();
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
-            _ = containerRegistry.Register<IFileService, FileService>();
+            _ = containerRegistry.Register<IGameService, GameService>();
             _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
             _ = containerRegistry.Register<IPresetManager, PresetManager>();
 

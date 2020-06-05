@@ -43,7 +43,7 @@ namespace ENBManager.Core.Helpers
         /// <param name="darkMode"></param>
         public static void UpdateTheme(bool darkMode)
         {
-            _logger.Debug("Theme updated");
+            _logger.Debug(nameof(UpdateTheme));
 
             var paletteHelper = new PaletteHelper();
 
@@ -66,7 +66,7 @@ namespace ENBManager.Core.Helpers
         /// <param name="secondary"></param>
         public static void UpdateColorScheme(string colorSchemeName)
         {
-            _logger.Debug("Color scheme updated");
+            _logger.Debug(nameof(UpdateColorScheme));
 
             var colorScheme = GetColorScheme(colorSchemeName);
             var paletteHelper = new PaletteHelper();

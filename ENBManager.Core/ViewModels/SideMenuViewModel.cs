@@ -24,7 +24,7 @@ namespace ENBManager.Core.ViewModels
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
-        private readonly IFileService _fileService;
+        private readonly IGameService _fileService;
         private readonly IGameModuleCatalog _gameModuleCatalog;
         private readonly IRegionManager _regionManager;
 
@@ -80,7 +80,7 @@ namespace ENBManager.Core.ViewModels
         public SideMenuViewModel(
             IConfigurationManager<AppSettings> configurationManager,
             IDialogService dialogService,
-            IFileService fileService, 
+            IGameService fileService, 
             IGameModuleCatalog gameModuleCatalog, 
             IRegionManager regionManager)
         {

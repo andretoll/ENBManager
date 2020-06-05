@@ -127,7 +127,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public Preset CreateExistingPreset(GameModule gameModule)
         {
-            List<string> enbFiles = Directory.GetFiles(gameModule.InstalledLocation, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
+            var enbFiles = Directory.GetFiles(gameModule.InstalledLocation, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
             var enbDirs = Directory.GetDirectories(gameModule.InstalledLocation, "*enb*", SearchOption.TopDirectoryOnly);
 
             foreach (var dir in enbDirs)

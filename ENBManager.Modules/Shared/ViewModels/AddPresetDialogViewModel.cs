@@ -6,6 +6,7 @@ using ENBManager.Infrastructure.Helpers;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
+using ENBManager.Modules.Shared.Models.Base;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -29,7 +30,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private GameModule _game;
         private string _name;
-        private DirectoryItem _selectedDirectory;
+        private DirectoryNode _selectedDirectory;
 
         #endregion
 
@@ -52,9 +53,9 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
         }
 
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<Node> Items { get; set; }
 
-        public DirectoryItem SelectedDirectory
+        public DirectoryNode SelectedDirectory
         {
             get { return _selectedDirectory; }
             set
@@ -98,14 +99,16 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             if (e.PropertyName == "IsSelected")
             {
-                if (sender.GetType() == typeof(FileItem))
+                _logger.Debug("Node selected/deselected");
+
+                if (sender.GetType() == typeof(FileNode))
                     SelectedDirectory = null;
-                else if (sender.GetType() == typeof(DirectoryItem))
+                else if (sender.GetType() == typeof(DirectoryNode))
                 {
-                    if ((sender as DirectoryItem).Path == Items.Single().Path)
+                    if ((sender as DirectoryNode).Path == Items.Single().Path)
                         SelectedDirectory = null;
-                    else if ((sender as DirectoryItem).IsSelected)
-                        SelectedDirectory = sender as DirectoryItem;
+                    else if ((sender as DirectoryNode).IsSelected)
+                        SelectedDirectory = sender as DirectoryNode;
                 }
             }
         }
@@ -116,6 +119,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnSaveCommand()
         {
+            _logger.Debug(nameof(OnSaveCommand));
+
             if (string.IsNullOrEmpty(_name) || Items == null || Items.Count == 0)
                 return;
 
@@ -125,7 +130,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             preset.FullPath = Items.Single().Path;
 
             // Map paths
-            preset.Files = GetPaths(Items.Single() as DirectoryItem);
+            preset.Files = GetPaths(Items.Single() as DirectoryNode);
 
             // Save preset
             using (var dialog = new ProgressDialog(true))
@@ -153,19 +158,23 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnBrowseFolderCommand()
         {
+            _logger.Debug(nameof(OnBrowseFolderCommand));
+
             bool accepted = DialogHelper.OpenFolderDialog(out string path);
             if (!accepted)
                 return;
 
-            Items = new ObservableCollection<Item>();
-            var root = new DirectoryItem
+            // Create root node
+            Items = new ObservableCollection<Node>();
+            var root = new DirectoryNode
             {
                 Path = path,
                 Name = Path.GetFileName(path)
             };
             root.PropertyChanged += Item_PropertyChanged;
 
-            root.Items = new ObservableCollection<Item>(GetItems(root.Path));
+            // Get nodes
+            root.Items = new ObservableCollection<Node>(GetItems(root.Path));
             Items.Add(root);
 
             RaisePropertyChanged(nameof(Items));
@@ -179,39 +188,44 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnSetRootDirectoryCommand()
         {
+            _logger.Debug(nameof(OnSetRootDirectoryCommand));
+
             if (!IsDirectorySelected)
                 return;
 
-            Items = new ObservableCollection<Item>();
-            var root = new DirectoryItem
+            // Create root node
+            Items = new ObservableCollection<Node>();
+            var root = new DirectoryNode
             {
                 Path = SelectedDirectory.Path,
                 Name = Path.GetFileName(SelectedDirectory.Path)
             };
 
-            root.Items = new ObservableCollection<Item>(GetItems(root.Path));
+            // Get nodes
+            root.Items = new ObservableCollection<Node>(GetItems(root.Path));
             Items.Add(root);
 
             RaisePropertyChanged(nameof(Items));
+            RaisePropertyChanged(nameof(IsFormValid));
         }
 
         #endregion
 
         #region Helper Methods
 
-        private List<Item> GetItems(string root)
+        private List<Node> GetItems(string root)
         {
-            var items = new List<Item>();
+            var items = new List<Node>();
 
             var dirInfo = new DirectoryInfo(root);  
 
             foreach (var directory in dirInfo.GetDirectories())
             {
-                var item = new DirectoryItem
+                var item = new DirectoryNode
                 {
                     Name = directory.Name,
                     Path = directory.FullName,
-                    Items = new ObservableCollection<Item>(GetItems(directory.FullName))
+                    Items = new ObservableCollection<Node>(GetItems(directory.FullName))
                 };
 
                 item.PropertyChanged += Item_PropertyChanged;
@@ -221,7 +235,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             foreach (var file in dirInfo.GetFiles())
             {
-                var item = new FileItem
+                var item = new FileNode
                 {
                     Name = file.Name,
                     Path = file.FullName
@@ -235,7 +249,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             return items;
         }
 
-        private IEnumerable<string> GetPaths(DirectoryItem directory)
+        private IEnumerable<string> GetPaths(DirectoryNode directory)
         {
             List<string> paths = new List<string>();
 
@@ -243,12 +257,12 @@ namespace ENBManager.Modules.Shared.ViewModels
             if (directory.Items.Count == 0)
                 paths.Add(directory.Path);
 
-            foreach (var item in directory.Items.Where(x => x.GetType() == typeof(DirectoryItem)))
+            foreach (var item in directory.Items.Where(x => x.GetType() == typeof(DirectoryNode)))
             {
-                paths.AddRange(GetPaths(item as DirectoryItem));
+                paths.AddRange(GetPaths(item as DirectoryNode));
             }
 
-            foreach (var file in directory.Items.Where(x => x.GetType() == typeof(FileItem)))
+            foreach (var file in directory.Items.Where(x => x.GetType() == typeof(FileNode)))
             {
                 paths.Add(file.Path);
             }

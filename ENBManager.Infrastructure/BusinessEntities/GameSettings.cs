@@ -20,7 +20,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         public GameSettings(string directory)
             : base(Path.Combine(PATH, directory, FILE_NAME))
