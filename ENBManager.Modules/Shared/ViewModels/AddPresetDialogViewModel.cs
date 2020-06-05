@@ -200,6 +200,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 Path = SelectedDirectory.Path,
                 Name = Path.GetFileName(SelectedDirectory.Path)
             };
+            root.PropertyChanged += Item_PropertyChanged;
 
             // Get nodes
             root.Items = new ObservableCollection<Node>(GetItems(root.Path));

@@ -156,7 +156,8 @@ namespace ENBManager.Core.ViewModels
 
             _dialogService.ShowDialog(nameof(DiscoverGamesDialog), dp, (dr) =>
             {
-                OnGetDataCommand();
+                if (dr.Result == ButtonResult.OK)
+                    OnGetDataCommand();
             });
         }
 
