@@ -4,6 +4,7 @@ using ENBManager.Core.Helpers;
 using ENBManager.Core.Interfaces;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Constants;
 using ENBManager.Modules.Shared.Interfaces;
 using NLog;
 using Prism.Commands;
@@ -11,6 +12,8 @@ using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -72,6 +75,7 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand GetDataCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
         public DelegateCommand OpenDiscoverGamesCommand { get; }
+        public DelegateCommand<GameModule> OpenGameDirectoryCommand { get; }
 
         #endregion
 
@@ -93,6 +97,7 @@ namespace ENBManager.Core.ViewModels
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
             OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
             OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
+            OpenGameDirectoryCommand = new DelegateCommand<GameModule>(OnOpenGameDirectoryCommand);
 
             _logger.Debug($"{nameof(SideMenuViewModel)} initialized");
         }
@@ -157,8 +162,23 @@ namespace ENBManager.Core.ViewModels
             _dialogService.ShowDialog(nameof(DiscoverGamesDialog), dp, (dr) =>
             {
                 if (dr.Result == ButtonResult.OK)
+                {
                     OnGetDataCommand();
+                    _regionManager.RequestNavigate(RegionNames.MainRegion, nameof(MainView));
+                }
             });
+        }
+
+        private void OnOpenGameDirectoryCommand(GameModule gameModule)
+        {
+            try
+            {
+                Process.Start("explorer", gameModule.InstalledLocation);
+            }
+            catch (Win32Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void ActivateModule(string name)

@@ -162,6 +162,9 @@
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>
+  <data name="GO_TO_DIRECTORY" xml:space="preserve">
+    <value>Go to directory</value>
+  </data>
   <data name="GRID" xml:space="preserve">
     <value>Grid</value>
   </data>

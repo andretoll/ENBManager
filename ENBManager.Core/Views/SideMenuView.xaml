@@ -18,8 +18,8 @@
     </i:Interaction.Triggers>
 
     <!-- Menu -->
-    <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" 
-            BorderThickness="0 0 2 0"
+    <Border BorderBrush="{DynamicResource AttentionToActionBrush}" 
+            BorderThickness="0 0 3 0"
             Width="420">
         <!-- Menu Open/Close animation -->
         <Border.Style>
@@ -57,9 +57,10 @@
                                       DockPanel.Dock="Top"
                                       Padding="15"
                                       Height="70"
+                                      Margin="0 0 -3 0"
                                       CornerRadius="0 0 15 0"
                                       materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                                      materialDesign:ShadowAssist.ShadowEdges="Bottom">
+                                      materialDesign:ShadowAssist.ShadowEdges="All">
 
                 <!-- Content -->
                 <Grid>
@@ -71,7 +72,6 @@
                     <!-- Toggle menu -->
                     <ToggleButton Grid.Column="0" 
                                   Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                  Foreground="{DynamicResource MaterialDesignBody}"
                                   IsChecked="True"
                                   Height="35"
                                   Width="35"
@@ -130,7 +130,6 @@
                         <StackPanel Margin="10 0"
                                     Visibility="{Binding ShowDarkModeShortcut, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Text="{x:Static loc:Strings.DARK_MODE}"
-                                       Foreground="{DynamicResource MaterialDesignBody}"
                                        VerticalAlignment="Center" />
                             <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" 
                                           IsChecked="{Binding DarkMode}" />
@@ -166,10 +165,16 @@
                           ScrollViewer.CanContentScroll="False"
                           ScrollViewer.HorizontalScrollBarVisibility="Hidden">
 
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                            <Setter Property="HorizontalContentAlignment"  Value="Stretch"></Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel>
-                                <Grid>
+                            <Grid>
+                                <Grid DockPanel.Dock="Left">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="4" />
                                         <ColumnDefinition Width="auto" />
@@ -195,7 +200,7 @@
                                     </Grid>
 
                                     <!-- Title -->
-                                    <StackPanel Grid.Column="2" 
+                                    <StackPanel Grid.Column="2"
                                                 Margin="5 0 0 0"
                                                 VerticalAlignment="Center">
 
@@ -205,26 +210,34 @@
                                     </StackPanel>
 
                                     <!-- Actions -->
-                                    <Grid Grid.Column="3"
-                                          Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
-                                        <materialDesign:PopupBox DockPanel.Dock="Right" 
-                                                                 PlacementMode="BottomAndAlignRightEdges">
-                                            <ListBox>
-                                                <ListBoxItem>
-                                                    Item 1
-                                                </ListBoxItem>
-                                                <ListBoxItem>
-                                                    Item 2
-                                                </ListBoxItem>
-                                                <ListBoxItem>
-                                                    Item 3
-                                                </ListBoxItem>
-                                            </ListBox>
+                                    <Grid Grid.Column="3">
+                                        <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges">
+                                            <StackPanel>
+
+                                                <!-- Go to directory -->
+                                                <Button Command="{Binding DataContext.OpenGameDirectoryCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding .}">
+
+                                                    <StackPanel Orientation="Horizontal"
+                                                                VerticalAlignment="Center">
+                                                        <materialDesign:PackIcon Kind="ExternalLink"
+                                                                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                                                 Width="20"
+                                                                                 Height="20"
+                                                                                 Margin="0 0 10 0"/>
+                                                        <TextBlock Text="{x:Static loc:Strings.GO_TO_DIRECTORY}"
+                                                                   Style="{StaticResource MaterialDesignButtonTextBlock}"
+                                                                   VerticalAlignment="Center"/>
+                                                    </StackPanel>
+
+                                                </Button>
+
+                                            </StackPanel>
                                         </materialDesign:PopupBox>
                                     </Grid>
 
                                 </Grid>
-                            </DockPanel>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     
