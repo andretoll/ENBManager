@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
@@ -49,7 +50,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 OnPropertyChanged();
             }
         }
-        public IEnumerable<Preset> Presets { get; set; }
+        public ICollection<Preset> Presets { get; set; }
 
         public GameSettings Settings
         {
@@ -89,7 +90,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         {
             // Get presets and active preset
             var presetManager = _container.Resolve<IPresetManager>();
-            Presets = presetManager.GetPresets(Paths.GetPresetsDirectory(Module));
+            Presets = new ObservableCollection<Preset>(presetManager.GetPresets(Paths.GetPresetsDirectory(Module)));
             if (Presets != null && Presets.Count() > 0)
             {
                 var activePreset = Presets.FirstOrDefault(x => x.Name == Settings.ActivePreset);

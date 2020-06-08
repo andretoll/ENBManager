@@ -4,11 +4,177 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid>
-    </Grid>
+    <DockPanel LastChildFill="True">
+
+        <!-- Top bar -->
+        <Border DockPanel.Dock="Top"
+                BorderThickness="0 0 0 2"
+                BorderBrush="{DynamicResource AttentionToActionBrush}"
+                Padding="0 10"
+                Margin="0 0 0 20">
+
+            <!-- Title -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" 
+                       Source="{Binding Image}"
+                       VerticalAlignment="Top"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Height="40"
+                       Width="40"/>
+
+                <Expander Grid.Column="1" 
+                          Header="{Binding Title}"
+                          materialDesign:ExpanderAssist.DownHeaderPadding="5"
+                          Padding="5 0 0 0">
+                    <Grid Margin="5">
+                        <TextBlock Text="{Binding InstalledLocation}"
+                                   Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                    </Grid>
+                </Expander>
+
+            </Grid>
+
+        </Border>
+        
+        <!-- Bottom bar -->
+        <Expander DockPanel.Dock="Bottom"
+                  IsExpanded="True"
+                  ExpandDirection="Up"
+                  materialDesign:ExpanderAssist.UpHeaderPadding="0">
+            
+            <Border DockPanel.Dock="Bottom"
+                    Padding="0 20 0 0"
+                    BorderThickness="0 2 0 0"
+                    BorderBrush="{DynamicResource AttentionToActionBrush}">
+
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation From="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <WrapPanel>
+
+                    <!-- Preset count -->
+                    <materialDesign:Card Height="150" 
+                                         Width="200"
+                                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
+
+                        <Grid Margin="20">
+
+                            <TextBlock Text="{x:Static loc:Strings.PRESETS}"
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                       FontWeight="Normal"/>
+
+                            <TextBlock Text="{Binding PresetCount}"
+                                       Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                       Foreground="{DynamicResource SecondaryAccentBrush}"
+                                       VerticalAlignment="Bottom"
+                                       HorizontalAlignment="Center"/>
+                        </Grid>
+
+                    </materialDesign:Card>
+
+                </WrapPanel>
+
+            </Border>
+        </Expander>
+
+        <!-- Status -->
+        <materialDesign:Card VerticalAlignment="Top">
+            <ItemsControl ItemsSource="{Binding Notifications}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Border Padding="10"
+                                    BorderThickness="0 0 0 1"
+                                    BorderBrush="{DynamicResource MaterialDesignShadowBrush}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Icon -->
+                                    <materialDesign:PackIcon Grid.Column="0" 
+                                                             Width="25"
+                                                             Height="25"
+                                                             VerticalAlignment="Center">
+                                        <materialDesign:PackIcon.Style>
+                                            <Style TargetType="materialDesign:PackIcon">
+                                                <Setter Property="Kind" Value="QuestionMark" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Icon}" Value="Success">
+                                                        <Setter Property="Kind" Value="CheckboxesMarkedOutline" />
+                                                        <Setter Property="Foreground" Value="LimeGreen" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Icon}" Value="Warning">
+                                                        <Setter Property="Kind" Value="WarningOutline" />
+                                                        <Setter Property="Foreground" Value="Orange" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Icon}" Value="Error">
+                                                        <Setter Property="Kind" Value="ErrorOutline" />
+                                                        <Setter Property="Foreground" Value="Red" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:PackIcon.Style>
+                                    </materialDesign:PackIcon>
+                                    
+                                    <!-- Message -->
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding Message}"
+                                               Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               VerticalAlignment="Center"
+                                               Margin="10 0"/>
+                                    
+                                    <!-- Action -->
+                                    <Button Grid.Column="2" 
+                                            Content="{Binding ActionButtonText}"
+                                            Command="{Binding ExecuteActionCommand}"
+                                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                            Margin="10 0"
+                                            Visibility="{Binding Action, Converter={StaticResource NullableToVisibilityConverter}}"/>
+                                    
+                                    <!-- Close item -->
+                                    <Button Grid.Column="3" 
+                                            Command="{Binding DataContext.RemoveNotificationCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                            CommandParameter="{Binding .}"
+                                            Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                            VerticalAlignment="Top">
+                                        <materialDesign:PackIcon Kind="Close" />
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </materialDesign:Card>
+
+    </DockPanel>
     
 </UserControl>
