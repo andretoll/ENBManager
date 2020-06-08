@@ -187,11 +187,11 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Could not locate game directory.
+        ///   Looks up a localized string similar to Error: Unable to locate game directory.
         /// </summary>
-        public static string ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY {
+        public static string ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY {
             get {
-                return ResourceManager.GetString("ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY", resourceCulture);
+                return ResourceManager.GetString("ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY", resourceCulture);
             }
         }
         

@@ -113,6 +113,9 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 regionManager.RegisterViewWithRegion(RegionNames.TabRegion, type);
             }
 
+            // Start with dashboard view
+            regionManager.RequestNavigate(RegionNames.TabRegion, types.First().FullName);
+
             // Publish events
             eventAggregator.GetEvent<ModuleActivatedEvent>().Publish(this);
         }

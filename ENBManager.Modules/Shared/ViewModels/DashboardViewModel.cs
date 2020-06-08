@@ -89,7 +89,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             if (!File.Exists(Path.Combine(game.Settings.InstalledLocation, game.Executable)))
             {
                 healthy = false;
-                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY, null, null));
+                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, null, null));
             }
 
             //TODO: Verify binaries

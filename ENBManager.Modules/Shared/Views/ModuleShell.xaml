@@ -24,7 +24,6 @@
     <Grid>
 
         <TabControl prism:RegionManager.RegionName="{x:Static const:RegionNames.TabRegion}"
-                    SelectedIndex="0"
                     Background="Transparent"
                     Foreground="{DynamicResource MaterialDesignBody}"
                     Margin="15"

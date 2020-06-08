@@ -159,8 +159,8 @@
   <data name="ENTER_A_NEW_NAME" xml:space="preserve">
     <value>Enter a new name:</value>
   </data>
-  <data name="ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY" xml:space="preserve">
-    <value>Error: Could not locate game directory</value>
+  <data name="ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY" xml:space="preserve">
+    <value>Error: Unable to locate game directory</value>
   </data>
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
