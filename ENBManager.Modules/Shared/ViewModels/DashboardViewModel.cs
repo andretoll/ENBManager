@@ -1,5 +1,6 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Localization.Strings;
+using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.ViewModels.Base;
 using Prism.Commands;
 using Prism.Events;
@@ -42,11 +43,22 @@ namespace ENBManager.Modules.Shared.ViewModels
             : base(eventAggregator)
         {
             RemoveNotificationCommand = new DelegateCommand<Notification>(OnRemoveNotificationCommand);
+
+            eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Subscribe(UpdateDashboard);
         }
 
         #endregion
 
         #region Private Methods
+
+        private void UpdateDashboard()
+        {
+            RaisePropertyChanged(nameof(Notifications));
+            RaisePropertyChanged(nameof(Title));
+            RaisePropertyChanged(nameof(InstalledLocation));
+            RaisePropertyChanged(nameof(Image));
+            RaisePropertyChanged(nameof(PresetCount));
+        }
 
         private void VerifyBinaries()
         {
@@ -86,11 +98,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             //TODO: Verify active preset (compare files)
 
-            RaisePropertyChanged(nameof(Notifications));
-            RaisePropertyChanged(nameof(Title));
-            RaisePropertyChanged(nameof(InstalledLocation));
-            RaisePropertyChanged(nameof(Image));
-            RaisePropertyChanged(nameof(PresetCount));
+            UpdateDashboard();
         } 
 
         #endregion

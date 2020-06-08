@@ -26,7 +26,7 @@ namespace ENBManager.Modules.Fallout4
 
         public override void Activate()
         {
-            ActivateModule(typeof(DashboardView), typeof(PresetsView), typeof(SettingsView));
+            ActivateModule(typeof(DashboardView), typeof(PresetsView));
         }
 
         #endregion

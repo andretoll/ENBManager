@@ -2,7 +2,6 @@
 using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
-using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
@@ -39,7 +38,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Public Properties
 
-        public ObservableCollection<Preset> Presets { get; set; }
+        public ObservableCollection<Preset> Presets => _game?.Presets;
 
         #endregion
 
@@ -214,6 +213,9 @@ namespace ENBManager.Modules.Shared.ViewModels
                 try
                 {
                     _presetManager.DeletePreset(preset);
+                    Presets.Remove(preset);
+                    RaisePropertyChanged(nameof(Presets));
+
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_DELETED);
                     _logger.Info("Preset deleted");
                 }
@@ -262,6 +264,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                         // Reload preset
                         newPreset = await _presetManager.GetPresetAsync(_game, newPreset.Name);
                         Presets.Add(newPreset);
+                        RaisePropertyChanged(nameof(Presets));
 
                         _logger.Info($"Preset {newPreset.Name} added");
 
@@ -282,16 +285,15 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             var dp = new DialogParameters();
             dp.Add("GameModule", _game);
-            _dialogService.ShowDialog(nameof(AddPresetDialog), dp, (dr) =>
+
+            _dialogService.ShowDialog(nameof(AddPresetDialog), dp, async (dr) =>
             {
                 if (dr.Result == ButtonResult.OK)
                 {
-                    Presets = new ObservableCollection<Preset>(_presetManager.GetPresets(Paths.GetPresetsDirectory(_game.Module)));
-                    var activePreset = Presets.FirstOrDefault(x => x.Name == _game.Settings.ActivePreset);
-                    if (activePreset != null)
-                        activePreset.IsActive = true;
-
+                    var newPreset = await _presetManager.GetPresetAsync(_game, dr.Parameters.GetValue<string>("PresetName"));
+                    Presets.Add(newPreset);
                     RaisePropertyChanged(nameof(Presets));
+
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
                     _logger.Info($"Preset added");
                 }
@@ -309,7 +311,6 @@ namespace ENBManager.Modules.Shared.ViewModels
         protected override void OnModuleActivated(GameModule game)
         {
             _game = game;
-            Presets = new ObservableCollection<Preset>(game.Presets);
             RaisePropertyChanged(nameof(Presets));
 
             _logger.Debug($"Module {game.Module} activated");

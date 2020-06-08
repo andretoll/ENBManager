@@ -23,7 +23,7 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs
                 OnPropertyChanged(nameof(Valid));
             }
         }
-        public bool Valid => !string.IsNullOrEmpty(Value);
+        public bool Valid => !string.IsNullOrWhiteSpace(Value);
 
         #endregion
 

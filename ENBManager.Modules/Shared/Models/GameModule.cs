@@ -50,7 +50,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 OnPropertyChanged();
             }
         }
-        public ICollection<Preset> Presets { get; set; }
+        public ObservableCollection<Preset> Presets { get; set; }
 
         public GameSettings Settings
         {
@@ -88,6 +88,8 @@ namespace ENBManager.Infrastructure.BusinessEntities
 
         protected void ActivateModule(params Type[] types)
         {
+            var eventAggregator = _container.Resolve<IEventAggregator>();
+
             // Get presets and active preset
             var presetManager = _container.Resolve<IPresetManager>();
             Presets = new ObservableCollection<Preset>(presetManager.GetPresets(Paths.GetPresetsDirectory(Module)));
@@ -99,6 +101,9 @@ namespace ENBManager.Infrastructure.BusinessEntities
                     activePreset.IsActive = true;
             }
 
+            // Register events
+            Presets.CollectionChanged += (sender, e) => { eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Publish(); };
+
             // Register views
             var regionManager = _container.Resolve<IRegionManager>();
             regionManager.RequestNavigate(RegionNames.MainRegion, nameof(ModuleShell));
@@ -108,8 +113,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
                 regionManager.RegisterViewWithRegion(RegionNames.TabRegion, type);
             }
 
-            // Publish event
-            var eventAggregator = _container.Resolve<IEventAggregator>();
+            // Publish events
             eventAggregator.GetEvent<ModuleActivatedEvent>().Publish(this);
         }
 

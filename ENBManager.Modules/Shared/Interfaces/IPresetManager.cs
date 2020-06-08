@@ -18,7 +18,7 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Task<Preset> GetPresetAsync(GameModule gameModule, string path);
+        Task<Preset> GetPresetAsync(GameModule gameModule, string preset);
 
         /// <summary>
         /// Renames a preset in folder and returns the new full path.

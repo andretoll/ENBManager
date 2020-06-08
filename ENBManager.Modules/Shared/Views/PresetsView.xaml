@@ -26,47 +26,10 @@
                         Background="Transparent"
                         Padding="0 15">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Activate preset -->
-                        <Grid Grid.Column="0"
-                              Margin="20 0">
-
-                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
-                                          Command="{Binding DataContext.ActivatePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                          CommandParameter="{Binding .}"
-                                          IsChecked="{Binding IsActive}"/>
-                        </Grid>
-
-                        <!-- Name -->
-                        <Grid Grid.Column="1"
-                              VerticalAlignment="Center"
-                              Margin="0 0 20 0">
-                            <TextBlock Text="{Binding Name}"
-                                       TextTrimming="CharacterEllipsis"
-                                       FontSize="18">
-
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                                <Setter Property="FontWeight" Value="Bold" />
-                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                                
-                            </TextBlock>
-                        </Grid>
+                    <DockPanel>
 
                         <!-- Misc -->
-                        <StackPanel Grid.Column="2"
+                        <StackPanel DockPanel.Dock="Right"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Right">
 
@@ -95,7 +58,43 @@
 
                         </StackPanel>
 
-                    </Grid>
+                        <!-- Enable / Title -->
+                        <StackPanel Orientation="Horizontal">
+
+                            <!-- Activate preset -->
+                            <Grid Grid.Column="0"
+                                  Margin="20 0">
+
+                                <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}"
+                                              Command="{Binding DataContext.ActivatePresetCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                              CommandParameter="{Binding .}"
+                                              IsChecked="{Binding IsActive}"/>
+                            </Grid>
+
+                            <!-- Name -->
+                            <Grid Grid.Column="1"
+                                  VerticalAlignment="Center"
+                                  Margin="0 0 20 0">
+                                <TextBlock Text="{Binding Name}"
+                                           TextTrimming="CharacterEllipsis"
+                                           FontSize="18">
+
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                    <Setter Property="FontWeight" Value="Bold" />
+                                                    <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+
+                                </TextBlock>
+                            </Grid>
+
+                        </StackPanel>
+                    </DockPanel>
 
                 </Border>
             </DataTemplate>

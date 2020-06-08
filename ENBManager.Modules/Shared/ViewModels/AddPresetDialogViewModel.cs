@@ -66,7 +66,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
         }
         public bool IsDirectorySelected => SelectedDirectory != null;
-        public bool IsFormValid => Name?.Length > 0 && Items?.Count > 0;
+        public bool IsFormValid => !string.IsNullOrWhiteSpace(Name) && Items?.Count > 0;
 
         #endregion
 
@@ -152,8 +152,10 @@ namespace ENBManager.Modules.Shared.ViewModels
                     return;
                 } 
             }
-            
-            RequestClose.Invoke(new DialogResult(ButtonResult.OK));
+
+            var dp = new DialogParameters(); 
+            dp.Add("PresetName", preset.Name);
+            RequestClose.Invoke(new DialogResult(ButtonResult.OK, dp));
         }
 
         private void OnBrowseFolderCommand()

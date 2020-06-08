@@ -84,7 +84,6 @@ namespace ENBManager.App
             // ViewModels
             _ = containerRegistry.RegisterSingleton<DashboardViewModel>();
             _ = containerRegistry.RegisterSingleton<PresetsViewModel>();
-            _ = containerRegistry.RegisterSingleton<SettingsViewModel>();
 
             // Dialogs
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
