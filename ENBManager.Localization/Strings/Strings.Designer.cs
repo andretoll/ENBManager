@@ -187,6 +187,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Could not locate game directory.
+        /// </summary>
+        public static string ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY {
+            get {
+                return ResourceManager.GetString("ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files.
         /// </summary>
         public static string FILES {
@@ -273,6 +282,15 @@ namespace ENBManager.Localization.Strings {
         public static string NO_PRESET_ACTIVE {
             get {
                 return ResourceManager.GetString("NO_PRESET_ACTIVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No problems have been detected.
+        /// </summary>
+        public static string NO_PROBLEMS_HAVE_BEEN_DETECTED {
+            get {
+                return ResourceManager.GetString("NO_PROBLEMS_HAVE_BEEN_DETECTED", resourceCulture);
             }
         }
         

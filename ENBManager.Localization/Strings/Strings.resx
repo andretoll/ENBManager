@@ -159,6 +159,9 @@
   <data name="ENTER_A_NEW_NAME" xml:space="preserve">
     <value>Enter a new name:</value>
   </data>
+  <data name="ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY" xml:space="preserve">
+    <value>Error: Could not locate game directory</value>
+  </data>
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>
@@ -188,6 +191,9 @@
   </data>
   <data name="NO_PRESET_ACTIVE" xml:space="preserve">
     <value>No preset active.</value>
+  </data>
+  <data name="NO_PROBLEMS_HAVE_BEEN_DETECTED" xml:space="preserve">
+    <value>No problems have been detected</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>Ok</value>

@@ -109,8 +109,6 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
             _gridPresetView = !_listPresetView;
-
-            _logger.Debug($"{nameof(PresetsViewModel)} initialized");
         }
 
         #endregion

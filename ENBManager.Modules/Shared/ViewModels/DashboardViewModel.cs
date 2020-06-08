@@ -2,6 +2,7 @@
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.ViewModels.Base;
+using NLog;
 using Prism.Commands;
 using Prism.Events;
 using System;
@@ -15,6 +16,8 @@ namespace ENBManager.Modules.Shared.ViewModels
     public class DashboardViewModel : TabItemBase
     {
         #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private GameModule _game;
 
@@ -53,6 +56,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void UpdateDashboard()
         {
+            _logger.Debug(nameof(UpdateDashboard));
+
             RaisePropertyChanged(nameof(Notifications));
             RaisePropertyChanged(nameof(Title));
             RaisePropertyChanged(nameof(InstalledLocation));
@@ -60,13 +65,10 @@ namespace ENBManager.Modules.Shared.ViewModels
             RaisePropertyChanged(nameof(PresetCount));
         }
 
-        private void VerifyBinaries()
-        {
-
-        }
-
         private void OnRemoveNotificationCommand(Notification notification)
         {
+            _logger.Debug(nameof(OnRemoveNotificationCommand));
+
             Notifications.Remove(notification);
         }
 
@@ -81,24 +83,33 @@ namespace ENBManager.Modules.Shared.ViewModels
             Notifications = new ObservableCollection<Notification>();
 
             _game = game;
+            bool healthy = true;
 
-            //TODO: Verify installation path
+            // Verify installation path
             if (!File.Exists(Path.Combine(game.Settings.InstalledLocation, game.Executable)))
             {
-                //_eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish("TEST");
+                healthy = false;
+                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_COULD_NOT_LOCATE_GAME_DIRECTORY, null, null));
             }
 
             //TODO: Verify binaries
             if (true)
             {
-                Notifications.Add(new Notification(Icon.Success, "[no binaries]", null, "action 0"));
-                Notifications.Add(new Notification(Icon.Warning, "[no binaries]", null, "action 1"));
-                Notifications.Add(new Notification(Icon.Error, "[no binaries]", VerifyBinaries, "action 2"));
             }
 
             //TODO: Verify active preset (compare files)
+            if (true)
+            {
+            }
+
+            if (healthy)
+            {
+                Notifications.Add(new Notification(Icon.Success, Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED, null, null));
+            }
 
             UpdateDashboard();
+
+            _logger.Debug($"Module {game.Module} activated");
         } 
 
         #endregion

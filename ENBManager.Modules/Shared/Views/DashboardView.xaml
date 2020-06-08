@@ -147,7 +147,7 @@
                                     <!-- Message -->
                                     <TextBlock Grid.Column="1" 
                                                Text="{Binding Message}"
-                                               Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                               Style="{StaticResource MaterialDesignBody2TextBlock}"
                                                VerticalAlignment="Center"
                                                Margin="10 0"/>
                                     
