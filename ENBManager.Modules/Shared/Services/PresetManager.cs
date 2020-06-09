@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace ENBManager.Modules.Shared.Services
@@ -209,6 +210,49 @@ namespace ENBManager.Modules.Shared.Services
             }
 
             await Task.Delay(500);
+        }
+
+        public bool ValidatePreset(GameModule gameModule, Preset preset)
+        {
+            bool identical = true;
+
+            foreach (var file in preset.Files)
+            {
+                string file1 = file;
+                string file2 = file.Replace(preset.FullPath, gameModule.InstalledLocation);
+
+                string hash1, hash2;
+
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(file1))
+                    {
+                        hash1 = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                    }
+                    using (var stream = File.OpenRead(file2))
+                    {
+                        hash2 = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                    }
+                }
+
+                if (hash1 != hash2)
+                    identical = false;
+            }
+
+            return identical;
+        }
+
+        public void UpdatePresetFiles(GameModule gameModule, Preset preset)
+        {
+            foreach (var item in preset.Files)
+            {
+                string source = item.Replace(preset.FullPath, gameModule.InstalledLocation);
+
+                File.Delete(item);
+
+                if (File.Exists(source))
+                    File.Copy(source, source.Replace(gameModule.InstalledLocation, preset.FullPath));
+            }
         }
 
         #endregion

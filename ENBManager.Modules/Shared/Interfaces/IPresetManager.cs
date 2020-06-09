@@ -68,5 +68,20 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// <param name="preset"></param>
         /// <returns></returns>
         Task SaveNewPresetAsync(GameModule gameModule, Preset preset);
+
+        /// <summary>
+        /// Validates an active preset.
+        /// </summary>
+        /// <param name="gameModule"></param>
+        /// <param name="preset"></param>
+        /// <returns></returns>
+        bool ValidatePreset(GameModule gameModule, Preset preset);
+
+        /// <summary>
+        /// Updates the provided preset.
+        /// </summary>
+        /// <param name="gameModule"></param>
+        /// <param name="preset"></param>
+        void UpdatePresetFiles(GameModule gameModule, Preset preset);
     }
 }

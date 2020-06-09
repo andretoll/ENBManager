@@ -246,8 +246,17 @@
   <data name="UNMANAGING_MANAGED_GAME" xml:space="preserve">
     <value>Unmanaging a previously managed game will reset its content.</value>
   </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>Update</value>
+  </data>
   <data name="VERTICAL_LIST" xml:space="preserve">
     <value>Vertical list</value>
+  </data>
+  <data name="WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET" xml:space="preserve">
+    <value>Warning: File(s) are missing from the active preset</value>
+  </data>
+  <data name="WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED" xml:space="preserve">
+    <value>Warning: The active preset differs from the preset currently used</value>
   </data>
   <data name="YES" xml:space="preserve">
     <value>Yes</value>

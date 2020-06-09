@@ -448,11 +448,38 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string UPDATE {
+            get {
+                return ResourceManager.GetString("UPDATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical list.
         /// </summary>
         public static string VERTICAL_LIST {
             get {
                 return ResourceManager.GetString("VERTICAL_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: File(s) are missing from the active preset.
+        /// </summary>
+        public static string WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET {
+            get {
+                return ResourceManager.GetString("WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: The active preset differs from the preset currently used.
+        /// </summary>
+        public static string WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED {
+            get {
+                return ResourceManager.GetString("WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED", resourceCulture);
             }
         }
         

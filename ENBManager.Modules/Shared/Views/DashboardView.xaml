@@ -6,9 +6,16 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <DockPanel LastChildFill="True">
 
@@ -106,7 +113,7 @@
             <ItemsControl ItemsSource="{Binding Notifications}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid MaxHeight="100">
 
                             <Border Padding="10"
                                     BorderThickness="0 0 0 1"
@@ -129,7 +136,7 @@
                                                 <Setter Property="Kind" Value="QuestionMark" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Icon}" Value="Success">
-                                                        <Setter Property="Kind" Value="CheckboxesMarkedOutline" />
+                                                        <Setter Property="Kind" Value="CheckboxMarkedOutline" />
                                                         <Setter Property="Foreground" Value="LimeGreen" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Icon}" Value="Warning">

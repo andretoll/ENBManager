@@ -3,6 +3,7 @@ using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
+using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.ViewModels.Base;
 using NLog;
 using Prism.Commands;
@@ -23,6 +24,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IGameService _gameService;
+        private readonly IPresetManager _presetManager;
 
         private GameModule _game;
 
@@ -41,29 +43,35 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Commands
 
+        public DelegateCommand OnLoadedCommand { get; set; }
         public DelegateCommand<Notification> RemoveNotificationCommand { get; set; }
 
         #endregion
 
         #region Constructor
 
-        public DashboardViewModel(IEventAggregator eventAggregator, IGameService gameService)
+        public DashboardViewModel(
+            IEventAggregator eventAggregator, 
+            IGameService gameService,
+            IPresetManager presetManager)
             : base(eventAggregator)
         {
             _gameService = gameService;
+            _presetManager = presetManager;
 
             RemoveNotificationCommand = new DelegateCommand<Notification>(OnRemoveNotificationCommand);
+            OnLoadedCommand = new DelegateCommand(VerifyIntegrity);
 
-            eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Subscribe(UpdateDashboard);
+            eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Subscribe(UpdateUI);
         }
 
         #endregion
 
         #region Private Methods
 
-        private void UpdateDashboard()
+        private void UpdateUI()
         {
-            _logger.Debug(nameof(UpdateDashboard));
+            _logger.Debug(nameof(UpdateUI));
 
             RaisePropertyChanged(nameof(Notifications));
             RaisePropertyChanged(nameof(Title));
@@ -106,9 +114,23 @@ namespace ENBManager.Modules.Shared.ViewModels
                 Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.GO_TO_ENBDEV));
             }
 
-            //TODO: Verify active preset (compare files)
-            if (true)
+            // Verify active preset (compare files)
+            if (_game.Presets.Count > 0 && _game.Presets.SingleOrDefault(x => x.IsActive) != null)
             {
+                try
+                {
+                    bool valid = _presetManager.ValidatePreset(_game, _game.Presets.Single(x => x.IsActive));
+
+                    if (!valid)
+                    {
+                        Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED, UpdatePreset, Strings.UPDATE));
+                    }
+                }
+                catch (FileNotFoundException ex)
+                {
+                    _logger.Info(ex);
+                    Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET, UpdatePreset, Strings.UPDATE));
+                }
             }
 
             if (healthy)
@@ -147,6 +169,20 @@ namespace ENBManager.Modules.Shared.ViewModels
             Process.Start(psi);
         }
 
+        private void UpdatePreset()
+        {
+            var activePreset = _game.Presets.SingleOrDefault(x => x.IsActive);
+
+            if (activePreset == null)
+                return;
+
+            _presetManager.UpdatePresetFiles(_game, activePreset);
+
+            activePreset.Files = _presetManager.GetPresetAsync(_game, activePreset.Name).Result.Files;
+
+            VerifyIntegrity();
+        }
+
         #endregion
 
         #region TabItemBase Override
@@ -159,9 +195,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             _game = game;
 
-            VerifyIntegrity();
-
-            UpdateDashboard();
+            UpdateUI();
 
             _logger.Debug($"Module {game.Module} activated");
         } 
