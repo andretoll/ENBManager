@@ -13,7 +13,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding OnLoadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding VerifyCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 

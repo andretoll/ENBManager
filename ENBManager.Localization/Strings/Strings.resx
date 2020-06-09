@@ -168,6 +168,9 @@
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>
+  <data name="GAME_UPDATED" xml:space="preserve">
+    <value>Game updated.</value>
+  </data>
   <data name="GO_TO_DIRECTORY" xml:space="preserve">
     <value>Go to directory</value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="PRESET_DELETED" xml:space="preserve">
     <value>Preset deleted.</value>
+  </data>
+  <data name="PRESET_UPDATED" xml:space="preserve">
+    <value>Preset updated.</value>
   </data>
   <data name="RENAME" xml:space="preserve">
     <value>Rename</value>

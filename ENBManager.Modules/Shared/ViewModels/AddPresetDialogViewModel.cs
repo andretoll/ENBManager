@@ -65,7 +65,9 @@ namespace ENBManager.Modules.Shared.ViewModels
                 RaisePropertyChanged(nameof(IsDirectorySelected));
             }
         }
+
         public bool IsDirectorySelected => SelectedDirectory != null;
+
         public bool IsFormValid => !string.IsNullOrWhiteSpace(Name) && Items?.Count > 0;
 
         #endregion
@@ -125,12 +127,14 @@ namespace ENBManager.Modules.Shared.ViewModels
                 return;
 
             // Create preset
-            var preset = new Preset();
-            preset.Name = Name;
-            preset.FullPath = Items.Single().Path;
+            var preset = new Preset
+            {
+                Name = Name,
+                FullPath = Items.Single().Path,
 
-            // Map paths
-            preset.Files = GetPaths(Items.Single() as DirectoryNode);
+                // Map paths
+                Files = GetPaths(Items.Single() as DirectoryNode)
+            };
 
             // Save preset
             using (var dialog = new ProgressDialog(true))
@@ -153,8 +157,10 @@ namespace ENBManager.Modules.Shared.ViewModels
                 } 
             }
 
-            var dp = new DialogParameters(); 
-            dp.Add("PresetName", preset.Name);
+            var dp = new DialogParameters
+            {
+                { "PresetName", preset.Name }
+            };
             RequestClose.Invoke(new DialogResult(ButtonResult.OK, dp));
         }
 

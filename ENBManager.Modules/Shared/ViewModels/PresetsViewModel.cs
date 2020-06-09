@@ -260,7 +260,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                         await _presetManager.SaveCurrentPresetAsync(_game, newPreset);
 
                         // Reload preset
-                        newPreset = await _presetManager.GetPresetAsync(_game, newPreset.Name);
+                        newPreset = await _presetManager.GetPreset(_game, newPreset.Name);
                         Presets.Add(newPreset);
                         RaisePropertyChanged(nameof(Presets));
 
@@ -290,7 +290,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 if (dr.Result == ButtonResult.OK)
                 {
-                    var newPreset = await _presetManager.GetPresetAsync(_game, dr.Parameters.GetValue<string>("PresetName"));
+                    var newPreset = await _presetManager.GetPreset(_game, dr.Parameters.GetValue<string>("PresetName"));
                     Presets.Add(newPreset);
                     RaisePropertyChanged(nameof(Presets));
 
@@ -311,9 +311,8 @@ namespace ENBManager.Modules.Shared.ViewModels
         protected override void OnModuleActivated(GameModule game)
         {
             _game = game;
-            RaisePropertyChanged(nameof(Presets));
 
-            _logger.Debug($"Module {game.Module} activated");
+            RaisePropertyChanged(nameof(Presets));
         } 
 
         #endregion

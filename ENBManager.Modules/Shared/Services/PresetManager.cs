@@ -3,6 +3,7 @@ using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,10 +15,18 @@ namespace ENBManager.Modules.Shared.Services
 {
     public class PresetManager : IPresetManager
     {
+        #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region IPresetManager Implementation
 
         public IEnumerable<Preset> GetPresets(string path)
         {
+            _logger.Debug(nameof(GetPresets));
+
             var presets = new List<Preset>();
 
             if (!Directory.Exists(path))
@@ -40,8 +49,10 @@ namespace ENBManager.Modules.Shared.Services
             return presets;
         }
 
-        public Task<Preset> GetPresetAsync(GameModule gameModule, string preset)
+        public Task<Preset> GetPreset(GameModule gameModule, string preset)
         {
+            _logger.Debug(nameof(GetPreset));
+
             var presets = GetPresets(Paths.GetPresetsDirectory(gameModule.Module));
 
             return Task.FromResult(presets.Single(x => x.Name == preset));
@@ -49,6 +60,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public string RenamePreset(Preset preset, string newName)
         {
+            _logger.Debug(nameof(RenamePreset));
+
             var oldDirectory = new DirectoryInfo(preset.FullPath);
 
             // Make sure new name has a value
@@ -76,6 +89,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public void DeletePreset(Preset preset)
         {
+            _logger.Debug(nameof(DeletePreset));
+
             // Make sure directory exists
             if (!Directory.Exists(preset.FullPath))
                 throw new DirectoryNotFoundException($"Preset with name {preset.Name} does not exist.");
@@ -85,6 +100,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task ActivatePresetAsync(GameModule gameModule, Preset preset)
         {
+            _logger.Debug(nameof(ActivatePresetAsync));
+
             // Create all directories
             foreach (var dir in Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories))
             {
@@ -103,6 +120,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task DeactivatePresetAsync(GameModule gameModule, Preset preset)
         {
+            _logger.Debug(nameof(DeactivatePresetAsync));
+
             // Delete all files
             foreach (var file in Directory.GetFiles(gameModule.InstalledLocation, "*", SearchOption.AllDirectories))
             {
@@ -128,6 +147,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public Preset CreateExistingPreset(GameModule gameModule)
         {
+            _logger.Debug(nameof(CreateExistingPreset));
+
             var enbFiles = Directory.GetFiles(gameModule.InstalledLocation, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
             var enbDirs = Directory.GetDirectories(gameModule.InstalledLocation, "*enb*", SearchOption.TopDirectoryOnly);
 
@@ -150,6 +171,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task SaveCurrentPresetAsync(GameModule gameModule, Preset preset)
         {
+            _logger.Debug(nameof(SaveCurrentPresetAsync));
+
             var presetsDir = Paths.GetPresetsDirectory(gameModule.Module);
 
             if (Directory.Exists(Path.Combine(presetsDir, preset.Name)))
@@ -179,6 +202,8 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task SaveNewPresetAsync(GameModule gameModule, Preset preset)
         {
+            _logger.Debug(nameof(SaveNewPresetAsync));
+
             string originRoot = preset.FullPath;
 
             var presetsDir = Paths.GetPresetsDirectory(gameModule.Module);
@@ -212,8 +237,10 @@ namespace ENBManager.Modules.Shared.Services
             await Task.Delay(500);
         }
 
-        public bool ValidatePreset(GameModule gameModule, Preset preset)
+        public Task<bool> ValidatePreset(GameModule gameModule, Preset preset)
         {
+            _logger.Debug(nameof(ValidatePreset));
+
             bool identical = true;
 
             foreach (var file in preset.Files)
@@ -239,10 +266,10 @@ namespace ENBManager.Modules.Shared.Services
                     identical = false;
             }
 
-            return identical;
+            return Task.FromResult(identical);
         }
 
-        public void UpdatePresetFiles(GameModule gameModule, Preset preset)
+        public Task UpdatePresetFiles(GameModule gameModule, Preset preset)
         {
             foreach (var item in preset.Files)
             {
@@ -253,6 +280,8 @@ namespace ENBManager.Modules.Shared.Services
                 if (File.Exists(source))
                     File.Copy(source, source.Replace(gameModule.InstalledLocation, preset.FullPath));
             }
+
+            return Task.CompletedTask;
         }
 
         #endregion

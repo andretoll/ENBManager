@@ -16,7 +16,7 @@ namespace ENBManager.Infrastructure.Services
 
         #endregion
 
-        #region IFileService Implementation
+        #region IGameService Implementation
 
         public string BrowseGameExecutable(string fileName)
         {

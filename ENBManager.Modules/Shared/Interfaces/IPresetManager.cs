@@ -18,7 +18,7 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        Task<Preset> GetPresetAsync(GameModule gameModule, string preset);
+        Task<Preset> GetPreset(GameModule gameModule, string preset);
 
         /// <summary>
         /// Renames a preset in folder and returns the new full path.
@@ -75,13 +75,13 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// <param name="gameModule"></param>
         /// <param name="preset"></param>
         /// <returns></returns>
-        bool ValidatePreset(GameModule gameModule, Preset preset);
+        Task<bool> ValidatePreset(GameModule gameModule, Preset preset);
 
         /// <summary>
         /// Updates the provided preset.
         /// </summary>
         /// <param name="gameModule"></param>
         /// <param name="preset"></param>
-        void UpdatePresetFiles(GameModule gameModule, Preset preset);
+        Task UpdatePresetFiles(GameModule gameModule, Preset preset);
     }
 }

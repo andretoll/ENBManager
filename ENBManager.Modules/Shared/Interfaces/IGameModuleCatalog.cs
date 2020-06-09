@@ -12,10 +12,10 @@ namespace ENBManager.Modules.Shared.Interfaces
         IEnumerable<GameModule> GameModules { get; }
 
         /// <summary>
-        /// Adds a module to the catalog. Accepts a dependency container as argument.
+        /// Registers a module to the catalog. Accepts a dependency container as argument.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="container"></param>
-        void AddModule<T>(IContainerProvider container) where T : GameModule;
+        void Register<T>(IContainerProvider container) where T : GameModule;
     }
 }

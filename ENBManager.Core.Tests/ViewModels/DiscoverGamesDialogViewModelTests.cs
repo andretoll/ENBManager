@@ -79,9 +79,9 @@ namespace ENBManager.Core.Tests.ViewModels
         {
             GameModuleCatalog gameModuleCatalog = new GameModuleCatalog();
 
-            gameModuleCatalog.AddModule<SkyrimModule>(null);
-            gameModuleCatalog.AddModule<SkyrimSEModule>(null);
-            gameModuleCatalog.AddModule<Fallout4Module>(null);
+            gameModuleCatalog.Register<SkyrimModule>(null);
+            gameModuleCatalog.Register<SkyrimSEModule>(null);
+            gameModuleCatalog.Register<Fallout4Module>(null);
 
             return gameModuleCatalog;
         }

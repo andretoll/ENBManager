@@ -32,7 +32,6 @@ namespace ENBManager.Modules.Shared.Models.Base
             set
             {
                 _isSelected = value;
-
                 OnPropertyChanged();
             }
         }

@@ -214,6 +214,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game updated..
+        /// </summary>
+        public static string GAME_UPDATED {
+            get {
+                return ResourceManager.GetString("GAME_UPDATED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go to directory.
         /// </summary>
         public static string GO_TO_DIRECTORY {
@@ -345,6 +354,15 @@ namespace ENBManager.Localization.Strings {
         public static string PRESET_DELETED {
             get {
                 return ResourceManager.GetString("PRESET_DELETED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset updated..
+        /// </summary>
+        public static string PRESET_UPDATED {
+            get {
+                return ResourceManager.GetString("PRESET_UPDATED", resourceCulture);
             }
         }
         

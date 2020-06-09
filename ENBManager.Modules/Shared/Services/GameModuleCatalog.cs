@@ -27,7 +27,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public IEnumerable<GameModule> GameModules => _gameModules;
 
-        public void AddModule<T>(IContainerProvider container) where T : GameModule
+        public void Register<T>(IContainerProvider container) where T : GameModule
         {
             _gameModules.Add((GameModule)Activator.CreateInstance(typeof(T), container));
         }

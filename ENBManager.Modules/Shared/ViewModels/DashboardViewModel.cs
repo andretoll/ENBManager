@@ -1,5 +1,6 @@
 ﻿using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
@@ -13,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace ENBManager.Modules.Shared.ViewModels
@@ -23,6 +25,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IEventAggregator _eventAggregator;
         private readonly IGameService _gameService;
         private readonly IPresetManager _presetManager;
 
@@ -43,7 +46,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Commands
 
-        public DelegateCommand OnLoadedCommand { get; set; }
+        public DelegateCommand VerifyCommand { get; set; }
         public DelegateCommand<Notification> RemoveNotificationCommand { get; set; }
 
         #endregion
@@ -56,11 +59,12 @@ namespace ENBManager.Modules.Shared.ViewModels
             IPresetManager presetManager)
             : base(eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _gameService = gameService;
             _presetManager = presetManager;
 
             RemoveNotificationCommand = new DelegateCommand<Notification>(OnRemoveNotificationCommand);
-            OnLoadedCommand = new DelegateCommand(VerifyIntegrity);
+            VerifyCommand = new DelegateCommand(async () => await VerifyIntegrity());
 
             eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Subscribe(UpdateUI);
         }
@@ -87,7 +91,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             Notifications.Remove(notification);
         }
 
-        private void VerifyIntegrity()
+        private async Task VerifyIntegrity()
         {
             _logger.Debug(nameof(VerifyIntegrity));
 
@@ -96,17 +100,16 @@ namespace ENBManager.Modules.Shared.ViewModels
             bool healthy = true;
 
             // Verify installation path
-            if (!Directory.Exists(_game.Settings.InstalledLocation))
+            if (!await VerifyInstallationPath())
             {
                 _logger.Info(Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY);
 
                 healthy = false;
-                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, BrowseGameDirectory, Strings.BROWSE));
+                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, async () => await BrowseGameDirectory(), Strings.BROWSE));
             }
 
             // Verify binaries
-            var missingFiles = _gameService.VerifyBinaries(_game.Settings.InstalledLocation, _game.Binaries);
-            if (missingFiles.Length > 0)
+            if (!await VerifyBinaries(out string[] missingFiles))
             {
                 _logger.Info(Strings.ERROR_MISSING_BINARIES);
 
@@ -119,17 +122,16 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 try
                 {
-                    bool valid = _presetManager.ValidatePreset(_game, _game.Presets.Single(x => x.IsActive));
-
-                    if (!valid)
+                    if (!await VerifyActivePreset())
                     {
-                        Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED, UpdatePreset, Strings.UPDATE));
+                        _logger.Info(Strings.WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED);
+                        Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED, async () => await UpdatePreset(), Strings.UPDATE));
                     }
                 }
-                catch (FileNotFoundException ex)
+                catch (FileNotFoundException)
                 {
-                    _logger.Info(ex);
-                    Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET, UpdatePreset, Strings.UPDATE));
+                    _logger.Info(Strings.WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET);
+                    Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET, async () => await UpdatePreset(), Strings.UPDATE));
                 }
             }
 
@@ -141,8 +143,10 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
         }
 
-        private void BrowseGameDirectory()
+        private async Task BrowseGameDirectory()
         {
+            _logger.Info("Browsing new directory");
+
             string newPath = _gameService.BrowseGameExecutable(_game.Executable);
 
             if (string.IsNullOrEmpty(newPath))
@@ -153,12 +157,16 @@ namespace ENBManager.Modules.Shared.ViewModels
             ConfigurationManager<GameSettings> config = new ConfigurationManager<GameSettings>(_game.Settings);
             config.SaveSettings();
 
-            VerifyIntegrity();
+            await VerifyIntegrity();
+
+            _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.GAME_UPDATED);
         }
 
         private void OpenLink()
         {
             string url = "http://enbdev.com/download.html";
+
+            _logger.Info($"Opening {url}");
 
             var psi = new ProcessStartInfo
             {
@@ -169,18 +177,62 @@ namespace ENBManager.Modules.Shared.ViewModels
             Process.Start(psi);
         }
 
-        private void UpdatePreset()
+        private async Task UpdatePreset()
         {
-            var activePreset = _game.Presets.SingleOrDefault(x => x.IsActive);
+            _logger.Info("Updating preset");
 
-            if (activePreset == null)
-                return;
+            using (var dialog = new ProgressDialog(true))
+            {
+                _ = dialog.OpenAsync();
 
-            _presetManager.UpdatePresetFiles(_game, activePreset);
+                var activePreset = _game.Presets.SingleOrDefault(x => x.IsActive);
+                if (activePreset == null)
+                    return;
 
-            activePreset.Files = _presetManager.GetPresetAsync(_game, activePreset.Name).Result.Files;
+                await _presetManager.UpdatePresetFiles(_game, activePreset);
 
-            VerifyIntegrity();
+                activePreset.Files = _presetManager.GetPreset(_game, activePreset.Name).Result.Files;
+
+                _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_UPDATED);
+            }
+
+            await VerifyIntegrity();
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private Task<bool> VerifyInstallationPath()
+        {
+            _logger.Debug(nameof(VerifyInstallationPath));
+
+            if (!Directory.Exists(_game.Settings.InstalledLocation))
+            {
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        private Task<bool> VerifyBinaries(out string[] binaries)
+        {
+            _logger.Debug(nameof(VerifyBinaries));
+
+            binaries = _gameService.VerifyBinaries(_game.Settings.InstalledLocation, _game.Binaries);
+            if (binaries.Length > 0)
+            {
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
+        }
+
+        private async Task<bool> VerifyActivePreset()
+        {
+            _logger.Debug(nameof(VerifyActivePreset));
+
+            return await _presetManager.ValidatePreset(_game, _game.Presets.Single(x => x.IsActive));
         }
 
         #endregion
@@ -191,13 +243,10 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         protected override void OnModuleActivated(GameModule game)
         {
-            Notifications = new ObservableCollection<Notification>();
-
             _game = game;
 
+            Notifications = new ObservableCollection<Notification>();
             UpdateUI();
-
-            _logger.Debug($"Module {game.Module} activated");
         } 
 
         #endregion
