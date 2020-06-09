@@ -1,11 +1,12 @@
-﻿using ENBManager.Core.Interfaces;
-using ENBManager.Infrastructure.Constants;
+﻿using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Interfaces;
 using Microsoft.Win32;
 using NLog;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace ENBManager.Core.Services
+namespace ENBManager.Infrastructure.Services
 {
     public class GameService : IGameService
     {
@@ -55,6 +56,23 @@ namespace ENBManager.Core.Services
             var directories = Directory.GetDirectories(Paths.GetGamesDirectory());
 
             return directories;
+        }
+
+        public string[] VerifyBinaries(string directoryPath, string[] files)
+        {
+            _logger.Debug(nameof(VerifyBinaries));
+
+            List<string> missingFiles = new List<string>();
+
+            foreach (var file in files)
+            {
+                if (!File.Exists(Path.Combine(directoryPath, file)))
+                {
+                    missingFiles.Add(file);
+                }
+            }
+
+            return missingFiles.ToArray();
         }
 
         #endregion

@@ -22,7 +22,7 @@ namespace ENBManager.Modules.Fallout4
         public override string Executable => "Fallout4.exe";
         public override string Module => ModuleNames.FALLOUT4;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/fallout4.png"));
-        public override string[] Binaries => throw new NotImplementedException();
+        public override string[] Binaries => new[] { "d3d11.dll", "d3dcompiler_46e.dll" };
 
         public override void Activate()
         {

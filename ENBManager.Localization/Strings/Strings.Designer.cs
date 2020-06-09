@@ -187,6 +187,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Missing binaries.
+        /// </summary>
+        public static string ERROR_MISSING_BINARIES {
+            get {
+                return ResourceManager.GetString("ERROR_MISSING_BINARIES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: Unable to locate game directory.
         /// </summary>
         public static string ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY {
@@ -210,6 +219,15 @@ namespace ENBManager.Localization.Strings {
         public static string GO_TO_DIRECTORY {
             get {
                 return ResourceManager.GetString("GO_TO_DIRECTORY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to ENBDev.
+        /// </summary>
+        public static string GO_TO_ENBDEV {
+            get {
+                return ResourceManager.GetString("GO_TO_ENBDEV", resourceCulture);
             }
         }
         

@@ -1,10 +1,10 @@
 ﻿using ENBManager.Configuration.Interfaces;
 using ENBManager.Configuration.Services;
 using ENBManager.Core.Helpers;
-using ENBManager.Core.Interfaces;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Modules.Shared.Interfaces;
 using NLog;
 using Prism.Commands;

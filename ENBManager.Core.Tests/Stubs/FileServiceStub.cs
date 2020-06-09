@@ -1,9 +1,9 @@
-﻿using ENBManager.Core.Interfaces;
+﻿using ENBManager.Infrastructure.Interfaces;
 using ENBManager.TestUtils.Utils;
 
 namespace ENBManager.Core.Tests.Stubs
 {
-    public class FileServiceStub : IGameService
+    public class GameServiceStub : IGameService
     {
         public string BrowseGameExecutable(string fileName)
         {

@@ -7,6 +7,8 @@ using ENBManager.Core.ViewModels;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Interfaces;
+using ENBManager.Infrastructure.Services;
 using ENBManager.Logging.Services;
 using ENBManager.Modules.Fallout4;
 using ENBManager.Modules.Shared.Interfaces;

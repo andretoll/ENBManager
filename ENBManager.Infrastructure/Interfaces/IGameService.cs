@@ -1,4 +1,4 @@
-﻿namespace ENBManager.Core.Interfaces
+﻿namespace ENBManager.Infrastructure.Interfaces
 {
     public interface IGameService
     {
@@ -19,5 +19,12 @@
         /// Deletes a game directory from disk.
         /// </summary>
         void DeleteGameDirectory(string directoryName);
+
+        /// <summary>
+        /// Verifies the existance of the files provided. Returns any missing files.
+        /// </summary>
+        /// <param name="files"></param>
+        /// <returns></returns>
+        string[] VerifyBinaries(string directoryPath, string[] files);
     }
 }

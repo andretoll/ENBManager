@@ -281,8 +281,10 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Debug(nameof(OnAddPresetCommand));
 
-            var dp = new DialogParameters();
-            dp.Add("GameModule", _game);
+            var dp = new DialogParameters
+            {
+                { "GameModule", _game }
+            };
 
             _dialogService.ShowDialog(nameof(AddPresetDialog), dp, async (dr) =>
             {

@@ -1,6 +1,7 @@
 ﻿using ENBManager.Configuration.Services;
 using ENBManager.Core.Interfaces;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Modules.Shared.Interfaces;
 using NLog;
 using Prism.Commands;

@@ -159,6 +159,9 @@
   <data name="ENTER_A_NEW_NAME" xml:space="preserve">
     <value>Enter a new name:</value>
   </data>
+  <data name="ERROR_MISSING_BINARIES" xml:space="preserve">
+    <value>Error: Missing binaries</value>
+  </data>
   <data name="ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY" xml:space="preserve">
     <value>Error: Unable to locate game directory</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="GO_TO_DIRECTORY" xml:space="preserve">
     <value>Go to directory</value>
+  </data>
+  <data name="GO_TO_ENBDEV" xml:space="preserve">
+    <value>Go to ENBDev</value>
   </data>
   <data name="GRID" xml:space="preserve">
     <value>Grid</value>

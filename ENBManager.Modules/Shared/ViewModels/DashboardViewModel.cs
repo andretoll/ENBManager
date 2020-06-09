@@ -1,4 +1,6 @@
-﻿using ENBManager.Infrastructure.BusinessEntities;
+﻿using ENBManager.Configuration.Services;
+using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.ViewModels.Base;
@@ -7,6 +9,7 @@ using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
@@ -18,6 +21,8 @@ namespace ENBManager.Modules.Shared.ViewModels
         #region Private Members
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        private readonly IGameService _gameService;
 
         private GameModule _game;
 
@@ -42,9 +47,11 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Constructor
 
-        public DashboardViewModel(IEventAggregator eventAggregator)
+        public DashboardViewModel(IEventAggregator eventAggregator, IGameService gameService)
             : base(eventAggregator)
         {
+            _gameService = gameService;
+
             RemoveNotificationCommand = new DelegateCommand<Notification>(OnRemoveNotificationCommand);
 
             eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Subscribe(UpdateDashboard);
@@ -72,6 +79,74 @@ namespace ENBManager.Modules.Shared.ViewModels
             Notifications.Remove(notification);
         }
 
+        private void VerifyIntegrity()
+        {
+            _logger.Debug(nameof(VerifyIntegrity));
+
+            Notifications.Clear();
+
+            bool healthy = true;
+
+            // Verify installation path
+            if (!Directory.Exists(_game.Settings.InstalledLocation))
+            {
+                _logger.Info(Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY);
+
+                healthy = false;
+                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, BrowseGameDirectory, Strings.BROWSE));
+            }
+
+            // Verify binaries
+            var missingFiles = _gameService.VerifyBinaries(_game.Settings.InstalledLocation, _game.Binaries);
+            if (missingFiles.Length > 0)
+            {
+                _logger.Info(Strings.ERROR_MISSING_BINARIES);
+
+                healthy = false;
+                Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.GO_TO_ENBDEV));
+            }
+
+            //TODO: Verify active preset (compare files)
+            if (true)
+            {
+            }
+
+            if (healthy)
+            {
+                _logger.Info(Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED);
+
+                Notifications.Add(new Notification(Icon.Success, Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED, null, null));
+            }
+        }
+
+        private void BrowseGameDirectory()
+        {
+            string newPath = _gameService.BrowseGameExecutable(_game.Executable);
+
+            if (string.IsNullOrEmpty(newPath))
+                return;
+
+            _game.Settings.InstalledLocation = Path.GetDirectoryName(newPath);
+
+            ConfigurationManager<GameSettings> config = new ConfigurationManager<GameSettings>(_game.Settings);
+            config.SaveSettings();
+
+            VerifyIntegrity();
+        }
+
+        private void OpenLink()
+        {
+            string url = "http://enbdev.com/download.html";
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
+        }
+
         #endregion
 
         #region TabItemBase Override
@@ -83,29 +158,8 @@ namespace ENBManager.Modules.Shared.ViewModels
             Notifications = new ObservableCollection<Notification>();
 
             _game = game;
-            bool healthy = true;
 
-            // Verify installation path
-            if (!File.Exists(Path.Combine(game.Settings.InstalledLocation, game.Executable)))
-            {
-                healthy = false;
-                Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, null, null));
-            }
-
-            //TODO: Verify binaries
-            if (true)
-            {
-            }
-
-            //TODO: Verify active preset (compare files)
-            if (true)
-            {
-            }
-
-            if (healthy)
-            {
-                Notifications.Add(new Notification(Icon.Success, Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED, null, null));
-            }
+            VerifyIntegrity();
 
             UpdateDashboard();
 

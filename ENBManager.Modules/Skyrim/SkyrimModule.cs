@@ -22,7 +22,7 @@ namespace ENBManager.Modules.Skyrim
         public override string Executable => "Skyrim.exe";
         public override string Module => ModuleNames.SKYRIM;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrim.png"));
-        public override string[] Binaries => throw new NotImplementedException();
+        public override string[] Binaries => new[] { "d3d11.dll", "d3dcompiler_46e.dll" };
 
         public override void Activate()
         {

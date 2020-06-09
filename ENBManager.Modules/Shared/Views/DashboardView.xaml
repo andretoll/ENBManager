@@ -107,6 +107,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Grid>
+
                             <Border Padding="10"
                                     BorderThickness="0 0 0 1"
                                     BorderBrush="{DynamicResource MaterialDesignShadowBrush}">
@@ -145,7 +146,8 @@
                                     </materialDesign:PackIcon>
                                     
                                     <!-- Message -->
-                                    <TextBlock Grid.Column="1" 
+                                    <TextBlock Grid.Column="1"
+                                               TextWrapping="Wrap"
                                                Text="{Binding Message}"
                                                Style="{StaticResource MaterialDesignBody2TextBlock}"
                                                VerticalAlignment="Center"
