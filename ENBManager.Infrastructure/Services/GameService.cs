@@ -53,9 +53,7 @@ namespace ENBManager.Infrastructure.Services
         {
             _logger.Debug(nameof(GetGameDirectories));
 
-            var directories = Directory.GetDirectories(Paths.GetGamesDirectory());
-
-            return directories;
+            return Directory.GetDirectories(Paths.GetGamesDirectory());
         }
 
         public string[] VerifyBinaries(string directoryPath, string[] files)
