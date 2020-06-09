@@ -97,8 +97,8 @@ namespace ENBManager.Core.ViewModels
         {
             _logger.Debug(nameof(OnContinueCommand));
 
-            ConfigurationManager<GameSettings> configManager;
             GameSettings gameSettings;
+            ConfigurationManager<GameSettings> configManager;
 
             // For every game to manage, initialize settings
             foreach (var game in Games.Where(x => x.ShouldManage))
@@ -182,7 +182,7 @@ namespace ENBManager.Core.ViewModels
         {
             _logger.Info(nameof(OnDialogOpened));
 
-            if (parameters.Count > 0)
+            if (parameters.GetValue<IEnumerable<GameModule>>("Games") != null)
             {
                 ShowUnmanagingWarning = true;
                 Games = new ObservableCollection<GameModule>(parameters.GetValue<IEnumerable<GameModule>>("Games"));

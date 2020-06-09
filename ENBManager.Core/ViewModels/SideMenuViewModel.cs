@@ -12,7 +12,6 @@ using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -48,6 +47,8 @@ namespace ENBManager.Core.ViewModels
 
                 if (value != null)
                     ActivateModule(value.Module);
+                else
+                    _regionManager.RequestNavigate(RegionNames.MainRegion, nameof(MainView));
             }
         }
 
@@ -164,21 +165,16 @@ namespace ENBManager.Core.ViewModels
                 if (dr.Result == ButtonResult.OK)
                 {
                     OnGetDataCommand();
-                    _regionManager.RequestNavigate(RegionNames.MainRegion, nameof(MainView));
+                    SelectedGame = null;
                 }
             });
         }
 
         private void OnOpenGameDirectoryCommand(GameModule gameModule)
         {
-            try
-            {
-                Process.Start("explorer", gameModule.InstalledLocation);
-            }
-            catch (Win32Exception ex)
-            {
-                throw ex;
-            }
+            _logger.Debug(nameof(OnOpenGameDirectoryCommand));
+
+            Process.Start("explorer", gameModule.InstalledLocation);
         }
 
         private void ActivateModule(string name)

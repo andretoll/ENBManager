@@ -19,5 +19,10 @@ namespace ENBManager.Core.Tests.Stubs
         {
             throw new System.NotImplementedException();
         }
+
+        public string[] VerifyBinaries(string directoryPath, string[] files)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
