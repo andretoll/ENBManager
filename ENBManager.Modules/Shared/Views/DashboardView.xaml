@@ -86,6 +86,7 @@
                     <!-- Preset count -->
                     <materialDesign:Card Height="150" 
                                          Width="200"
+                                         Margin="10"
                                          materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
                         <Grid Margin="20">
@@ -99,6 +100,39 @@
                                        Foreground="{DynamicResource SecondaryAccentBrush}"
                                        VerticalAlignment="Bottom"
                                        HorizontalAlignment="Center"/>
+                        </Grid>
+
+                    </materialDesign:Card>
+
+                    <!-- Active preset -->
+                    <materialDesign:Card Height="150" 
+                                         Width="200"
+                                         Margin="10"
+                                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
+
+                        <Grid Margin="20">
+
+                            <TextBlock FontWeight="Normal">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
+                                        <Setter Property="Text" Value="{x:Static loc:Strings.ACTIVE_PRESET}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ActivePreset}" Value="{x:Null}">
+                                                <Setter Property="Text" Value="{x:Static loc:Strings.NO_PRESET_ACTIVE}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <Viewbox>
+                                <TextBlock Text="{Binding ActivePreset}"
+                                           Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                           TextWrapping="Wrap"
+                                           Margin="0 100 0 0"
+                                           MaxWidth="600"
+                                           Foreground="{DynamicResource SecondaryAccentBrush}"/>
+                            </Viewbox>
                         </Grid>
 
                     </materialDesign:Card>

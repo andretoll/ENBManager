@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:models="clr-namespace:ENBManager.Infrastructure.BusinessEntities.Dialogs"
+                    xmlns:be="clr-namespace:ENBManager.Infrastructure.BusinessEntities"
                     xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization">
 
     <DataTemplate DataType="{x:Type models:InputDialog}">
@@ -41,8 +42,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type models:ConfirmDialog}">
-        <StackPanel Margin="16"
-                    Width="300">
+        <StackPanel Margin="16">
             <TextBlock Text="{Binding Message}" />
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
@@ -73,8 +73,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type models:MessageDialog}">
-        <StackPanel Margin="16"
-                    Width="300">
+        <StackPanel Margin="16">
             <TextBlock Text="{Binding Message}" />
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
@@ -99,6 +98,73 @@
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                          IsIndeterminate="{Binding IsIndeterminate}"
                          Value="{Binding Progress}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type models:TreeViewDialog}">
+        <Grid Width="800"
+              Height="400"
+              Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.Resources>
+
+                <HierarchicalDataTemplate DataType="{x:Type be:DirectoryNode}"
+                                          ItemsSource="{Binding Items}">
+                    <StackPanel Orientation="Horizontal"
+                                IsHitTestVisible="False">
+                        <materialDesign:PackIcon Kind="FolderOutline"
+                                                 Width="20"
+                                                 Height="20"/>
+                        <TextBlock Text="{Binding Path=Name}"
+                                   Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                   Margin="5 0 0 0" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+
+                <DataTemplate DataType="{x:Type be:FileNode}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileOutline"
+                                                 Width="20"
+                                                 Height="20"/>
+                        <TextBlock Text="{Binding Path=Name}"
+                                   Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                   Margin="5 0 0 0" />
+                    </StackPanel>
+                </DataTemplate>
+
+            </Grid.Resources>
+
+            <Border Grid.Row="0"
+                    Padding="10"
+                    Background="{DynamicResource AttentionToActionBrush}">
+
+                <Grid>
+                    <TreeView ItemsSource="{Binding Nodes}"
+                              HorizontalAlignment="Stretch" />
+                </Grid>
+
+            </Border>
+
+            <StackPanel Grid.Row="1" 
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Content="{x:Static loc:Strings.OK}"
+                        IsDefault="True"
+                        Margin="0 8 8 0"
+                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                    <Button.CommandParameter>
+                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                            True
+                        </system:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+            </StackPanel>
+
         </Grid>
     </DataTemplate>
 

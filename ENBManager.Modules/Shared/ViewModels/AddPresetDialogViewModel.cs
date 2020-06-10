@@ -1,4 +1,5 @@
 ﻿using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.BusinessEntities.Base;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
@@ -6,13 +7,11 @@ using ENBManager.Infrastructure.Helpers;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
-using ENBManager.Modules.Shared.Models.Base;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -133,7 +132,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 FullPath = Items.Single().Path,
 
                 // Map paths
-                Files = GetPaths(Items.Single() as DirectoryNode)
+                Files = TreeViewHelper.GetPaths(Items.Single() as DirectoryNode)
             };
 
             // Save preset
@@ -154,7 +153,15 @@ namespace ENBManager.Modules.Shared.ViewModels
                     await messageDialog.OpenAsync();
                     _logger.Debug(ex.Message);
                     return;
-                } 
+                }
+                catch (IOException ex)
+                {
+                    var messageDialog = new MessageDialog(Strings.INVALID_NAME);
+                    messageDialog.SetHost(RegionNames.AddPresetDialogHost);
+                    await messageDialog.OpenAsync();
+                    _logger.Warn(ex);
+                    return;
+                }
             }
 
             var dp = new DialogParameters
@@ -182,7 +189,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             root.PropertyChanged += Item_PropertyChanged;
 
             // Get nodes
-            root.Items = new ObservableCollection<Node>(GetItems(root.Path));
+            root.Items = new ObservableCollection<Node>(TreeViewHelper.GetItems(root.Path, Item_PropertyChanged));
             Items.Add(root);
 
             RaisePropertyChanged(nameof(Items));
@@ -211,72 +218,11 @@ namespace ENBManager.Modules.Shared.ViewModels
             root.PropertyChanged += Item_PropertyChanged;
 
             // Get nodes
-            root.Items = new ObservableCollection<Node>(GetItems(root.Path));
+            root.Items = new ObservableCollection<Node>(TreeViewHelper.GetItems(root.Path, Item_PropertyChanged));
             Items.Add(root);
 
             RaisePropertyChanged(nameof(Items));
             RaisePropertyChanged(nameof(IsFormValid));
-        }
-
-        #endregion
-
-        #region Helper Methods
-
-        private List<Node> GetItems(string root)
-        {
-            var items = new List<Node>();
-
-            var dirInfo = new DirectoryInfo(root);  
-
-            foreach (var directory in dirInfo.GetDirectories())
-            {
-                var item = new DirectoryNode
-                {
-                    Name = directory.Name,
-                    Path = directory.FullName,
-                    Items = new ObservableCollection<Node>(GetItems(directory.FullName))
-                };
-
-                item.PropertyChanged += Item_PropertyChanged;
-
-                items.Add(item);
-            }
-
-            foreach (var file in dirInfo.GetFiles())
-            {
-                var item = new FileNode
-                {
-                    Name = file.Name,
-                    Path = file.FullName
-                };
-
-                item.PropertyChanged += Item_PropertyChanged;
-
-                items.Add(item);
-            }
-
-            return items;
-        }
-
-        private IEnumerable<string> GetPaths(DirectoryNode directory)
-        {
-            List<string> paths = new List<string>();
-
-            // Add empty directory
-            if (directory.Items.Count == 0)
-                paths.Add(directory.Path);
-
-            foreach (var item in directory.Items.Where(x => x.GetType() == typeof(DirectoryNode)))
-            {
-                paths.AddRange(GetPaths(item as DirectoryNode));
-            }
-
-            foreach (var file in directory.Items.Where(x => x.GetType() == typeof(FileNode)))
-            {
-                paths.Add(file.Path);
-            }
-
-            return paths;
         }
 
         #endregion

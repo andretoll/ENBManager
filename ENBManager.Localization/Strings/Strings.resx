@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ACTIVE_PRESET" xml:space="preserve">
+    <value>Active preset</value>
+  </data>
   <data name="ADD_NEW_PRESET" xml:space="preserve">
     <value>Add new preset</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="INSTALLED_GAMES" xml:space="preserve">
     <value>Installed Games</value>
+  </data>
+  <data name="INVALID_NAME" xml:space="preserve">
+    <value>Invalid name: The name may contain illegal characters</value>
   </data>
   <data name="INVALID_PRESET_NO_FILES" xml:space="preserve">
     <value>Invalid preset: No eligible files were found.</value>
@@ -257,6 +263,9 @@
   </data>
   <data name="VERTICAL_LIST" xml:space="preserve">
     <value>Vertical list</value>
+  </data>
+  <data name="VIEW_FILES" xml:space="preserve">
+    <value>View files</value>
   </data>
   <data name="WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET" xml:space="preserve">
     <value>Warning: File(s) are missing from the active preset</value>

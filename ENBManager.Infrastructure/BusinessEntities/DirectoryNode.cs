@@ -1,7 +1,7 @@
-﻿using ENBManager.Modules.Shared.Models.Base;
+﻿using ENBManager.Infrastructure.BusinessEntities.Base;
 using System.Collections.ObjectModel;
 
-namespace ENBManager.Modules.Shared.Models
+namespace ENBManager.Infrastructure.BusinessEntities
 {
     public class DirectoryNode : Node
     {

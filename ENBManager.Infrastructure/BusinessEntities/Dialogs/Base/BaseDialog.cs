@@ -39,14 +39,6 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs.Base
             _hostIdentifier = hostIdentifier;
         }
 
-        public bool Open()
-        {
-            Close();
-            var result = DialogHost.Show(this, _hostIdentifier).Result;
-
-            return result != null && (bool)result;
-        }
-
         public async Task<bool> OpenAsync()
         {
             await CloseAsync();

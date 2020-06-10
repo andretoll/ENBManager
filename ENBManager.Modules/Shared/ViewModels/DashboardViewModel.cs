@@ -40,6 +40,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         public string InstalledLocation => _game?.InstalledLocation;
         public BitmapImage Image => _game?.Icon;
         public int? PresetCount => _game?.Presets.Count();
+        public string ActivePreset => _game?.Presets.SingleOrDefault(x => x.IsActive)?.Name;
 
         public ObservableCollection<Notification> Notifications { get; set; }
 
@@ -89,6 +90,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             RaisePropertyChanged(nameof(InstalledLocation));
             RaisePropertyChanged(nameof(Image));
             RaisePropertyChanged(nameof(PresetCount));
+            RaisePropertyChanged(nameof(ActivePreset));
         }
 
         private void OnRemoveNotificationCommand(Notification notification)

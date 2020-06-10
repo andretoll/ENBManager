@@ -4,6 +4,7 @@ using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
+using ENBManager.Infrastructure.Helpers;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
@@ -85,6 +86,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         public DelegateCommand<Preset> DeletePresetCommand { get; }
         public DelegateCommand SaveCurrentPresetCommand { get; }
         public DelegateCommand AddPresetCommand { get; }
+        public DelegateCommand<Preset> ViewFilesCommand { get; set; }
 
         #endregion
 
@@ -107,6 +109,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             DeletePresetCommand = new DelegateCommand<Preset>(async (x) => await OnDeletePresetCommand(x));
             SaveCurrentPresetCommand = new DelegateCommand(async () => await OnSaveCurrentPresetCommand());
             AddPresetCommand = new DelegateCommand(async () => await OnAddPresetCommand());
+            ViewFilesCommand = new DelegateCommand<Preset>(OnViewFilesCommand);
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
             _gridPresetView = !_listPresetView;
@@ -205,6 +208,11 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _logger.Debug(ex.Message);
                     await new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS).OpenAsync();
                 }
+                catch (IOException ex)
+                {
+                    _logger.Warn(ex);
+                    await new MessageDialog(Strings.INVALID_NAME).OpenAsync();
+                }
             }
         }
 
@@ -282,6 +290,11 @@ namespace ENBManager.Modules.Shared.ViewModels
                         await new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS).OpenAsync();
                         _logger.Debug(ex.Message);
                     }
+                    catch (IOException ex)
+                    {
+                        await new MessageDialog(Strings.INVALID_NAME).OpenAsync();
+                        _logger.Warn(ex);
+                    }
                 }
             }
         }
@@ -309,6 +322,12 @@ namespace ENBManager.Modules.Shared.ViewModels
             });
 
             await Task.CompletedTask;
+        }
+
+        private void OnViewFilesCommand(Preset preset)
+        {
+            var dialog = new TreeViewDialog(string.Empty, TreeViewHelper.GetItems(preset.FullPath));
+            _ = dialog.OpenAsync();
         }
 
         #endregion

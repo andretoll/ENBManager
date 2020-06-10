@@ -61,6 +61,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active preset.
+        /// </summary>
+        public static string ACTIVE_PRESET {
+            get {
+                return ResourceManager.GetString("ACTIVE_PRESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add new preset.
         /// </summary>
         public static string ADD_NEW_PRESET {
@@ -255,6 +264,15 @@ namespace ENBManager.Localization.Strings {
         public static string INSTALLED_GAMES {
             get {
                 return ResourceManager.GetString("INSTALLED_GAMES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid name: The name may contain illegal characters.
+        /// </summary>
+        public static string INVALID_NAME {
+            get {
+                return ResourceManager.GetString("INVALID_NAME", resourceCulture);
             }
         }
         
@@ -480,6 +498,15 @@ namespace ENBManager.Localization.Strings {
         public static string VERTICAL_LIST {
             get {
                 return ResourceManager.GetString("VERTICAL_LIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View files.
+        /// </summary>
+        public static string VIEW_FILES {
+            get {
+                return ResourceManager.GetString("VIEW_FILES", resourceCulture);
             }
         }
         
