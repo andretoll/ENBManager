@@ -27,5 +27,21 @@
         /// <param name="files"></param>
         /// <returns></returns>
         string[] VerifyBinaries(string directoryPath, string[] files);
+
+        /// <summary>
+        /// Verifies the existance of binaries backup.
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        /// <param name="binaries"></param>
+        /// <returns></returns>
+        bool VerifyBinariesBackup(string directoryPath, params string[] binaries);
+
+        /// <summary>
+        /// Creates backup files of the provided files.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="binaries"></param>
+        void CopyBinaries(string source, string target, string[] binaries);
     }
 }

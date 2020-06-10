@@ -106,6 +106,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup.
+        /// </summary>
+        public static string BACKUP {
+            get {
+                return ResourceManager.GetString("BACKUP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse.
         /// </summary>
         public static string BROWSE {
@@ -448,6 +457,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        public static string RESTORE {
+            get {
+                return ResourceManager.GetString("RESTORE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SAVE {
@@ -570,6 +588,15 @@ namespace ENBManager.Localization.Strings {
         public static string WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET {
             get {
                 return ResourceManager.GetString("WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: Binaries have not yet been backed up.
+        /// </summary>
+        public static string WARNING_NO_BINARIES_BACKUP {
+            get {
+                return ResourceManager.GetString("WARNING_NO_BINARIES_BACKUP", resourceCulture);
             }
         }
         

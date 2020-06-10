@@ -73,6 +73,32 @@ namespace ENBManager.Infrastructure.Services
             return missingFiles.ToArray();
         }
 
+        public bool VerifyBinariesBackup(string directoryPath, string[] binaries)
+        {
+            _logger.Debug(nameof(VerifyBinariesBackup));
+
+            foreach (var binary in binaries)
+            {
+                if (!File.Exists(Path.Combine(directoryPath, binary)))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public void CopyBinaries(string source, string target, string[] binaries)
+        {
+            _logger.Debug(nameof(CopyBinaries));
+
+            foreach (var binary in binaries)
+            {
+                if (!Directory.Exists(target))
+                    Directory.CreateDirectory(target);
+
+                File.Copy(Path.Combine(source, binary), Path.Combine(target, binary));
+            }
+        }
+
         #endregion
     }
 }

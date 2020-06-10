@@ -1,4 +1,5 @@
-﻿using ENBManager.Configuration.Services;
+﻿using ENBManager.Configuration.Interfaces;
+using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
@@ -26,6 +27,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IGameService _gameService;
         private readonly IPresetManager _presetManager;
@@ -56,11 +58,13 @@ namespace ENBManager.Modules.Shared.ViewModels
         #region Constructor
 
         public DashboardViewModel(
+            ConfigurationManager<AppSettings> configurationManager,
             IEventAggregator eventAggregator, 
             IGameService gameService,
             IPresetManager presetManager)
             : base(eventAggregator)
         {
+            _configurationManager = configurationManager;
             _eventAggregator = eventAggregator;
             _gameService = gameService;
             _presetManager = presetManager;
@@ -111,7 +115,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             // Verify installation path
             if (!await VerifyInstallationPath())
             {
-                _logger.Info(Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY);
+                _logger.Warn(Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY);
 
                 healthy = false;
                 Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, async () => await BrowseGameDirectory(), Strings.BROWSE));
@@ -120,10 +124,21 @@ namespace ENBManager.Modules.Shared.ViewModels
             // Verify binaries
             if (!await VerifyBinaries(out string[] missingFiles))
             {
-                _logger.Info(Strings.ERROR_MISSING_BINARIES);
+                _logger.Warn(Strings.ERROR_MISSING_BINARIES);
 
                 healthy = false;
-                Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.GO_TO_ENBDEV));
+
+                if (_configurationManager.Settings.ManageBinaries && await VerifyBinariesBackup())
+                    Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", async () => await RestoreBinaries(), Strings.RESTORE));
+                else
+                    Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.GO_TO_ENBDEV));
+            }
+            else if (_configurationManager.Settings.ManageBinaries && !await VerifyBinariesBackup())
+            {
+                _logger.Warn(Strings.WARNING_NO_BINARIES_BACKUP);
+
+                healthy = false;
+                Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_NO_BINARIES_BACKUP, async () => await BackupBinaries(), Strings.BACKUP));
             }
 
             // Verify active preset (compare files)
@@ -208,6 +223,24 @@ namespace ENBManager.Modules.Shared.ViewModels
             await VerifyIntegrity();
         }
 
+        private async Task BackupBinaries()
+        {
+            _logger.Info("Backing up binaries");
+
+            _gameService.CopyBinaries(_game.Settings.InstalledLocation, Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries);
+
+            await VerifyIntegrity();
+        }
+
+        private async Task RestoreBinaries()
+        {
+            _logger.Info("Restoring binaries");
+
+            _gameService.CopyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.Settings.InstalledLocation, _game.Binaries);
+
+            await VerifyIntegrity();
+        }
+
         #endregion
 
         #region Helper Methods
@@ -235,6 +268,15 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
 
             return Task.FromResult(true);
+        }
+
+        private Task<bool> VerifyBinariesBackup()
+        {
+            _logger.Debug(nameof(VerifyBinariesBackup));
+
+            bool existing = _gameService.VerifyBinariesBackup(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries);
+
+            return Task.FromResult(existing);
         }
 
         private async Task<bool> VerifyActivePreset()

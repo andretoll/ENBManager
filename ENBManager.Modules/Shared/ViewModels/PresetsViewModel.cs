@@ -255,8 +255,8 @@ namespace ENBManager.Modules.Shared.ViewModels
             else
                 newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
 
-            // Validate file count
-            if (newPreset.Files.Count() == 0)
+            // Validate file count without any binaries
+            if (newPreset.Files.Except(_game.Binaries.Select(x => Path.Combine(_game.InstalledLocation, x))).Count() == 0)
             {
                 var messageDialog = new MessageDialog(Strings.INVALID_PRESET_NO_FILES);
                 await messageDialog.OpenAsync();

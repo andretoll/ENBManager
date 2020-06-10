@@ -132,6 +132,9 @@
   <data name="APPLICATION" xml:space="preserve">
     <value>Application</value>
   </data>
+  <data name="BACKUP" xml:space="preserve">
+    <value>Backup</value>
+  </data>
   <data name="BROWSE" xml:space="preserve">
     <value>Browse</value>
   </data>
@@ -246,6 +249,9 @@
   <data name="RENAME" xml:space="preserve">
     <value>Rename</value>
   </data>
+  <data name="RESTORE" xml:space="preserve">
+    <value>Restore</value>
+  </data>
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -287,6 +293,9 @@
   </data>
   <data name="WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET" xml:space="preserve">
     <value>Warning: File(s) are missing from the active preset</value>
+  </data>
+  <data name="WARNING_NO_BINARIES_BACKUP" xml:space="preserve">
+    <value>Warning: Binaries have not yet been backed up</value>
   </data>
   <data name="WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED" xml:space="preserve">
     <value>Warning: The active preset differs from the preset currently used</value>
