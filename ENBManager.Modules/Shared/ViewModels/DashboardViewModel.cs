@@ -46,7 +46,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Commands
 
-        public DelegateCommand VerifyCommand { get; set; }
+        public DelegateCommand LoadedCommand { get; set; }
         public DelegateCommand<Notification> RemoveNotificationCommand { get; set; }
 
         #endregion
@@ -64,14 +64,20 @@ namespace ENBManager.Modules.Shared.ViewModels
             _presetManager = presetManager;
 
             RemoveNotificationCommand = new DelegateCommand<Notification>(OnRemoveNotificationCommand);
-            VerifyCommand = new DelegateCommand(async () => await VerifyIntegrity());
-
-            eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Subscribe(UpdateUI);
+            LoadedCommand = new DelegateCommand(async () => await OnLoadedCommand());
         }
 
         #endregion
 
         #region Private Methods
+
+        private async Task OnLoadedCommand()
+        {
+            Notifications = new ObservableCollection<Notification>();
+            UpdateUI();
+
+            await VerifyIntegrity();
+        }
 
         private void UpdateUI()
         {
@@ -244,9 +250,6 @@ namespace ENBManager.Modules.Shared.ViewModels
         protected override void OnModuleActivated(GameModule game)
         {
             _game = game;
-
-            Notifications = new ObservableCollection<Notification>();
-            UpdateUI();
         } 
 
         #endregion
