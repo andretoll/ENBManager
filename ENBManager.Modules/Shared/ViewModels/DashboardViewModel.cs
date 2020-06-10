@@ -122,7 +122,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
 
             // Verify binaries
-            if (!await VerifyBinaries(out string[] missingFiles))
+            if (ActivePreset != null && !await VerifyBinaries(out string[] missingFiles))
             {
                 _logger.Warn(Strings.ERROR_MISSING_BINARIES);
 
@@ -133,7 +133,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 else
                     Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.GO_TO_ENBDEV));
             }
-            else if (_configurationManager.Settings.ManageBinaries && !await VerifyBinariesBackup())
+            else if (_configurationManager.Settings.ManageBinaries && await VerifyBinaries(out missingFiles) && !await VerifyBinariesBackup())
             {
                 _logger.Warn(Strings.WARNING_NO_BINARIES_BACKUP);
 

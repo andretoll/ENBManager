@@ -35,13 +35,15 @@ namespace ENBManager.Modules.Tests.Shared.Services
 
         public override string[] Binaries => throw new System.NotImplementedException();
 
+        public override string Url => throw new System.NotImplementedException();
+
         public override void Activate()
         {
             throw new System.NotImplementedException();
         }
 
         public Game(IContainerProvider containerProvider)
-            : base(null)
+            : base(containerProvider)
         {
         }
     }

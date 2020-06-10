@@ -10,6 +10,11 @@ namespace ENBManager.Core.Tests.Stubs
             return TestValues.GetRandomString();
         }
 
+        public void CopyBinaries(string source, string target, string[] binaries)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void DeleteGameDirectory(string directoryName)
         {
             throw new System.NotImplementedException();
@@ -21,6 +26,11 @@ namespace ENBManager.Core.Tests.Stubs
         }
 
         public string[] VerifyBinaries(string directoryPath, string[] files)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool VerifyBinariesBackup(string directoryPath, params string[] binaries)
         {
             throw new System.NotImplementedException();
         }
