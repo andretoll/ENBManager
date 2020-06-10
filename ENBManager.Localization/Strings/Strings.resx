@@ -156,6 +156,9 @@
   <data name="DELETE" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DIAGNOSTICS" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
   <data name="EMPTY" xml:space="preserve">
     <value>Empty.</value>
   </data>
@@ -171,8 +174,14 @@
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>
+  <data name="GAMES" xml:space="preserve">
+    <value>Games</value>
+  </data>
   <data name="GAME_UPDATED" xml:space="preserve">
     <value>Game updated.</value>
+  </data>
+  <data name="GENERAL" xml:space="preserve">
+    <value>General</value>
   </data>
   <data name="GO_TO_DIRECTORY" xml:space="preserve">
     <value>Go to directory</value>
@@ -200,6 +209,9 @@
   </data>
   <data name="MANAGE" xml:space="preserve">
     <value>Manage</value>
+  </data>
+  <data name="MANAGE_BINARIES" xml:space="preserve">
+    <value>Manage binaries</value>
   </data>
   <data name="MISC" xml:space="preserve">
     <value>Misc</value>
@@ -257,6 +269,9 @@
   </data>
   <data name="START_WITH_LAST_GAME" xml:space="preserve">
     <value>Start with last game active</value>
+  </data>
+  <data name="THEMES_AND_COLORS" xml:space="preserve">
+    <value>Themes &amp; Colors</value>
   </data>
   <data name="UNMANAGING_MANAGED_GAME" xml:space="preserve">
     <value>Unmanaging a previously managed game will reset its content.</value>

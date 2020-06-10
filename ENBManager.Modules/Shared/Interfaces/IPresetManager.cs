@@ -51,7 +51,7 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// </summary>
         /// <param name="gameModule"></param>
         /// <returns></returns>
-        Preset CreateExistingPreset(string targetDir);
+        Preset CreateExistingPreset(string targetDir, params string[] binaries);
 
         /// <summary>
         /// Saves the current preset to folder.

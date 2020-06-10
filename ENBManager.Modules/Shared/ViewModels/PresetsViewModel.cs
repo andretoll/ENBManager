@@ -247,8 +247,13 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Debug(nameof(OnSaveCurrentPresetCommand));
 
+            Preset newPreset;
+
             // Create preset
-            var newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
+            if (_configurationManager.Settings.ManageBinaries)
+                newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation, _game.Binaries);
+            else
+                newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
 
             // Validate file count
             if (newPreset.Files.Count() == 0)
@@ -280,6 +285,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                         newPreset = await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), newPreset.Name);
                         newPreset.IsActive = true;
                         Presets.Add(newPreset);
+                        await OnActivatePresetCommand(newPreset);
                         RaisePropertyChanged(nameof(Presets));
 
                         _logger.Info($"Preset {newPreset.Name} added");

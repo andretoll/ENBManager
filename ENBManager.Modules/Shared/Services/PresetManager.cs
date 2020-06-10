@@ -1,6 +1,4 @@
-﻿using ENBManager.Infrastructure.BusinessEntities;
-using ENBManager.Infrastructure.Constants;
-using ENBManager.Infrastructure.Exceptions;
+﻿using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using NLog;
@@ -145,11 +143,18 @@ namespace ENBManager.Modules.Shared.Services
             await Task.Delay(500);
         }
 
-        public Preset CreateExistingPreset(string targetDir)
+        public Preset CreateExistingPreset(string targetDir, params string[] binaries)
         {
             _logger.Debug(nameof(CreateExistingPreset));
 
             var enbFiles = Directory.GetFiles(targetDir, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
+
+            foreach (var binary in binaries)
+            {
+                if (File.Exists(Path.Combine(targetDir, binary)))
+                    enbFiles.Add(Path.Combine(targetDir, binary));
+            }
+
             var enbDirs = Directory.GetDirectories(targetDir, "*enb*", SearchOption.TopDirectoryOnly);
 
             foreach (var dir in enbDirs)

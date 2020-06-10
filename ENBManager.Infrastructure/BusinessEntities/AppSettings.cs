@@ -23,6 +23,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public string ColorScheme { get; set; } = "Fire";
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
         public bool DefaultPresetView { get; set; } = true;
+        public bool ManageBinaries { get; set; } = true;
 
         #endregion
 

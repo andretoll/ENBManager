@@ -178,6 +178,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diagnostics.
+        /// </summary>
+        public static string DIAGNOSTICS {
+            get {
+                return ResourceManager.GetString("DIAGNOSTICS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty..
         /// </summary>
         public static string EMPTY {
@@ -228,6 +237,24 @@ namespace ENBManager.Localization.Strings {
         public static string GAME_UPDATED {
             get {
                 return ResourceManager.GetString("GAME_UPDATED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Games.
+        /// </summary>
+        public static string GAMES {
+            get {
+                return ResourceManager.GetString("GAMES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string GENERAL {
+            get {
+                return ResourceManager.GetString("GENERAL", resourceCulture);
             }
         }
         
@@ -309,6 +336,15 @@ namespace ENBManager.Localization.Strings {
         public static string MANAGE {
             get {
                 return ResourceManager.GetString("MANAGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage binaries.
+        /// </summary>
+        public static string MANAGE_BINARIES {
+            get {
+                return ResourceManager.GetString("MANAGE_BINARIES", resourceCulture);
             }
         }
         
@@ -480,6 +516,15 @@ namespace ENBManager.Localization.Strings {
         public static string START_WITH_LAST_GAME {
             get {
                 return ResourceManager.GetString("START_WITH_LAST_GAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Themes &amp; Colors.
+        /// </summary>
+        public static string THEMES_AND_COLORS {
+            get {
+                return ResourceManager.GetString("THEMES_AND_COLORS", resourceCulture);
             }
         }
         

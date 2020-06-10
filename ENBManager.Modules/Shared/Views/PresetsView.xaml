@@ -233,6 +233,34 @@
                                                          Width="20"/>
                                 </Button>
 
+                                <!-- Misc -->
+                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                        Margin="5 0">
+                                    <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges">
+                                        <StackPanel>
+
+                                            <!-- View files -->
+                                            <Button Command="{Binding DataContext.ViewFilesCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding .}">
+
+                                                <StackPanel Orientation="Horizontal"
+                                                            VerticalAlignment="Center">
+                                                    <materialDesign:PackIcon Kind="Files"
+                                                                             Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                                             Width="20"
+                                                                             Height="20"
+                                                                             Margin="0 0 10 0"/>
+                                                    <TextBlock Text="{x:Static loc:Strings.VIEW_FILES}"
+                                                               Style="{StaticResource MaterialDesignButtonTextBlock}"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                            </Button>
+
+                                        </StackPanel>
+                                    </materialDesign:PopupBox>
+                                </Button>
+
                             </StackPanel>
                             
                         </Grid>
