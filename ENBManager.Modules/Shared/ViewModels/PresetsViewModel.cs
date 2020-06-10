@@ -2,6 +2,7 @@
 using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
+using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
@@ -128,7 +129,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     if (other.IsActive)
                     {
-                        await _presetManager.DeactivatePresetAsync(_game, other);
+                        await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, other);
                         other.IsActive = false;
                     }
                 }
@@ -145,7 +146,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 // If preset was activated
                 if (preset.IsActive)
                 {
-                    await _presetManager.ActivatePresetAsync(_game, preset);
+                    await _presetManager.ActivatePresetAsync(_game.InstalledLocation, preset);
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
 
                     _logger.Info($"Preset {preset.Name} activated");
@@ -153,7 +154,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 // If preset was deactivated
                 else
                 {
-                    await _presetManager.DeactivatePresetAsync(_game, preset);
+                    await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, preset);
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
 
                     _logger.Info($"No preset activated");
@@ -174,6 +175,13 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     preset.FullPath = _presetManager.RenamePreset(preset, dialog.Value);
                     preset.Name = dialog.Value;
+
+                    if (preset.IsActive)
+                    {
+                        _game.Settings.ActivePreset = preset.Name;
+                        new ConfigurationManager<GameSettings>(_game.Settings).SaveSettings();
+                        preset.Files = (await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), preset.Name)).Files;
+                    }
 
                     _logger.Info("Preset renamed");
                 }
@@ -231,7 +239,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             _logger.Debug(nameof(OnSaveCurrentPresetCommand));
 
             // Create preset
-            var newPreset = _presetManager.CreateExistingPreset(_game);
+            var newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
 
             // Validate file count
             if (newPreset.Files.Count() == 0)
@@ -257,10 +265,10 @@ namespace ENBManager.Modules.Shared.ViewModels
 
                         // Save preset
                         newPreset.Name = inputDialog.Value;
-                        await _presetManager.SaveCurrentPresetAsync(_game, newPreset);
+                        await _presetManager.SaveCurrentPresetAsync(Paths.GetPresetsDirectory(_game.Module), _game.InstalledLocation, newPreset);
 
                         // Reload preset
-                        newPreset = await _presetManager.GetPreset(_game, newPreset.Name);
+                        newPreset = await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), newPreset.Name);
                         Presets.Add(newPreset);
                         RaisePropertyChanged(nameof(Presets));
 
@@ -290,7 +298,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 if (dr.Result == ButtonResult.OK)
                 {
-                    var newPreset = await _presetManager.GetPreset(_game, dr.Parameters.GetValue<string>("PresetName"));
+                    var newPreset = await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), dr.Parameters.GetValue<string>("PresetName"));
                     Presets.Add(newPreset);
                     RaisePropertyChanged(nameof(Presets));
 

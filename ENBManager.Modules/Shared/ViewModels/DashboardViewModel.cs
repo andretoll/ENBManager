@@ -1,6 +1,7 @@
 ﻿using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
+using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
@@ -195,9 +196,9 @@ namespace ENBManager.Modules.Shared.ViewModels
                 if (activePreset == null)
                     return;
 
-                await _presetManager.UpdatePresetFiles(_game, activePreset);
+                await _presetManager.UpdatePresetFilesAsync(_game.InstalledLocation, activePreset);
 
-                activePreset.Files = _presetManager.GetPreset(_game, activePreset.Name).Result.Files;
+                activePreset.Files = _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), activePreset.Name).Result.Files;
 
                 _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_UPDATED);
             }
@@ -238,7 +239,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Debug(nameof(VerifyActivePreset));
 
-            return await _presetManager.ValidatePreset(_game, _game.Presets.Single(x => x.IsActive));
+            return await _presetManager.ValidatePresetAsync(_game.InstalledLocation, _game.Presets.Single(x => x.IsActive));
         }
 
         #endregion

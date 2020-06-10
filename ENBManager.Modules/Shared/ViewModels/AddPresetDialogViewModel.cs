@@ -143,7 +143,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     dialog.SetHost(RegionNames.AddPresetDialogHost);
                     _ = dialog.OpenAsync();
-                    await _presetManager.SaveNewPresetAsync(_game, preset);
+                    await _presetManager.SaveNewPresetAsync(Paths.GetPresetsDirectory(_game.Module), preset);
 
                     _logger.Info($"Preset {preset.Name} added");
                 }

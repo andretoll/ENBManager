@@ -100,9 +100,6 @@ namespace ENBManager.Infrastructure.BusinessEntities
                     activePreset.IsActive = true;
             }
 
-            // Register events
-            Presets.CollectionChanged += (sender, e) => { eventAggregator.GetEvent<PresetsCollectionChangedEvent>().Publish(); };
-
             // Register views
             var regionManager = _container.Resolve<IRegionManager>();
             regionManager.RequestNavigate(RegionNames.MainRegion, nameof(ModuleShell));
