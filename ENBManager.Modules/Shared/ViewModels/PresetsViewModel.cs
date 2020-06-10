@@ -180,8 +180,9 @@ namespace ENBManager.Modules.Shared.ViewModels
                     {
                         _game.Settings.ActivePreset = preset.Name;
                         new ConfigurationManager<GameSettings>(_game.Settings).SaveSettings();
-                        preset.Files = (await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), preset.Name)).Files;
                     }
+
+                    preset.Files = (await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), preset.Name)).Files;
 
                     _logger.Info("Preset renamed");
                 }
