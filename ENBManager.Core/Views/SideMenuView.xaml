@@ -214,6 +214,24 @@
                                         <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges">
                                             <StackPanel>
 
+                                                <!-- Go to nexus -->
+                                                <Button Command="{Binding DataContext.OpenNexusCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding .}">
+
+                                                    <StackPanel Orientation="Horizontal"
+                                                                VerticalAlignment="Center">
+                                                        <materialDesign:PackIcon Kind="GamepadVariantOutline"
+                                                                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                                                 Width="20"
+                                                                                 Height="20"
+                                                                                 Margin="0 0 10 0"/>
+                                                        <TextBlock Text="{x:Static loc:Strings.GO_TO_NEXUS_MODS}"
+                                                                   Style="{StaticResource MaterialDesignButtonTextBlock}"
+                                                                   VerticalAlignment="Center"/>
+                                                    </StackPanel>
+
+                                                </Button>
+                                                
                                                 <!-- Go to directory -->
                                                 <Button Command="{Binding DataContext.OpenGameDirectoryCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                         CommandParameter="{Binding .}">

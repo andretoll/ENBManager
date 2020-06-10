@@ -77,6 +77,7 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand OpenSettingsCommand { get; }
         public DelegateCommand OpenDiscoverGamesCommand { get; }
         public DelegateCommand<GameModule> OpenGameDirectoryCommand { get; }
+        public DelegateCommand<GameModule> OpenNexusCommand { get; }
 
         #endregion
 
@@ -99,6 +100,7 @@ namespace ENBManager.Core.ViewModels
             OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
             OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
             OpenGameDirectoryCommand = new DelegateCommand<GameModule>(OnOpenGameDirectoryCommand);
+            OpenNexusCommand = new DelegateCommand<GameModule>(OnOpenNexusCommand);
 
             _logger.Debug($"{nameof(SideMenuViewModel)} initialized");
         }
@@ -175,6 +177,19 @@ namespace ENBManager.Core.ViewModels
             _logger.Debug(nameof(OnOpenGameDirectoryCommand));
 
             Process.Start("explorer", gameModule.InstalledLocation);
+        }
+
+        private void OnOpenNexusCommand(GameModule gameModule)
+        {
+            _logger.Info($"Opening {gameModule.Url}");
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = gameModule.Url,
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
         }
 
         private void ActivateModule(string name)

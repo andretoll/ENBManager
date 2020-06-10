@@ -250,6 +250,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to Nexus Mods.
+        /// </summary>
+        public static string GO_TO_NEXUS_MODS {
+            get {
+                return ResourceManager.GetString("GO_TO_NEXUS_MODS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Grid.
         /// </summary>
         public static string GRID {

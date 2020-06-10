@@ -23,6 +23,7 @@ namespace ENBManager.Modules.SkyrimSE
         public override string Module => ModuleNames.SKYRIMSE;
         public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrimse.png"));
         public override string[] Binaries => new[] {"d3d11.dll", "d3dcompiler_46e.dll"};
+        public override string Url => "https://www.nexusmods.com/skyrimspecialedition";
 
         public override void Activate()
         {

@@ -71,6 +71,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public abstract string Executable { get; } 
         public abstract string Module { get; }
         public abstract string[] Binaries { get; }
+        public abstract string Url { get; }
 
         #endregion
 

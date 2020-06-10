@@ -180,6 +180,9 @@
   <data name="GO_TO_ENBDEV" xml:space="preserve">
     <value>Go to ENBDev</value>
   </data>
+  <data name="GO_TO_NEXUS_MODS" xml:space="preserve">
+    <value>Go to Nexus Mods</value>
+  </data>
   <data name="GRID" xml:space="preserve">
     <value>Grid</value>
   </data>
