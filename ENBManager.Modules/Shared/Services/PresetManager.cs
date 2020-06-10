@@ -154,6 +154,10 @@ namespace ENBManager.Modules.Shared.Services
 
             foreach (var dir in enbDirs)
             {
+                // If directory is empty, add it
+                if (Directory.GetFiles(dir).Length == 0)
+                    enbFiles.Add(dir);
+
                 var files = Directory.GetFiles(dir, "*", SearchOption.AllDirectories);
                 foreach (var file in files)
                 {
@@ -185,6 +189,13 @@ namespace ENBManager.Modules.Shared.Services
 
             foreach (var file in preset.Files)
             {
+                // If directory is empty, create it
+                if (File.GetAttributes(file).HasFlag(FileAttributes.Directory) && Directory.GetFiles(file).Length == 0)
+                {
+                    Directory.CreateDirectory(file.Replace(sourceDir, preset.FullPath));
+                    continue;
+                }
+
                 var parentDir = Directory.GetParent(file.Replace(sourceDir, preset.FullPath));
 
                 // Create subfolder

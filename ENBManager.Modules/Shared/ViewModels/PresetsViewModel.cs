@@ -278,6 +278,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
                         // Reload preset
                         newPreset = await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), newPreset.Name);
+                        newPreset.IsActive = true;
                         Presets.Add(newPreset);
                         RaisePropertyChanged(nameof(Presets));
 
