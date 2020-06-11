@@ -113,6 +113,7 @@
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
     <Compile Include="Constants\RegionNames.cs" />
+    <Compile Include="Enums\VersionMismatch.cs" />
     <Compile Include="Exceptions\IdenticalNameException.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Helpers\TreeViewHelper.cs" />

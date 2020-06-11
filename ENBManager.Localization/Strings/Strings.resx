@@ -124,7 +124,7 @@
     <value>Add new preset</value>
   </data>
   <data name="AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS" xml:space="preserve">
-    <value>An item with this this name already exists.</value>
+    <value>An item with this this name already exists</value>
   </data>
   <data name="APPEARANCE" xml:space="preserve">
     <value>Appearance</value>
@@ -171,6 +171,9 @@
   <data name="ERROR_MISSING_BINARIES" xml:space="preserve">
     <value>Error: Missing binaries</value>
   </data>
+  <data name="ERROR_PRESET_COULD_NOT_BE_ACTIVATED" xml:space="preserve">
+    <value>Error: Preset could not be activated. Make sure the files included in the preset are compatible with the game directory</value>
+  </data>
   <data name="ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY" xml:space="preserve">
     <value>Error: Unable to locate game directory</value>
   </data>
@@ -181,7 +184,7 @@
     <value>Games</value>
   </data>
   <data name="GAME_UPDATED" xml:space="preserve">
-    <value>Game updated.</value>
+    <value>Game updated</value>
   </data>
   <data name="GENERAL" xml:space="preserve">
     <value>General</value>
@@ -205,7 +208,7 @@
     <value>Invalid name: The name may contain illegal characters</value>
   </data>
   <data name="INVALID_PRESET_NO_FILES" xml:space="preserve">
-    <value>Invalid preset: No eligible files were found.</value>
+    <value>Invalid preset: No eligible files were found</value>
   </data>
   <data name="LOG_LEVEL" xml:space="preserve">
     <value>Log level</value>
@@ -226,7 +229,7 @@
     <value>No</value>
   </data>
   <data name="NO_PRESET_ACTIVE" xml:space="preserve">
-    <value>No preset active.</value>
+    <value>No preset active</value>
   </data>
   <data name="NO_PROBLEMS_HAVE_BEEN_DETECTED" xml:space="preserve">
     <value>No problems have been detected</value>
@@ -241,13 +244,13 @@
     <value>activated.</value>
   </data>
   <data name="PRESET_ADDED" xml:space="preserve">
-    <value>Preset added.</value>
+    <value>Preset added</value>
   </data>
   <data name="PRESET_DELETED" xml:space="preserve">
-    <value>Preset deleted.</value>
+    <value>Preset deleted</value>
   </data>
   <data name="PRESET_UPDATED" xml:space="preserve">
-    <value>Preset updated.</value>
+    <value>Preset updated</value>
   </data>
   <data name="RENAME" xml:space="preserve">
     <value>Rename</value>
@@ -262,7 +265,7 @@
     <value>Save current</value>
   </data>
   <data name="SAVE_CURRENT_TOOLTIP_TEXT" xml:space="preserve">
-    <value>EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory.</value>
+    <value>EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory</value>
   </data>
   <data name="SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED" xml:space="preserve">
     <value>Select a game in the menu to get started!</value>
@@ -274,7 +277,7 @@
     <value>Set root</value>
   </data>
   <data name="SET_ROOT_TOOLTIP_TEXT" xml:space="preserve">
-    <value>Sets the selected folder as the top-level directory.</value>
+    <value>Sets the selected folder as the top-level directory</value>
   </data>
   <data name="START_WITH_LAST_GAME_ACTIVE" xml:space="preserve">
     <value>Start with last game active</value>
@@ -286,7 +289,7 @@
     <value>Themes &amp; Colors</value>
   </data>
   <data name="UNMANAGING_MANAGED_GAME" xml:space="preserve">
-    <value>Unmanaging a previously managed game will reset its content.</value>
+    <value>Unmanaging a previously managed game will reset its content</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
     <value>Update</value>
@@ -296,6 +299,12 @@
   </data>
   <data name="VIEW_FILES" xml:space="preserve">
     <value>View files</value>
+  </data>
+  <data name="WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED" xml:space="preserve">
+    <value>Version mismatch: An older binary version is currently used</value>
+  </data>
+  <data name="WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED" xml:space="preserve">
+    <value>Version mismatch: A newer binary version is currently used</value>
   </data>
   <data name="WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET" xml:space="preserve">
     <value>Warning: File(s) are missing from the active preset</value>

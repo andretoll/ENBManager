@@ -1,8 +1,11 @@
 ﻿using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Enums;
 using ENBManager.Infrastructure.Interfaces;
 using Microsoft.Win32;
 using NLog;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -108,6 +111,39 @@ namespace ENBManager.Infrastructure.Services
                 if (File.Exists(Path.Combine(target, binary)))
                     File.Delete(Path.Combine(target, binary));
             }
+        }
+
+        public VersionMismatch VerifyBinariesVersion(string source, string target, string[] binaries)
+        {
+            _logger.Debug(nameof(VerifyBinariesVersion));
+
+            foreach (var binary in binaries)
+            {
+                string sourcePath = Path.Combine(source, binary);
+                string targetPath = Path.Combine(target, binary);
+
+                if (File.Exists(sourcePath) && File.Exists(targetPath))
+                {
+                    var v1 = FileVersionInfo.GetVersionInfo(sourcePath).ProductVersion.Replace(',', '.');
+                    var sourceVersion = new Version(v1);
+                    var v2 = FileVersionInfo.GetVersionInfo(targetPath).ProductVersion.Replace(',', '.');
+                    var targetVersion = new Version(v2);
+
+                    var result = sourceVersion.CompareTo(targetVersion);
+
+                    switch (result)
+                    {
+                        case 0:
+                            return VersionMismatch.Matching;
+                        case 1:
+                            return VersionMismatch.Above;
+                        case -1:
+                            return VersionMismatch.Below;
+                    }
+                }
+            }
+
+            return VersionMismatch.Matching;
         }
 
         #endregion

@@ -153,7 +153,19 @@ namespace ENBManager.Modules.Shared.ViewModels
                 // If preset was activated
                 if (preset.IsActive)
                 {
-                    await _presetManager.ActivatePresetAsync(_game.InstalledLocation, preset);
+                    try
+                    {
+                        await _presetManager.ActivatePresetAsync(_game.InstalledLocation, preset);
+                    }
+                    catch (IOException ex)
+                    {
+                        _logger.Error(ex);
+                        await new MessageDialog(Strings.ERROR_PRESET_COULD_NOT_BE_ACTIVATED).OpenAsync();
+
+                        preset.IsActive = false;
+                        await OnActivatePresetCommand(preset);
+                        return;
+                    }
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
 
                     // If managing binaries, copy them to game dir

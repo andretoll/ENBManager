@@ -1,4 +1,6 @@
-﻿namespace ENBManager.Infrastructure.Interfaces
+﻿using ENBManager.Infrastructure.Enums;
+
+namespace ENBManager.Infrastructure.Interfaces
 {
     public interface IGameService
     {
@@ -27,6 +29,15 @@
         /// <param name="files"></param>
         /// <returns></returns>
         string[] VerifyBinaries(string directoryPath, string[] files);
+
+        /// <summary>
+        /// Verifies the version of the provided binaries compared to the binaries in the game directory.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <param name="binaries"></param>
+        /// <returns></returns>
+        VersionMismatch VerifyBinariesVersion(string source, string target, string[] binaries);
 
         /// <summary>
         /// Verifies the existance of binaries backup.

@@ -79,7 +79,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An item with this this name already exists..
+        ///   Looks up a localized string similar to An item with this this name already exists.
         /// </summary>
         public static string AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS {
             get {
@@ -223,6 +223,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Preset could not be activated. Make sure the files included in the preset are compatible with the game directory.
+        /// </summary>
+        public static string ERROR_PRESET_COULD_NOT_BE_ACTIVATED {
+            get {
+                return ResourceManager.GetString("ERROR_PRESET_COULD_NOT_BE_ACTIVATED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: Unable to locate game directory.
         /// </summary>
         public static string ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY {
@@ -241,7 +250,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game updated..
+        ///   Looks up a localized string similar to Game updated.
         /// </summary>
         public static string GAME_UPDATED {
             get {
@@ -322,7 +331,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid preset: No eligible files were found..
+        ///   Looks up a localized string similar to Invalid preset: No eligible files were found.
         /// </summary>
         public static string INVALID_PRESET_NO_FILES {
             get {
@@ -385,7 +394,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No preset active..
+        ///   Looks up a localized string similar to No preset active.
         /// </summary>
         public static string NO_PRESET_ACTIVE {
             get {
@@ -421,7 +430,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preset added..
+        ///   Looks up a localized string similar to Preset added.
         /// </summary>
         public static string PRESET_ADDED {
             get {
@@ -430,7 +439,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preset deleted..
+        ///   Looks up a localized string similar to Preset deleted.
         /// </summary>
         public static string PRESET_DELETED {
             get {
@@ -439,7 +448,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preset updated..
+        ///   Looks up a localized string similar to Preset updated.
         /// </summary>
         public static string PRESET_UPDATED {
             get {
@@ -493,7 +502,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory..
+        ///   Looks up a localized string similar to EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory.
         /// </summary>
         public static string SAVE_CURRENT_TOOLTIP_TEXT {
             get {
@@ -520,7 +529,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the selected folder as the top-level directory..
+        ///   Looks up a localized string similar to Sets the selected folder as the top-level directory.
         /// </summary>
         public static string SET_ROOT_TOOLTIP_TEXT {
             get {
@@ -565,7 +574,7 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unmanaging a previously managed game will reset its content..
+        ///   Looks up a localized string similar to Unmanaging a previously managed game will reset its content.
         /// </summary>
         public static string UNMANAGING_MANAGED_GAME {
             get {
@@ -597,6 +606,24 @@ namespace ENBManager.Localization.Strings {
         public static string VIEW_FILES {
             get {
                 return ResourceManager.GetString("VIEW_FILES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version mismatch: A newer binary version is currently used.
+        /// </summary>
+        public static string WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED {
+            get {
+                return ResourceManager.GetString("WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version mismatch: An older binary version is currently used.
+        /// </summary>
+        public static string WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED {
+            get {
+                return ResourceManager.GetString("WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED", resourceCulture);
             }
         }
         

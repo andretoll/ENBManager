@@ -3,6 +3,7 @@ using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Enums;
 using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
@@ -140,6 +141,27 @@ namespace ENBManager.Modules.Shared.ViewModels
                 healthy = false;
                 Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_NO_BINARIES_BACKUP, async () => await BackupBinaries(), Strings.BACKUP));
             }
+            else if (_configurationManager.Settings.ManageBinaries)
+            {
+                var versionMismatch = await VerifyBinariesVersion();
+
+                if (versionMismatch != VersionMismatch.Matching)
+                {
+                    healthy = false;
+
+                    switch (versionMismatch)
+                    {
+                        // If older version is used in game dir
+                        case VersionMismatch.Above:
+                            Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED, async () => await RestoreBinaries(), Strings.UPDATE));
+                            break;
+                        // If newer version is used in game dir
+                        case VersionMismatch.Below:
+                            Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED, async () => await BackupBinaries(), Strings.UPDATE));
+                            break;
+                    } 
+                }
+            }
 
             // Verify active preset (compare files)
             if (_game.Presets.Count > 0 && _game.Presets.SingleOrDefault(x => x.IsActive) != null)
@@ -227,7 +249,16 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Info("Backing up binaries");
 
-            _gameService.CopyBinaries(_game.Settings.InstalledLocation, Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries);
+            try
+            {
+                _gameService.CopyBinaries(_game.Settings.InstalledLocation, Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries);
+            }
+            catch (FileNotFoundException ex)
+            {
+                _logger.Warn(ex.Message);
+
+                await new MessageDialog(ex.Message).OpenAsync();
+            }
 
             await VerifyIntegrity();
         }
@@ -268,6 +299,13 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
 
             return Task.FromResult(true);
+        }
+
+        private Task<VersionMismatch> VerifyBinariesVersion()
+        {
+            _logger.Debug(nameof(VerifyBinariesVersion));
+
+            return Task.FromResult(_gameService.VerifyBinariesVersion(Paths.GetBinariesBackupDirectory(_game.Module), _game.InstalledLocation, _game.Binaries));
         }
 
         private Task<bool> VerifyBinariesBackup()
