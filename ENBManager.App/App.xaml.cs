@@ -77,15 +77,18 @@ namespace ENBManager.App
             // Services
             _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
             _ = containerRegistry.RegisterSingleton<IGameModuleCatalog, GameModuleCatalog>();
+            _ = containerRegistry.RegisterSingleton<IScreenshotWatcher, ScreenshotWatcher>();
             _ = containerRegistry.Register<ILoggerFacade, PrismLogger>();
             _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IGameService, GameService>();
             _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
             _ = containerRegistry.Register<IPresetManager, PresetManager>();
+            _ = containerRegistry.Register<IScreenshotManager, ScreenshotManager>();
 
             // ViewModels
             _ = containerRegistry.RegisterSingleton<DashboardViewModel>();
             _ = containerRegistry.RegisterSingleton<PresetsViewModel>();
+            _ = containerRegistry.RegisterSingleton<ScreenshotViewModel>();
 
             // Dialogs
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();

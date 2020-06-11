@@ -24,6 +24,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
         public bool DefaultPresetView { get; set; } = true;
         public bool ManageBinaries { get; set; } = true;
+        public bool EnableScreenshotWithoutPreset { get; set; } = true;
 
         #endregion
 

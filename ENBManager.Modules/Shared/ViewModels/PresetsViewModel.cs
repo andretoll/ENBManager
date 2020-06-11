@@ -123,6 +123,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Private Methods
 
+        //TODO: Refactoring
         private async Task OnActivatePresetCommand(Preset preset)
         {
             _logger.Debug(nameof(OnActivatePresetCommand));
@@ -141,18 +142,29 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
                 }
 
-                // Save active preset
-                if (preset.IsActive)
-                    _game.Settings.ActivePreset = preset.Name;
-                else
-                    _game.Settings.ActivePreset = string.Empty;
-
-                var configManager = new ConfigurationManager<GameSettings>(_game.Settings);
-                configManager.SaveSettings();
-
                 // If preset was activated
                 if (preset.IsActive)
                 {
+                    // If binaries are missing, add them
+                    if (_configurationManager.Settings.ManageBinaries && 
+                        _gameService.VerifyBinariesBackup(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries) &&
+                        _gameService.VerifyBinaries(_game.InstalledLocation, _game.Binaries).Length > 0)
+                    {
+                        try
+                        {
+                            _gameService.CopyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.InstalledLocation, _game.Binaries);
+                        }
+                        catch (IOException ex)
+                        {
+                            _logger.Warn(ex.Message);
+                            await new MessageDialog(Strings.ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN).OpenAsync();
+
+                            preset.IsActive = false;
+                            return;
+                        }
+                    }
+
+                    // Activate preset
                     try
                     {
                         await _presetManager.ActivatePresetAsync(_game.InstalledLocation, preset);
@@ -168,24 +180,43 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
 
-                    // If managing binaries, copy them to game dir
-                    if (_configurationManager.Settings.ManageBinaries && _gameService.VerifyBinariesBackup(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries))
-                        _gameService.CopyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.InstalledLocation, _game.Binaries);
-
                     _logger.Info($"Preset {preset.Name} activated");
                 }
                 // If preset was deactivated
                 else
                 {
+                    // If managing binaries, remove them from game dir
+                    if (_configurationManager.Settings.ManageBinaries)
+                    {
+                        try
+                        {
+                            _gameService.DeleteBinaries(_game.InstalledLocation, _game.Binaries);
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            _logger.Warn(ex.Message);
+                            await new MessageDialog(Strings.ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN).OpenAsync();
+
+                            preset.IsActive = true;
+                            return;
+                        }
+                    }
+
+                    // Deactivate preset
                     await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, preset);
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
 
-                    // If managing binaries, remove them from game dir
-                    if (_configurationManager.Settings.ManageBinaries)
-                        _gameService.DeleteBinaries(_game.InstalledLocation, _game.Binaries);
-
                     _logger.Info($"No preset activated");
-                } 
+                }
+
+                // Save active preset
+                if (preset.IsActive)
+                    _game.Settings.ActivePreset = preset.Name;
+                else
+                    _game.Settings.ActivePreset = string.Empty;
+
+                var configManager = new ConfigurationManager<GameSettings>(_game.Settings);
+                configManager.SaveSettings();
             }
         }
 
@@ -237,6 +268,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _logger.Warn(ex);
                     await new MessageDialog(Strings.INVALID_NAME).OpenAsync();
                 }
+
+                //TODO: Rename screenshots folder
             }
         }
 
@@ -262,6 +295,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     _logger.Warn(ex);
                 }
+
+                //TODO: Delete screenshots folder
 
                 Presets.Remove(preset);
             }

@@ -15,8 +15,9 @@ namespace ENBManager.Infrastructure.BusinessEntities
 
         #region Settings
 
-        public string InstalledLocation { get; set; }
-        public string ActivePreset { get; set; }
+        public string InstalledLocation { get; set; } = null;
+        public string ActivePreset { get; set; } = null;
+        public bool ScreenshotsEnabled { get; set; } = false;
 
         #endregion
 

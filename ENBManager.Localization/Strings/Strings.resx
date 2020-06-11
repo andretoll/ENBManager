@@ -165,8 +165,20 @@
   <data name="EMPTY" xml:space="preserve">
     <value>Empty.</value>
   </data>
+  <data name="ENABLE_SCREENSHOTS" xml:space="preserve">
+    <value>Enable screenshots</value>
+  </data>
+  <data name="ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET" xml:space="preserve">
+    <value>Enable screenshots without active preset</value>
+  </data>
+  <data name="ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP" xml:space="preserve">
+    <value>If enabled, screenshots will be saved even if no preset is active</value>
+  </data>
   <data name="ENTER_A_NEW_NAME" xml:space="preserve">
     <value>Enter a new name:</value>
+  </data>
+  <data name="ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN" xml:space="preserve">
+    <value>Error: Files are in use. Make sure the game is not running and try again.</value>
   </data>
   <data name="ERROR_MISSING_BINARIES" xml:space="preserve">
     <value>Error: Missing binaries</value>
@@ -266,6 +278,9 @@
   </data>
   <data name="SAVE_CURRENT_TOOLTIP_TEXT" xml:space="preserve">
     <value>EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory</value>
+  </data>
+  <data name="SCREENSHOTS" xml:space="preserve">
+    <value>Screenshots</value>
   </data>
   <data name="SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED" xml:space="preserve">
     <value>Select a game in the menu to get started!</value>

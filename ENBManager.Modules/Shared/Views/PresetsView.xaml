@@ -389,7 +389,7 @@
                         <Style TargetType="ContentPresenter">
 
                             <Setter Property="ContentTemplate"
-                                Value="{StaticResource PresetListItemTemplate}"/>
+                                    Value="{StaticResource PresetListItemTemplate}"/>
 
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="false">

@@ -11,6 +11,7 @@ namespace ENBManager.Infrastructure.Constants
         private const string GAMES_DIRECTORY = "Games"; 
         private const string PRESETS_DIRECTORY = "Presets";
         private const string BINARIES_BACKUP_DIRECTORY = "Binaries";
+        private const string SCREENSHOTS_DIRECTORY = "Screenshots";
 
         #endregion
 
@@ -34,6 +35,16 @@ namespace ENBManager.Infrastructure.Constants
         public static string GetBinariesBackupDirectory(string module)
         {
             return Path.Combine(GetBaseDirectory(), GAMES_DIRECTORY, module, BINARIES_BACKUP_DIRECTORY);
+        }
+
+        public static string GetScreenshotsDirectory(string module)
+        {
+            return Path.Combine(GetBaseDirectory(), GAMES_DIRECTORY, module, SCREENSHOTS_DIRECTORY);
+        }
+
+        public static string GetPresetScreenshotsDirectory(string module, string preset)
+        {
+            return Path.Combine(GetBaseDirectory(), GAMES_DIRECTORY, module, SCREENSHOTS_DIRECTORY, preset);
         }
 
         #endregion

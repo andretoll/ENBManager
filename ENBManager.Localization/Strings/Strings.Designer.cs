@@ -205,11 +205,47 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable screenshots.
+        /// </summary>
+        public static string ENABLE_SCREENSHOTS {
+            get {
+                return ResourceManager.GetString("ENABLE_SCREENSHOTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable screenshots without active preset.
+        /// </summary>
+        public static string ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET {
+            get {
+                return ResourceManager.GetString("ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If enabled, screenshots will be saved even if no preset is active.
+        /// </summary>
+        public static string ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP {
+            get {
+                return ResourceManager.GetString("ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a new name:.
         /// </summary>
         public static string ENTER_A_NEW_NAME {
             get {
                 return ResourceManager.GetString("ENTER_A_NEW_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Files are in use. Make sure the game is not running and try again..
+        /// </summary>
+        public static string ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN {
+            get {
+                return ResourceManager.GetString("ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN", resourceCulture);
             }
         }
         
@@ -507,6 +543,15 @@ namespace ENBManager.Localization.Strings {
         public static string SAVE_CURRENT_TOOLTIP_TEXT {
             get {
                 return ResourceManager.GetString("SAVE_CURRENT_TOOLTIP_TEXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Screenshots.
+        /// </summary>
+        public static string SCREENSHOTS {
+            get {
+                return ResourceManager.GetString("SCREENSHOTS", resourceCulture);
             }
         }
         

@@ -22,7 +22,7 @@
         <!-- Top bar -->
         <Border DockPanel.Dock="Top"
                 BorderThickness="0 0 0 2"
-                BorderBrush="{DynamicResource AttentionToActionBrush}"
+                BorderBrush="Gray"
                 Padding="0 10"
                 Margin="0 0 0 20">
 
@@ -63,7 +63,7 @@
             <Border DockPanel.Dock="Bottom"
                     Padding="0 20 0 0"
                     BorderThickness="0 2 0 0"
-                    BorderBrush="{DynamicResource AttentionToActionBrush}">
+                    BorderBrush="Gray">
 
                 <Border.Style>
                     <Style TargetType="{x:Type Border}">
