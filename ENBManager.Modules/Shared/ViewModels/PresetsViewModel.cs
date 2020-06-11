@@ -5,6 +5,7 @@ using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Infrastructure.Helpers;
+using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
@@ -32,6 +33,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IGameService _gameService;
         private readonly IPresetManager _presetManager;
 
         private GameModule _game;
@@ -96,12 +98,14 @@ namespace ENBManager.Modules.Shared.ViewModels
             IConfigurationManager<AppSettings> configurationManager,
             IDialogService dialogService,
             IEventAggregator eventAggregator,
+            IGameService gameService,
             IPresetManager presetManager)
             : base(eventAggregator)
         {
             _configurationManager = configurationManager;
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
+            _gameService = gameService;
             _presetManager = presetManager;
 
             ActivatePresetCommand = new DelegateCommand<Preset>(async (x) => await OnActivatePresetCommand(x));
@@ -152,6 +156,10 @@ namespace ENBManager.Modules.Shared.ViewModels
                     await _presetManager.ActivatePresetAsync(_game.InstalledLocation, preset);
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
 
+                    // If managing binaries, copy them to game dir
+                    if (_configurationManager.Settings.ManageBinaries && _gameService.VerifyBinariesBackup(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries))
+                        _gameService.CopyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.InstalledLocation, _game.Binaries);
+
                     _logger.Info($"Preset {preset.Name} activated");
                 }
                 // If preset was deactivated
@@ -159,6 +167,10 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, preset);
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
+
+                    // If managing binaries, remove them from game dir
+                    if (_configurationManager.Settings.ManageBinaries)
+                        _gameService.DeleteBinaries(_game.InstalledLocation, _game.Binaries);
 
                     _logger.Info($"No preset activated");
                 } 
@@ -247,16 +259,11 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Debug(nameof(OnSaveCurrentPresetCommand));
 
-            Preset newPreset;
-
             // Create preset
-            if (_configurationManager.Settings.ManageBinaries)
-                newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation, _game.Binaries);
-            else
-                newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
+            var newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
 
             // Validate file count without any binaries
-            if (newPreset.Files.Except(_game.Binaries.Select(x => Path.Combine(_game.InstalledLocation, x))).Count() == 0)
+            if (newPreset.Files.Count() == 0)
             {
                 var messageDialog = new MessageDialog(Strings.INVALID_PRESET_NO_FILES);
                 await messageDialog.OpenAsync();

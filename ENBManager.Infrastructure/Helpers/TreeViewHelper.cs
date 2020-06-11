@@ -22,7 +22,7 @@ namespace ENBManager.Infrastructure.Helpers
                 {
                     Name = directory.Name,
                     Path = directory.FullName,
-                    Items = new ObservableCollection<Node>(GetItems(directory.FullName))
+                    Items = new ObservableCollection<Node>(GetItems(directory.FullName, eventHandler))
                 };
 
                 item.PropertyChanged += eventHandler;

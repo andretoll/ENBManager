@@ -43,5 +43,12 @@
         /// <param name="target"></param>
         /// <param name="binaries"></param>
         void CopyBinaries(string source, string target, string[] binaries);
+
+        /// <summary>
+        /// Deletes the binaries from the target directory.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="binaries"></param>
+        void DeleteBinaries(string target, string[] binaries);
     }
 }

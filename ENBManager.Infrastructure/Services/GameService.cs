@@ -95,7 +95,18 @@ namespace ENBManager.Infrastructure.Services
                 if (!Directory.Exists(target))
                     Directory.CreateDirectory(target);
 
-                File.Copy(Path.Combine(source, binary), Path.Combine(target, binary));
+                File.Copy(Path.Combine(source, binary), Path.Combine(target, binary), true);
+            }
+        }
+
+        public void DeleteBinaries(string target, string[] binaries)
+        {
+            _logger.Debug(nameof(DeleteBinaries));
+
+            foreach (var binary in binaries)
+            {
+                if (File.Exists(Path.Combine(target, binary)))
+                    File.Delete(Path.Combine(target, binary));
             }
         }
 

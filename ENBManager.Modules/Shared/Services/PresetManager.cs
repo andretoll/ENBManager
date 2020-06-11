@@ -143,17 +143,11 @@ namespace ENBManager.Modules.Shared.Services
             await Task.Delay(500);
         }
 
-        public Preset CreateExistingPreset(string targetDir, params string[] binaries)
+        public Preset CreateExistingPreset(string targetDir)
         {
             _logger.Debug(nameof(CreateExistingPreset));
 
             var enbFiles = Directory.GetFiles(targetDir, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
-
-            foreach (var binary in binaries)
-            {
-                if (File.Exists(Path.Combine(targetDir, binary)))
-                    enbFiles.Add(Path.Combine(targetDir, binary));
-            }
 
             var enbDirs = Directory.GetDirectories(targetDir, "*enb*", SearchOption.TopDirectoryOnly);
 

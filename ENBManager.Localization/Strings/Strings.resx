@@ -216,6 +216,9 @@
   <data name="MANAGE_BINARIES" xml:space="preserve">
     <value>Manage binaries</value>
   </data>
+  <data name="MANAGE_BINARIES_TOOLTIP" xml:space="preserve">
+    <value>If enabled, binary files will be automatically managed by the application. It is recommended to have this enabled</value>
+  </data>
   <data name="MISC" xml:space="preserve">
     <value>Misc</value>
   </data>
@@ -273,8 +276,11 @@
   <data name="SET_ROOT_TOOLTIP_TEXT" xml:space="preserve">
     <value>Sets the selected folder as the top-level directory.</value>
   </data>
-  <data name="START_WITH_LAST_GAME" xml:space="preserve">
+  <data name="START_WITH_LAST_GAME_ACTIVE" xml:space="preserve">
     <value>Start with last game active</value>
+  </data>
+  <data name="START_WITH_LAST_GAME_ACTIVE_TOOLTIP" xml:space="preserve">
+    <value>Automatically selects the last active game upon startup</value>
   </data>
   <data name="THEMES_AND_COLORS" xml:space="preserve">
     <value>Themes &amp; Colors</value>

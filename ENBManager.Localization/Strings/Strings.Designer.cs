@@ -358,6 +358,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If enabled, binary files will be automatically managed by the application. It is recommended to have this enabled.
+        /// </summary>
+        public static string MANAGE_BINARIES_TOOLTIP {
+            get {
+                return ResourceManager.GetString("MANAGE_BINARIES_TOOLTIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Misc.
         /// </summary>
         public static string MISC {
@@ -531,9 +540,18 @@ namespace ENBManager.Localization.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Start with last game active.
         /// </summary>
-        public static string START_WITH_LAST_GAME {
+        public static string START_WITH_LAST_GAME_ACTIVE {
             get {
-                return ResourceManager.GetString("START_WITH_LAST_GAME", resourceCulture);
+                return ResourceManager.GetString("START_WITH_LAST_GAME_ACTIVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically selects the last active game upon startup.
+        /// </summary>
+        public static string START_WITH_LAST_GAME_ACTIVE_TOOLTIP {
+            get {
+                return ResourceManager.GetString("START_WITH_LAST_GAME_ACTIVE_TOOLTIP", resourceCulture);
             }
         }
         
