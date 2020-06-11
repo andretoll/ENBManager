@@ -19,9 +19,8 @@ namespace ENBManager.Core.Tests.ViewModels
         public void Setup()
         {
             var fileService = new GameServiceStub();
-            var gameLocator = new GameLocatorStub();
             var gameModuleCatalog = GetGameModuleCatalog();
-            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameLocator, gameModuleCatalog);
+            _viewModel = new DiscoverGamesDialogViewModel(fileService, gameModuleCatalog);
         }
 
         [Test]

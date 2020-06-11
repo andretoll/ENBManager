@@ -1,8 +1,6 @@
 ﻿using ENBManager.Configuration.Interfaces;
 using ENBManager.Configuration.Services;
 using ENBManager.Core.Helpers;
-using ENBManager.Core.Interfaces;
-using ENBManager.Core.Services;
 using ENBManager.Core.ViewModels;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
@@ -79,7 +77,6 @@ namespace ENBManager.App
             _ = containerRegistry.RegisterSingleton<IGameModuleCatalog, GameModuleCatalog>();
             _ = containerRegistry.RegisterSingleton<IScreenshotWatcher, ScreenshotWatcher>();
             _ = containerRegistry.Register<ILoggerFacade, PrismLogger>();
-            _ = containerRegistry.Register<IGameLocator, GameLocator>();
             _ = containerRegistry.Register<IGameService, GameService>();
             _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
             _ = containerRegistry.Register<IPresetManager, PresetManager>();
@@ -102,6 +99,8 @@ namespace ENBManager.App
 
         private void ConfigureGameModuleCatalog()
         {
+            _logger.Debug("Configuring game modules");
+
             var catalog = Container.Resolve<IGameModuleCatalog>();
 
             catalog.Register<Fallout4Module>(Container);
@@ -133,6 +132,8 @@ namespace ENBManager.App
 
         private void ApplyTheme()
         {
+            _logger.Debug("Applying theme");
+
             var configurationManager = Container.Resolve<IConfigurationManager<AppSettings>>();
 
             ThemeHelper.UpdateTheme(configurationManager.Settings.DarkMode);

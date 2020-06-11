@@ -32,7 +32,7 @@ namespace ENBManager.Core.ViewModels
 
         private void InitializeViews()
         {
-            _logger.Debug(nameof(InitializeViews));
+            _logger.Debug("Initializing views");
 
             _regionManager.RegisterViewWithRegion(RegionNames.SideMenuRegion, typeof(SideMenuView));
             _regionManager.RegisterViewWithRegion(RegionNames.MainRegion, typeof(MainView));

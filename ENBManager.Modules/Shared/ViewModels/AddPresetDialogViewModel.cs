@@ -102,8 +102,6 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             if (e.PropertyName == "IsSelected")
             {
-                _logger.Debug("Node selected/deselected");
-
                 if (sender.GetType() == typeof(FileNode))
                     SelectedDirectory = null;
                 else if (sender.GetType() == typeof(DirectoryNode))
@@ -122,7 +120,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnSaveCommand()
         {
-            _logger.Debug(nameof(OnSaveCommand));
+            _logger.Info("Saving preset");
 
             if (string.IsNullOrEmpty(_name) || Items == null || Items.Count == 0)
                 return;
@@ -175,10 +173,10 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnBrowseFolderCommand()
         {
-            _logger.Debug(nameof(OnBrowseFolderCommand));
+            _logger.Info("Browsing folder");
 
-            bool accepted = DialogHelper.OpenFolderDialog(out string path);
-            if (!accepted)
+            string path = DialogHelper.OpenDirectory();
+            if (string.IsNullOrEmpty(path))
                 return;
 
             // Create root node
@@ -191,7 +189,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             root.PropertyChanged += Item_PropertyChanged;
 
             // Get nodes
-            root.Items = new ObservableCollection<Node>(TreeViewHelper.GetItems(root.Path, Item_PropertyChanged));
+            root.Items = new ObservableCollection<Node>(TreeViewHelper.GetNodes(root.Path, Item_PropertyChanged));
             Items.Add(root);
 
             RaisePropertyChanged(nameof(Items));
@@ -205,7 +203,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnSetRootDirectoryCommand()
         {
-            _logger.Debug(nameof(OnSetRootDirectoryCommand));
+            _logger.Info("Setting root directory");
 
             if (!IsDirectorySelected)
                 return;
@@ -220,7 +218,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             root.PropertyChanged += Item_PropertyChanged;
 
             // Get nodes
-            root.Items = new ObservableCollection<Node>(TreeViewHelper.GetItems(root.Path, Item_PropertyChanged));
+            root.Items = new ObservableCollection<Node>(TreeViewHelper.GetNodes(root.Path, Item_PropertyChanged));
             Items.Add(root);
 
             RaisePropertyChanged(nameof(Items));
@@ -229,7 +227,9 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnDeleteNodeCommand(Node node)
         {
-            TreeViewHelper.DeleteItem(Items, node);
+            _logger.Info($"Deleting node {node.Path}");
+
+            TreeViewHelper.DeleteNode(Items, node);
             RaisePropertyChanged(nameof(Items));
             RaisePropertyChanged(nameof(IsFormValid));
         }
@@ -246,7 +246,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         public void OnDialogClosed()
         {
-            _logger.Info(nameof(OnDialogClosed));
+            _logger.Info("Closed");
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
@@ -256,7 +256,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 _game = parameters.GetValue<GameModule>("GameModule");
             }
 
-            _logger.Info(nameof(OnDialogOpened));
+            _logger.Info("Opened");
         } 
 
         #endregion

@@ -48,7 +48,7 @@ namespace ENBManager.Configuration.Services
             settings.SetFullPath(fullPath);
 
             return settings;
-        } 
+        }
 
         #endregion
 

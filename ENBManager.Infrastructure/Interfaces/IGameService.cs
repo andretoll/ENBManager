@@ -5,13 +5,6 @@ namespace ENBManager.Infrastructure.Interfaces
     public interface IGameService
     {
         /// <summary>
-        /// Prompts user to browse the computer for a specific file.
-        /// </summary>
-        /// <param name="fileName">The name of the file.</param>
-        /// <returns></returns>
-        string BrowseGameExecutable(string fileName);
-
-        /// <summary>
         /// Retrieves the managed games defined by existing folders in ProgramData.
         /// </summary>
         /// <returns></returns>
@@ -28,7 +21,15 @@ namespace ENBManager.Infrastructure.Interfaces
         /// <param name="directoryPath"></param>
         /// <param name="files"></param>
         /// <returns></returns>
-        string[] VerifyBinaries(string directoryPath, string[] files);
+        bool VerifyBinaries(string directoryPath, string[] files, out string[] missingBinaries);
+
+        /// <summary>
+        /// Verifies the existance of the files provided.
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        /// <param name="files"></param>
+        /// <returns></returns>
+        bool VerifyBinaries(string directoryPath, string[] files);
 
         /// <summary>
         /// Verifies the version of the provided binaries compared to the binaries in the game directory.
@@ -38,14 +39,6 @@ namespace ENBManager.Infrastructure.Interfaces
         /// <param name="binaries"></param>
         /// <returns></returns>
         VersionMismatch VerifyBinariesVersion(string source, string target, string[] binaries);
-
-        /// <summary>
-        /// Verifies the existance of binaries backup.
-        /// </summary>
-        /// <param name="directoryPath"></param>
-        /// <param name="binaries"></param>
-        /// <returns></returns>
-        bool VerifyBinariesBackup(string directoryPath, params string[] binaries);
 
         /// <summary>
         /// Creates backup files of the provided files.

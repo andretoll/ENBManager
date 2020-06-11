@@ -26,7 +26,7 @@ namespace ENBManager.Core.ViewModels
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
-        private readonly IGameService _fileService;
+        private readonly IGameService _gameService;
         private readonly IGameModuleCatalog _gameModuleCatalog;
         private readonly IRegionManager _regionManager;
 
@@ -86,13 +86,13 @@ namespace ENBManager.Core.ViewModels
         public SideMenuViewModel(
             IConfigurationManager<AppSettings> configurationManager,
             IDialogService dialogService,
-            IGameService fileService, 
+            IGameService gameService, 
             IGameModuleCatalog gameModuleCatalog, 
             IRegionManager regionManager)
         {
             _configurationManager = configurationManager;
             _dialogService = dialogService;
-            _fileService = fileService;
+            _gameService = gameService;
             _gameModuleCatalog = gameModuleCatalog;
             _regionManager = regionManager;
 
@@ -101,8 +101,6 @@ namespace ENBManager.Core.ViewModels
             OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
             OpenGameDirectoryCommand = new DelegateCommand<GameModule>(OnOpenGameDirectoryCommand);
             OpenNexusCommand = new DelegateCommand<GameModule>(OnOpenNexusCommand);
-
-            _logger.Debug($"{nameof(SideMenuViewModel)} initialized");
         }
 
         #endregion
@@ -111,11 +109,11 @@ namespace ENBManager.Core.ViewModels
 
         private void OnGetDataCommand()
         {
-            _logger.Debug(nameof(OnGetDataCommand));
+            _logger.Info("Getting managed games");
 
             Games = new ObservableCollection<GameModule>();
 
-            var directories = _fileService.GetGameDirectories();
+            var directories = _gameService.GetGameDirectories();
 
             foreach (var directory in directories)
             {
@@ -139,7 +137,7 @@ namespace ENBManager.Core.ViewModels
 
         private void OnOpenSettingsCommand()
         {
-            _logger.Debug(nameof(OnOpenSettingsCommand));
+            _logger.Info("Opening app settings dialog");
 
             _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
             {
@@ -155,7 +153,7 @@ namespace ENBManager.Core.ViewModels
 
         private void OnOpenDiscoverGamesCommand()
         {
-            _logger.Debug(nameof(OnOpenDiscoverGamesCommand));
+            _logger.Info("Opening discover games dialog");
 
             DialogParameters dp = new DialogParameters
             {
@@ -174,7 +172,7 @@ namespace ENBManager.Core.ViewModels
 
         private void OnOpenGameDirectoryCommand(GameModule gameModule)
         {
-            _logger.Debug(nameof(OnOpenGameDirectoryCommand));
+            _logger.Info("Opening game directory");
 
             Process.Start("explorer", gameModule.InstalledLocation);
         }
@@ -200,7 +198,7 @@ namespace ENBManager.Core.ViewModels
             _configurationManager.Settings.LastActiveGame = name;
             _configurationManager.SaveSettings();
 
-            _logger.Info($"Module '{name}' loaded");
+            _logger.Info($"Module '{name}' activated");
         }
 
         #endregion

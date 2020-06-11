@@ -1,17 +1,19 @@
-﻿using ENBManager.Core.Interfaces;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using NLog;
 using System.Threading.Tasks;
 
-namespace ENBManager.Core.Services
+namespace ENBManager.Core.Helpers
 {
-    public class GameLocator : IGameLocator
+    /// <summary>
+    /// A static helper class that provides functions related to locate installed games.
+    /// </summary>
+    public static class GameLocator
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public async Task<string> Find(string title)
+        public static async Task<string> Find(string title)
         {
-            _logger.Debug(nameof(Find));
+            _logger.Debug($"Attempts to find game '{title}'");
 
             string registry_key = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))

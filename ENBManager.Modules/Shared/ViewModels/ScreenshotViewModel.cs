@@ -68,6 +68,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void FileCreated(object sender, System.IO.FileSystemEventArgs e)
         {
+            _logger.Info("Detecting new screenshot");
+
             var activePreset = _game.Presets.Where(x => x.IsActive).SingleOrDefault();
 
             // If a preset is active, copy to preset dir
@@ -75,6 +77,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 try
                 {
+                    _logger.Info("Copying screenshot to preset");
                     _screenshotManager.SaveScreenshot(Paths.GetPresetScreenshotsDirectory(_game.Module, activePreset.Name), e.FullPath);
                 }
                 catch (Exception ex)
@@ -87,6 +90,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 try
                 {
+                    _logger.Info("Copying screenshot to base");
                     _screenshotManager.SaveScreenshot(Paths.GetScreenshotsDirectory(_game.Module), e.FullPath);
                 }
                 catch (Exception ex)
@@ -102,6 +106,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void UpdateUI()
         {
+            _logger.Debug("Updating UI");
+
             RaisePropertyChanged(nameof(EnableScreenshots));
         }
 
@@ -115,7 +121,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _game = game;
 
-            _screenshotWatcher.Configure(game.InstalledLocation, ScreenshotFileTypes.GetFileTypes());
+            _screenshotWatcher.Configure(game.InstalledLocation, FileTypes.ScreenshotFileTypes);
             _screenshotWatcher.Stop();
             
             // If screenshot watcher is enabled
@@ -127,8 +133,6 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             UpdateUI();
         }
-
-        
 
         #endregion
     }

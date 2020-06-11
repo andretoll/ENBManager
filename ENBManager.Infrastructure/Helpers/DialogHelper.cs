@@ -1,20 +1,54 @@
-﻿using System.Windows.Forms;
+﻿using NLog;
+using System.IO;
+using System.Windows.Forms;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace ENBManager.Infrastructure.Helpers
 {
+    /// <summary>
+    /// A static helper class that provides functions related to <see cref="OpenFileDialog"/> and <see cref="FolderBrowserDialog"/>.
+    /// </summary>
     public static class DialogHelper
     {
-        public static bool OpenFolderDialog(out string path)
+        #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
+        public static string OpenDirectory()
         {
-            path = null;
+            _logger.Debug("Opening FolderBrowserDialog");
 
             FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.ShowDialog();
 
-            if (dialog.ShowDialog() != DialogResult.OK)
-                return false;
+            return dialog.SelectedPath;
+        }
 
-            path = dialog.SelectedPath;
-            return true;
+        public static string OpenExecutable(string fileName)
+        {
+            _logger.Debug("Opening OpenFileDialog");
+
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                Filter = $"{fileName.Split('.')[0]} ({fileName}) | {fileName}",
+                CheckFileExists = true
+            };
+
+            bool? cancelled;
+            do
+            {
+                cancelled = !dialog.ShowDialog();
+            }
+            while (!cancelled.Value
+            && !string.IsNullOrEmpty(dialog.FileName)
+            && Path.GetFileName(dialog.FileName) != fileName);
+
+            if (cancelled.Value)
+                return null;
+
+            return dialog.FileName;
         }
     }
 }

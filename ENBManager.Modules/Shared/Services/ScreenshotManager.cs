@@ -19,14 +19,33 @@ namespace ENBManager.Modules.Shared.Services
 
         public void SaveScreenshot(string directory, string path)
         {
-            _logger.Debug(nameof(SaveScreenshot));
+            _logger.Debug($"Saving screenshot {path}");
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
             Thread.Sleep(SCREENSHOT_TIMEOUT);
             File.Move(path, Path.Combine(directory, Path.GetFileName(path)), true);
-        }  
+        }
+
+        public void RenameScreenshotDirectory(string directory, string newName)
+        {
+            _logger.Debug("Renaming screenshot directory");
+
+            string destination = Path.Combine(new DirectoryInfo(directory).Parent.FullName, newName);
+
+            if (directory.Equals(destination))
+                return;
+
+            Directory.Move(directory, destination);
+        }
+
+        public void DeleteScreenshotDirectory(string directory)
+        {
+            _logger.Debug("Deleting screenshot directory");
+
+            Directory.Delete(directory, true);
+        }
 
         #endregion
     }

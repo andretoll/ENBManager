@@ -12,12 +12,15 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
+using NLog;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
     public abstract class GameModule : INotifyPropertyChanged
     {
         #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IContainerProvider _container;
 
@@ -88,6 +91,8 @@ namespace ENBManager.Infrastructure.BusinessEntities
 
         protected void ActivateModule(params Type[] types)
         {
+            _logger.Debug($"Activating module '{this.GetType().Name}'");
+
             var eventAggregator = _container.Resolve<IEventAggregator>();
 
             // Get presets and active preset

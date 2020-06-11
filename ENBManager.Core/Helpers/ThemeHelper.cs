@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace ENBManager.Core.Helpers
 {
+    /// <summary>
+    /// A static helper class that provides functions related to themes and colors.
+    /// </summary>
     public static class ThemeHelper
     {
         #region Private Members
@@ -23,7 +26,7 @@ namespace ENBManager.Core.Helpers
         /// <returns></returns>
         public static IEnumerable<ColorScheme> GetColorSchemes()
         {
-            _logger.Debug(nameof(GetColorSchemes));
+            _logger.Debug("Getting color schemes");
 
             List<ColorScheme> colorSchemes = new List<ColorScheme>();
 
@@ -43,7 +46,7 @@ namespace ENBManager.Core.Helpers
         /// <param name="darkMode"></param>
         public static void UpdateTheme(bool darkMode)
         {
-            _logger.Debug(nameof(UpdateTheme));
+            _logger.Debug("Updating theme");
 
             var paletteHelper = new PaletteHelper();
 
@@ -66,7 +69,7 @@ namespace ENBManager.Core.Helpers
         /// <param name="secondary"></param>
         public static void UpdateColorScheme(string colorSchemeName)
         {
-            _logger.Debug(nameof(UpdateColorScheme));
+            _logger.Debug("Updating color scheme");
 
             var colorScheme = GetColorScheme(colorSchemeName);
             var paletteHelper = new PaletteHelper();
@@ -83,7 +86,7 @@ namespace ENBManager.Core.Helpers
 
         private static ColorScheme GetColorScheme(string colorSchemeName)
         {
-            _logger.Debug(nameof(GetColorScheme));
+            _logger.Debug("Getting color scheme");
 
             var colorSchemes = GetColorSchemes();
 

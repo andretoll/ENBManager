@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using NLog;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs.Base
     public abstract class BaseDialog
     {
         #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private string _hostIdentifier;
 
@@ -36,11 +39,15 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs.Base
         /// <param name="hostIdentifier"></param>
         public void SetHost(string hostIdentifier)
         {
+            _logger.Debug($"Setting host '{hostIdentifier}'");
+
             _hostIdentifier = hostIdentifier;
         }
 
         public async Task<bool> OpenAsync()
         {
+            _logger.Debug($"Opening {this.GetType().Name}");
+
             await CloseAsync();
             var result = await DialogHost.Show(this, _hostIdentifier);
 
@@ -49,11 +56,15 @@ namespace ENBManager.Infrastructure.BusinessEntities.Dialogs.Base
 
         public void Close()
         {
+            _logger.Debug($"Closing {this.GetType().Name}");
+
             DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         public Task CloseAsync()
         {
+            _logger.Debug($"Closing {this.GetType().Name}");
+
             DialogHost.CloseDialogCommand.Execute(null, null);
             return Task.CompletedTask;
         }

@@ -35,6 +35,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IGameService _gameService;
         private readonly IPresetManager _presetManager;
+        private readonly IScreenshotManager _screenshotManager;
 
         private GameModule _game;
 
@@ -99,7 +100,8 @@ namespace ENBManager.Modules.Shared.ViewModels
             IDialogService dialogService,
             IEventAggregator eventAggregator,
             IGameService gameService,
-            IPresetManager presetManager)
+            IPresetManager presetManager,
+            IScreenshotManager screenshotManager)
             : base(eventAggregator)
         {
             _configurationManager = configurationManager;
@@ -107,6 +109,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             _eventAggregator = eventAggregator;
             _gameService = gameService;
             _presetManager = presetManager;
+            _screenshotManager = screenshotManager;
 
             ActivatePresetCommand = new DelegateCommand<Preset>(async (x) => await OnActivatePresetCommand(x));
             RenamePresetCommand = new DelegateCommand<Preset>(async (x) => await OnRenamePresetCommand(x));
@@ -123,11 +126,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Private Methods
 
-        //TODO: Refactoring
         private async Task OnActivatePresetCommand(Preset preset)
         {
-            _logger.Debug(nameof(OnActivatePresetCommand));
-
             using (var dialog = new ProgressDialog(true))
             {
                 _ = dialog.OpenAsync();
@@ -137,6 +137,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     if (other.IsActive)
                     {
+                        _logger.Info($"Deactivating preset {preset.Name}");
                         await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, other);
                         other.IsActive = false;
                     }
@@ -147,11 +148,12 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     // If binaries are missing, add them
                     if (_configurationManager.Settings.ManageBinaries && 
-                        _gameService.VerifyBinariesBackup(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries) &&
-                        _gameService.VerifyBinaries(_game.InstalledLocation, _game.Binaries).Length > 0)
+                        _gameService.VerifyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries) &&
+                        !_gameService.VerifyBinaries(_game.InstalledLocation, _game.Binaries))
                     {
                         try
                         {
+                            _logger.Info($"Copying binaries");
                             _gameService.CopyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.InstalledLocation, _game.Binaries);
                         }
                         catch (IOException ex)
@@ -167,6 +169,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                     // Activate preset
                     try
                     {
+                        _logger.Info($"Activating preset {preset.Name}");
                         await _presetManager.ActivatePresetAsync(_game.InstalledLocation, preset);
                     }
                     catch (IOException ex)
@@ -178,9 +181,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                         await OnActivatePresetCommand(preset);
                         return;
                     }
-                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
 
-                    _logger.Info($"Preset {preset.Name} activated");
+                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish($"{preset.Name} {Strings.PRESET_ACTIVATED}");
                 }
                 // If preset was deactivated
                 else
@@ -190,6 +192,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                     {
                         try
                         {
+                            _logger.Info($"Deleting binaries");
+
                             _gameService.DeleteBinaries(_game.InstalledLocation, _game.Binaries);
                         }
                         catch (UnauthorizedAccessException ex)
@@ -203,10 +207,10 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
 
                     // Deactivate preset
+                    _logger.Info($"Deactivating preset {preset.Name}");
                     await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, preset);
-                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
 
-                    _logger.Info($"No preset activated");
+                    _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.NO_PRESET_ACTIVE);
                 }
 
                 // Save active preset
@@ -222,8 +226,6 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnRenamePresetCommand(Preset preset)
         {
-            _logger.Debug(nameof(OnRenamePresetCommand));
-
             var dialog = new InputDialog(Strings.ENTER_A_NEW_NAME, preset.Name);
             var result = await dialog.OpenAsync();
 
@@ -231,7 +233,17 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 try
                 {
+                    // Rename preset
+                    _logger.Info($"Renaming {preset.Name} to {dialog.Value}");
                     preset.FullPath = _presetManager.RenamePreset(preset, dialog.Value);
+
+                    // Rename screenshot folder
+                    if (Directory.Exists(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name)))
+                    {
+                        _logger.Info("Renaming screenshot directory");
+                        _screenshotManager.RenameScreenshotDirectory(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name), dialog.Value);
+                    }
+
                     preset.Name = dialog.Value;
 
                     if (preset.IsActive)
@@ -241,8 +253,6 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
 
                     preset.Files = (await _presetManager.GetPresetAsync(Paths.GetPresetsDirectory(_game.Module), preset.Name)).Files;
-
-                    _logger.Info("Preset renamed");
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -268,15 +278,11 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _logger.Warn(ex);
                     await new MessageDialog(Strings.INVALID_NAME).OpenAsync();
                 }
-
-                //TODO: Rename screenshots folder
             }
         }
 
         private async Task OnDeletePresetCommand(Preset preset)
         {
-            _logger.Debug(nameof(OnDeletePresetCommand));
-
             var dialog = new ConfirmDialog(Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE);
             var result = await dialog.OpenAsync();
 
@@ -284,19 +290,22 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 try
                 {
+                    // Delete preset
+                    _logger.Info("Deleting preset");
                     _presetManager.DeletePreset(preset);
-                    Presets.Remove(preset);
+
+                    // Delete screenshots folder
+                    _logger.Info("Deleting screenshot directory");
+                    _screenshotManager.DeleteScreenshotDirectory(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name));
+
                     RaisePropertyChanged(nameof(Presets));
 
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_DELETED);
-                    _logger.Info("Preset deleted");
                 }
                 catch (DirectoryNotFoundException ex)
                 {
                     _logger.Warn(ex);
                 }
-
-                //TODO: Delete screenshots folder
 
                 Presets.Remove(preset);
             }
@@ -304,9 +313,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnSaveCurrentPresetCommand()
         {
-            _logger.Debug(nameof(OnSaveCurrentPresetCommand));
-
             // Create preset
+            _logger.Info("Creating preset");
             var newPreset = _presetManager.CreateExistingPreset(_game.InstalledLocation);
 
             // Validate file count without any binaries
@@ -315,7 +323,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 var messageDialog = new MessageDialog(Strings.INVALID_PRESET_NO_FILES);
                 await messageDialog.OpenAsync();
 
-                _logger.Debug($"OnSaveCurrentPresetCommand: {Strings.INVALID_PRESET_NO_FILES}");
+                _logger.Info(Strings.INVALID_PRESET_NO_FILES);
                 return;
             }
 
@@ -332,6 +340,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                         _ = dialog.OpenAsync();
 
                         // Save preset
+                        _logger.Info("Saving current preset");
                         newPreset.Name = inputDialog.Value;
                         await _presetManager.SaveCurrentPresetAsync(Paths.GetPresetsDirectory(_game.Module), _game.InstalledLocation, newPreset);
 
@@ -341,8 +350,6 @@ namespace ENBManager.Modules.Shared.ViewModels
                         Presets.Add(newPreset);
                         await OnActivatePresetCommand(newPreset);
                         RaisePropertyChanged(nameof(Presets));
-
-                        _logger.Info($"Preset {newPreset.Name} added");
 
                         _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
                     }
@@ -362,13 +369,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnAddPresetCommand()
         {
-            _logger.Debug(nameof(OnAddPresetCommand));
+            _logger.Info("Opening add preset dialog");
 
             var dp = new DialogParameters
             {
                 { "GameModule", _game }
             };
-
             _dialogService.ShowDialog(nameof(AddPresetDialog), dp, async (dr) =>
             {
                 if (dr.Result == ButtonResult.OK)
@@ -378,7 +384,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                     RaisePropertyChanged(nameof(Presets));
 
                     _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
-                    _logger.Info($"Preset added");
+
+                    _logger.Info("Preset added");
                 }
             });
 
@@ -387,7 +394,9 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnViewFilesCommand(Preset preset)
         {
-            var dialog = new TreeViewDialog(string.Empty, TreeViewHelper.GetItems(preset.FullPath));
+            _logger.Info("Viewing preset files");
+
+            var dialog = new TreeViewDialog(string.Empty, TreeViewHelper.GetNodes(preset.FullPath));
             _ = dialog.OpenAsync();
         }
 

@@ -21,8 +21,6 @@ namespace ENBManager.Modules.Shared.Services
         public ScreenshotWatcher()
         {
             _watcher = new FileSystemWatcher();
-
-            _logger.Debug($"{nameof(ScreenshotWatcher)} initialized");
         }
 
         #endregion
@@ -66,7 +64,5 @@ namespace ENBManager.Modules.Shared.Services
         }
 
         #endregion
-
-
     }
 }

@@ -23,7 +23,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public IEnumerable<Preset> GetPresets(string path)
         {
-            _logger.Debug(nameof(GetPresets));
+            _logger.Debug("Getting presets");
 
             var presets = new List<Preset>();
 
@@ -49,7 +49,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public Task<Preset> GetPresetAsync(string path, string preset)
         {
-            _logger.Debug(nameof(GetPresetAsync));
+            _logger.Debug("Getting preset");
 
             var presets = GetPresets(path);
 
@@ -58,7 +58,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public string RenamePreset(Preset preset, string newName)
         {
-            _logger.Debug(nameof(RenamePreset));
+            _logger.Debug($"Renaming preset {preset.Name} to {newName}");
 
             var oldDirectory = new DirectoryInfo(preset.FullPath);
 
@@ -87,7 +87,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public void DeletePreset(Preset preset)
         {
-            _logger.Debug(nameof(DeletePreset));
+            _logger.Debug("Deleting preset");
 
             // Make sure directory exists
             if (!Directory.Exists(preset.FullPath))
@@ -98,7 +98,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task ActivatePresetAsync(string targetDir, Preset preset)
         {
-            _logger.Debug(nameof(ActivatePresetAsync));
+            _logger.Debug("Activating preset");
 
             // Create all directories
             foreach (var dir in Directory.GetDirectories(preset.FullPath, "*", SearchOption.AllDirectories))
@@ -118,7 +118,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task DeactivatePresetAsync(string targetDir, Preset preset)
         {
-            _logger.Debug(nameof(DeactivatePresetAsync));
+            _logger.Debug("Deactivating preset");
 
             // Delete all files
             foreach (var file in Directory.GetFiles(targetDir, "*", SearchOption.AllDirectories))
@@ -145,7 +145,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public Preset CreateExistingPreset(string targetDir)
         {
-            _logger.Debug(nameof(CreateExistingPreset));
+            _logger.Debug("Creating existing preset");
 
             var enbFiles = Directory.GetFiles(targetDir, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
 
@@ -174,7 +174,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task SaveCurrentPresetAsync(string targetDir, string sourceDir, Preset preset)
         {
-            _logger.Debug(nameof(SaveCurrentPresetAsync));
+            _logger.Debug("Saving current preset");
 
             var presetsDir = targetDir;
 
@@ -212,7 +212,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public async Task SaveNewPresetAsync(string targetDir, Preset preset)
         {
-            _logger.Debug(nameof(SaveNewPresetAsync));
+            _logger.Debug("Saving new preset");
 
             string originRoot = preset.FullPath;
 
@@ -247,7 +247,7 @@ namespace ENBManager.Modules.Shared.Services
 
         public Task<bool> ValidatePresetAsync(string targetDir, Preset preset)
         {
-            _logger.Debug(nameof(ValidatePresetAsync));
+            _logger.Debug("Validating preset");
 
             bool identical = true;
 
@@ -274,11 +274,15 @@ namespace ENBManager.Modules.Shared.Services
                     identical = false;
             }
 
+            _logger.Debug($"Identical - {identical}");
+
             return Task.FromResult(identical);
         }
 
         public Task UpdatePresetFilesAsync(string targetDir, Preset preset)
         {
+            _logger.Debug("Updating preset files");
+
             foreach (var item in preset.Files)
             {
                 string source = item.Replace(preset.FullPath, targetDir);

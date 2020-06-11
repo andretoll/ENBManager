@@ -1,5 +1,4 @@
-﻿using ENBManager.Infrastructure.BusinessEntities;
-using ENBManager.Modules.Shared.Models;
+﻿using ENBManager.Modules.Shared.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

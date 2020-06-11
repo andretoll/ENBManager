@@ -8,5 +8,18 @@
         /// <param name="directory"></param>
         /// <param name="path"></param>
         void SaveScreenshot(string directory, string path);
+
+        /// <summary>
+        /// Renames a screenshot directory.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="newName"></param>
+        void RenameScreenshotDirectory(string directory, string newName);
+
+        /// <summary>
+        /// Deletes a screenshot directory.
+        /// </summary>
+        /// <param name="directory"></param>
+        void DeleteScreenshotDirectory(string directory);
     }
 }

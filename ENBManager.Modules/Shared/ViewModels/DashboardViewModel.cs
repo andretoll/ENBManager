@@ -4,15 +4,16 @@ using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Enums;
+using ENBManager.Infrastructure.Helpers;
 using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
+using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
 using NLog;
 using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -80,6 +81,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private async Task OnLoadedCommand()
         {
+            _logger.Info("Loaded");
+
             Notifications = new ObservableCollection<Notification>();
             UpdateUI();
 
@@ -88,7 +91,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void UpdateUI()
         {
-            _logger.Debug(nameof(UpdateUI));
+            _logger.Debug("Updating UI");
 
             RaisePropertyChanged(nameof(Notifications));
             RaisePropertyChanged(nameof(Title));
@@ -100,14 +103,14 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnRemoveNotificationCommand(Notification notification)
         {
-            _logger.Debug(nameof(OnRemoveNotificationCommand));
+            _logger.Debug("Removing notification");
 
             Notifications.Remove(notification);
         }
 
         private async Task VerifyIntegrity()
         {
-            _logger.Debug(nameof(VerifyIntegrity));
+            _logger.Info("Verifying integrity");
 
             Notifications.Clear();
 
@@ -153,10 +156,12 @@ namespace ENBManager.Modules.Shared.ViewModels
                     {
                         // If older version is used in game dir
                         case VersionMismatch.Above:
+                            _logger.Warn("Version mismatch: older version in game directory");
                             Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED, async () => await RestoreBinaries(), Strings.UPDATE));
                             break;
                         // If newer version is used in game dir
                         case VersionMismatch.Below:
+                            _logger.Warn("Version mismatch: newer version in game directory");
                             Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED, async () => await BackupBinaries(), Strings.UPDATE));
                             break;
                     } 
@@ -183,7 +188,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             if (healthy)
             {
-                _logger.Info(Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED);
+                _logger.Info("Game healthy");
 
                 Notifications.Add(new Notification(Icon.Success, Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED, null, null));
             }
@@ -193,7 +198,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Info("Browsing new directory");
 
-            string newPath = _gameService.BrowseGameExecutable(_game.Executable);
+            string newPath = DialogHelper.OpenExecutable(_game.Executable);
 
             if (string.IsNullOrEmpty(newPath))
                 return;
@@ -278,7 +283,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private Task<bool> VerifyInstallationPath()
         {
-            _logger.Debug(nameof(VerifyInstallationPath));
+            _logger.Debug("Verifying installation path");
 
             if (!Directory.Exists(_game.Settings.InstalledLocation))
             {
@@ -290,36 +295,30 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private Task<bool> VerifyBinaries(out string[] binaries)
         {
-            _logger.Debug(nameof(VerifyBinaries));
+            _logger.Debug("Verifying binaries");
 
-            binaries = _gameService.VerifyBinaries(_game.Settings.InstalledLocation, _game.Binaries);
-            if (binaries.Length > 0)
-            {
-                return Task.FromResult(false);
-            }
-
-            return Task.FromResult(true);
+            return Task.FromResult(_gameService.VerifyBinaries(_game.Settings.InstalledLocation, _game.Binaries, out binaries));
         }
 
         private Task<VersionMismatch> VerifyBinariesVersion()
         {
-            _logger.Debug(nameof(VerifyBinariesVersion));
+            _logger.Debug("Verifying binaries version");
 
             return Task.FromResult(_gameService.VerifyBinariesVersion(Paths.GetBinariesBackupDirectory(_game.Module), _game.InstalledLocation, _game.Binaries));
         }
 
         private Task<bool> VerifyBinariesBackup()
         {
-            _logger.Debug(nameof(VerifyBinariesBackup));
+            _logger.Debug("Verifying binaries backup");
 
-            bool existing = _gameService.VerifyBinariesBackup(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries);
+            bool existing = _gameService.VerifyBinaries(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries);
 
             return Task.FromResult(existing);
         }
 
         private async Task<bool> VerifyActivePreset()
         {
-            _logger.Debug(nameof(VerifyActivePreset));
+            _logger.Debug("Verifying active preset");
 
             return await _presetManager.ValidatePresetAsync(_game.InstalledLocation, _game.Presets.Single(x => x.IsActive));
         }
@@ -336,48 +335,5 @@ namespace ENBManager.Modules.Shared.ViewModels
         } 
 
         #endregion
-    }
-
-    public class Notification
-    {
-        #region Public Properties
-
-        public Icon Icon { get; set; }
-        public string Message { get; set; }
-        public Action Action { get; set; }
-        public string ActionButtonText { get; set; }
-        public bool IsActive { get; set; }
-
-        #endregion
-
-        #region Commands
-
-        public DelegateCommand ExecuteActionCommand { get; }
-        public DelegateCommand HideCommand { get; }
-
-        #endregion
-
-        #region Constructor
-
-        public Notification(Icon icon, string message, Action action, string actionButtonText)
-        {
-            Icon = icon;
-            Message = message;
-            Action = action;
-            ActionButtonText = actionButtonText;
-            IsActive = true;
-
-            ExecuteActionCommand = action == null ? null : new DelegateCommand(action);
-            HideCommand = new DelegateCommand(() => IsActive = false);
-        } 
-
-        #endregion
-    }
-
-    public enum Icon
-    {
-        Success = 0,
-        Warning = 1,
-        Error = 2
     }
 }

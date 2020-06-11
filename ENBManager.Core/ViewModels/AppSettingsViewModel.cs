@@ -44,8 +44,6 @@ namespace ENBManager.Core.ViewModels
 
             SaveCommand = new DelegateCommand(OnSaveCommand);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
-
-            _logger.Debug($"{nameof(AppSettingsViewModel)} initialized");
         }
 
         #endregion
@@ -54,7 +52,7 @@ namespace ENBManager.Core.ViewModels
 
         private void OnSaveCommand()
         {
-            _logger.Debug(nameof(OnSaveCommand));
+            _logger.Info("Saving app settings");
 
             ThemeHelper.UpdateTheme(_configurationManager.Settings.DarkMode);
             ThemeHelper.UpdateColorScheme(_configurationManager.Settings.ColorScheme);
@@ -76,12 +74,12 @@ namespace ENBManager.Core.ViewModels
 
         public void OnDialogClosed() 
         {
-            _logger.Info(nameof(OnDialogClosed));
+            _logger.Info("Closed");
         }
 
         public void OnDialogOpened(IDialogParameters parameters) 
         {
-            _logger.Info(nameof(OnDialogOpened));
+            _logger.Info("Opened");
         }
 
         #endregion

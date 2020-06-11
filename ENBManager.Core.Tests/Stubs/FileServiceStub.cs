@@ -1,4 +1,5 @@
-﻿using ENBManager.Infrastructure.Interfaces;
+﻿using ENBManager.Infrastructure.Enums;
+using ENBManager.Infrastructure.Interfaces;
 using ENBManager.TestUtils.Utils;
 
 namespace ENBManager.Core.Tests.Stubs
@@ -35,7 +36,22 @@ namespace ENBManager.Core.Tests.Stubs
             throw new System.NotImplementedException();
         }
 
+        public bool VerifyBinaries(string directoryPath, string[] files, out string[] missingBinaries)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool VerifyBinariesBackup(string directoryPath, params string[] binaries)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public VersionMismatch VerifyBinariesVersion(string source, string target, string[] binaries)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        bool IGameService.VerifyBinaries(string directoryPath, string[] files)
         {
             throw new System.NotImplementedException();
         }

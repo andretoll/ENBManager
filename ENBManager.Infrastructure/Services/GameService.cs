@@ -1,13 +1,11 @@
 ﻿using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Enums;
 using ENBManager.Infrastructure.Interfaces;
-using Microsoft.Win32;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace ENBManager.Infrastructure.Services
 {
@@ -21,69 +19,49 @@ namespace ENBManager.Infrastructure.Services
 
         #region IGameService Implementation
 
-        public string BrowseGameExecutable(string fileName)
+        public void DeleteGameDirectory(string module)
         {
-            _logger.Info($"Browsing for file '{fileName}'");
+            _logger.Debug($"Deleting directory '{module}'");
 
-            OpenFileDialog dialog = new OpenFileDialog()
-            {
-                Filter = $"{fileName.Split('.').First()} ({fileName}) | {fileName}",
-                CheckFileExists = true
-            };
-
-            bool? cancelled;
-            do
-            {
-                cancelled = !dialog.ShowDialog();
-            }
-            while (!cancelled.Value && !string.IsNullOrEmpty(dialog.FileName) &&
-                Path.GetFileName(dialog.FileName) != fileName);
-
-            if (cancelled.Value)
-                return null;
-
-            return dialog.FileName;
-        }
-
-        public void DeleteGameDirectory(string directoryName)
-        {
-            _logger.Info($"Deleting directory '{directoryName}'");
-
-            Directory.Delete(Path.Combine(Paths.GetGamesDirectory(), directoryName), true);
+            Directory.Delete(Path.Combine(Paths.GetGamesDirectory(), module), true);
         }
 
         public string[] GetGameDirectories()
         {
-            _logger.Debug(nameof(GetGameDirectories));
+            _logger.Debug("Getting game directories");
 
             return Directory.GetDirectories(Paths.GetGamesDirectory());
         }
 
-        public string[] VerifyBinaries(string directoryPath, string[] files)
+        public bool VerifyBinaries(string directoryPath, string[] binaries, out string[] missingBinaries)
         {
-            _logger.Debug(nameof(VerifyBinaries));
+            _logger.Debug("Verifying binaries and returns missing files");
 
             List<string> missingFiles = new List<string>();
-
-            foreach (var file in files)
-            {
-                if (!File.Exists(Path.Combine(directoryPath, file)))
-                {
-                    missingFiles.Add(file);
-                }
-            }
-
-            return missingFiles.ToArray();
-        }
-
-        public bool VerifyBinariesBackup(string directoryPath, string[] binaries)
-        {
-            _logger.Debug(nameof(VerifyBinariesBackup));
 
             foreach (var binary in binaries)
             {
                 if (!File.Exists(Path.Combine(directoryPath, binary)))
+                {
+                    missingFiles.Add(binary);
+                }
+            }
+
+            missingBinaries = missingFiles.ToArray();
+
+            return missingBinaries.Length == 0;
+        }
+
+        public bool VerifyBinaries(string directoryPath, string[] binaries)
+        {
+            _logger.Debug("Verifying binaries");
+
+            foreach (var binary in binaries)
+            {
+                if (!File.Exists(Path.Combine(directoryPath, binary)))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -91,7 +69,7 @@ namespace ENBManager.Infrastructure.Services
 
         public void CopyBinaries(string source, string target, string[] binaries)
         {
-            _logger.Debug(nameof(CopyBinaries));
+            _logger.Debug($"Copying binaries from {source} to {target}");
 
             foreach (var binary in binaries)
             {
@@ -104,7 +82,7 @@ namespace ENBManager.Infrastructure.Services
 
         public void DeleteBinaries(string target, string[] binaries)
         {
-            _logger.Debug(nameof(DeleteBinaries));
+            _logger.Debug("Deleting binaries");
 
             foreach (var binary in binaries)
             {
@@ -115,7 +93,7 @@ namespace ENBManager.Infrastructure.Services
 
         public VersionMismatch VerifyBinariesVersion(string source, string target, string[] binaries)
         {
-            _logger.Debug(nameof(VerifyBinariesVersion));
+            _logger.Debug("Verifying binaries version");
 
             foreach (var binary in binaries)
             {
@@ -134,10 +112,13 @@ namespace ENBManager.Infrastructure.Services
                     switch (result)
                     {
                         case 0:
+                            _logger.Debug(VersionMismatch.Matching.ToString());
                             return VersionMismatch.Matching;
                         case 1:
+                            _logger.Debug(VersionMismatch.Above.ToString());
                             return VersionMismatch.Above;
                         case -1:
+                            _logger.Debug(VersionMismatch.Below.ToString());
                             return VersionMismatch.Below;
                     }
                 }

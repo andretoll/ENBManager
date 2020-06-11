@@ -1,5 +1,6 @@
 ﻿using ENBManager.Modules.Shared.Events;
 using MaterialDesignThemes.Wpf;
+using NLog;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -7,6 +8,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 {
     public class ModuleShellViewModel : BindableBase
     {
+        #region Private Members
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
         #region Public Properties
 
         public ISnackbarMessageQueue MessageQueue { get; }
@@ -28,6 +35,8 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void ShowSnackbarMessage(string message)
         {
+            _logger.Debug($"Showing message: {message}");
+
             MessageQueue.Enqueue(message);
         }
 

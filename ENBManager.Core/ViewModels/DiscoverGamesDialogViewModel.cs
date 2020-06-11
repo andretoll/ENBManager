@@ -1,6 +1,7 @@
 ﻿using ENBManager.Configuration.Services;
-using ENBManager.Core.Interfaces;
+using ENBManager.Core.Helpers;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Helpers;
 using ENBManager.Infrastructure.Interfaces;
 using ENBManager.Modules.Shared.Interfaces;
 using NLog;
@@ -23,8 +24,7 @@ namespace ENBManager.Core.ViewModels
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private readonly IGameService _fileService;
-        private readonly IGameLocator _gameLocator;
+        private readonly IGameService _gameService;
         private readonly IGameModuleCatalog _gameModuleCatalog;
 
         #endregion
@@ -64,20 +64,16 @@ namespace ENBManager.Core.ViewModels
         #region Constructor
 
         public DiscoverGamesDialogViewModel(
-            IGameService fileService,
-            IGameLocator gameLocator,
+            IGameService gameService,
             IGameModuleCatalog gameModuleCatalog)
         {
-            _fileService = fileService;
-            _gameLocator = gameLocator;
+            _gameService = gameService;
             _gameModuleCatalog = gameModuleCatalog;
 
             ContinueCommand = new DelegateCommand(OnContinueCommand).ObservesCanExecute(() => AnyGamesManaged);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
             GetDataCommand = new DelegateCommand(async () => await OnGetDataCommand());
             BrowseGameCommand = new DelegateCommand<GameModule>((p) => OnBrowseGameCommand(p));
-
-            _logger.Debug($"{nameof(DiscoverGamesDialogViewModel)} initialized");
         }
 
         #endregion
@@ -95,7 +91,7 @@ namespace ENBManager.Core.ViewModels
 
         private void OnContinueCommand()
         {
-            _logger.Debug(nameof(OnContinueCommand));
+            _logger.Info("Continuing");
 
             GameSettings gameSettings;
             ConfigurationManager<GameSettings> configManager;
@@ -103,6 +99,7 @@ namespace ENBManager.Core.ViewModels
             // For every game to manage, initialize settings
             foreach (var game in Games.Where(x => x.ShouldManage))
             {
+                _logger.Debug($"Managing {game}");
                 gameSettings = new GameSettings(game.Module) { InstalledLocation = game.InstalledLocation };
                 configManager = new ConfigurationManager<GameSettings>(gameSettings);
                 configManager.InitializeSettings();
@@ -111,15 +108,17 @@ namespace ENBManager.Core.ViewModels
             // For every game to not manage, delete directory
             foreach (var game in Games.Where(x => !x.ShouldManage))
             {
+                _logger.Debug($"Unmanaging {game}");
+
                 // If game directory exists, delete it and its content
-                var directories = _fileService.GetGameDirectories();
+                var directories = _gameService.GetGameDirectories();
                 for (int i = 0; i < directories.Length; i++)
                 {
                     if (new DirectoryInfo(directories[i]).Name == game.Module)
                     {
                         configManager = new ConfigurationManager<GameSettings>(new GameSettings(game.Module));
                         configManager.SetReadOnly(false);
-                        _fileService.DeleteGameDirectory(game.Module);
+                        _gameService.DeleteGameDirectory(game.Module);
                     }
                 }
             }
@@ -129,7 +128,7 @@ namespace ENBManager.Core.ViewModels
 
         private async Task OnGetDataCommand()
         {
-            _logger.Debug(nameof(OnGetDataCommand));
+            _logger.Info("Getting supported games");
 
             if (Games == null)
                 Games = new ObservableCollection<GameModule>();
@@ -141,7 +140,7 @@ namespace ENBManager.Core.ViewModels
                 if (Games.Any(x => x.Module == game.Module))
                     continue;
 
-                game.InstalledLocation = await _gameLocator.Find(game.Title);
+                game.InstalledLocation = await GameLocator.Find(game.Title);
                 game.PropertyChanged += Game_PropertyChanged;
                 Games.Add(game);
             }
@@ -152,9 +151,9 @@ namespace ENBManager.Core.ViewModels
 
         private void OnBrowseGameCommand(GameModule game)
         {
-            _logger.Debug(nameof(OnBrowseGameCommand));
+            _logger.Info("Browsing game");
 
-            string filePath = _fileService.BrowseGameExecutable(game.Executable);
+            string filePath = DialogHelper.OpenExecutable(game.Executable);
 
             if (string.IsNullOrEmpty(filePath))
                 return;
@@ -175,13 +174,11 @@ namespace ENBManager.Core.ViewModels
 
         public void OnDialogClosed() 
         {
-            _logger.Info(nameof(OnDialogClosed));
+            _logger.Info("Closed");
         }
 
         public void OnDialogOpened(IDialogParameters parameters) 
         {
-            _logger.Info(nameof(OnDialogOpened));
-
             if (parameters.GetValue<IEnumerable<GameModule>>("Games") != null)
             {
                 ShowUnmanagingWarning = true;
@@ -191,6 +188,8 @@ namespace ENBManager.Core.ViewModels
                     game.PropertyChanged += Game_PropertyChanged;
                 }
             }
+
+            _logger.Info("Opened");
         }
 
         #endregion
