@@ -43,7 +43,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 _name = value;
                 RaisePropertyChanged();
 
-                if (Items == null)
+                if (Items == null || Items.Count == 0)
                     return;
 
                 Items.Single().Name = value;
@@ -77,6 +77,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         public DelegateCommand CancelCommand { get; }
         public DelegateCommand BrowseFolderCommand { get; }
         public DelegateCommand SetRootDirectoryCommand { get; }
+        public DelegateCommand<Node> DeleteNodeCommand { get; set; }
 
         #endregion
 
@@ -90,6 +91,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             CancelCommand = new DelegateCommand(() => RequestClose.Invoke(new DialogResult(ButtonResult.Cancel)));
             BrowseFolderCommand = new DelegateCommand(OnBrowseFolderCommand);
             SetRootDirectoryCommand = new DelegateCommand(OnSetRootDirectoryCommand, () => SelectedDirectory != null).ObservesCanExecute(() => IsDirectorySelected);
+            DeleteNodeCommand = new DelegateCommand<Node>(OnDeleteNodeCommand);
         }
 
         #endregion
@@ -221,6 +223,13 @@ namespace ENBManager.Modules.Shared.ViewModels
             root.Items = new ObservableCollection<Node>(TreeViewHelper.GetItems(root.Path, Item_PropertyChanged));
             Items.Add(root);
 
+            RaisePropertyChanged(nameof(Items));
+            RaisePropertyChanged(nameof(IsFormValid));
+        }
+
+        private void OnDeleteNodeCommand(Node node)
+        {
+            TreeViewHelper.DeleteItem(Items, node);
             RaisePropertyChanged(nameof(Items));
             RaisePropertyChanged(nameof(IsFormValid));
         }

@@ -78,7 +78,7 @@ namespace ENBManager.Infrastructure.Helpers
             return items;
         }
 
-        public static IEnumerable<string> GetPaths(DirectoryNode directory)
+        public static ICollection<string> GetPaths(DirectoryNode directory)
         {
             List<string> paths = new List<string>();
 
@@ -97,6 +97,17 @@ namespace ENBManager.Infrastructure.Helpers
             }
 
             return paths;
+        }
+
+        public static void DeleteItem(ICollection<Node> nodes, Node nodeToDelete)
+        {
+            if (!nodes.Remove(nodeToDelete))
+            {
+                foreach (var node in nodes.Where(x => x.GetType() == typeof(DirectoryNode)))
+                {
+                    DeleteItem((node as DirectoryNode).Items, nodeToDelete);
+                }
+            }
         }
     }
 }

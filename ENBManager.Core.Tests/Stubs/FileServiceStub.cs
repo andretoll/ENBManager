@@ -15,6 +15,11 @@ namespace ENBManager.Core.Tests.Stubs
             throw new System.NotImplementedException();
         }
 
+        public void DeleteBinaries(string target, string[] binaries)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void DeleteGameDirectory(string directoryName)
         {
             throw new System.NotImplementedException();

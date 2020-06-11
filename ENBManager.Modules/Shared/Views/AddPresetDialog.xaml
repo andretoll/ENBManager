@@ -155,9 +155,17 @@
 
                             <TreeView ItemsSource="{Binding Items}"
                                       HorizontalAlignment="Stretch">
+                                <TreeView.Resources>
+                                    <ContextMenu x:Key="TreeViewItemContextMenu">
+                                        <MenuItem Header="{x:Static loc:Strings.DELETE}"
+                                                  Command="{Binding DataContext.DeleteNodeCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                  CommandParameter="{Binding .}"/>
+                                    </ContextMenu>
+                                </TreeView.Resources>
                                 <TreeView.ItemContainerStyle>
                                     <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                                         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                                        <Setter Property="ContextMenu" Value="{StaticResource TreeViewItemContextMenu}" />
                                     </Style>
                                 </TreeView.ItemContainerStyle>
                             </TreeView>
