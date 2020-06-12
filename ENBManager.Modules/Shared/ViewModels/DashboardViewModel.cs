@@ -33,18 +33,20 @@ namespace ENBManager.Modules.Shared.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IGameService _gameService;
         private readonly IPresetManager _presetManager;
+        private readonly IScreenshotManager _screenshotManager;
 
         private GameModule _game;
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         public string Title => _game?.Title;
         public string InstalledLocation => _game?.InstalledLocation;
         public BitmapImage Image => _game?.Icon;
         public int? PresetCount => _game?.Presets.Count();
         public string ActivePreset => _game?.Presets.SingleOrDefault(x => x.IsActive)?.Name;
+        public int? ScreenshotCount { get; set; }
 
         public ObservableCollection<Notification> Notifications { get; set; }
 
@@ -63,13 +65,15 @@ namespace ENBManager.Modules.Shared.ViewModels
             ConfigurationManager<AppSettings> configurationManager,
             IEventAggregator eventAggregator, 
             IGameService gameService,
-            IPresetManager presetManager)
+            IPresetManager presetManager,
+            IScreenshotManager screenshotManager)
             : base(eventAggregator)
         {
             _configurationManager = configurationManager;
             _eventAggregator = eventAggregator;
             _gameService = gameService;
             _presetManager = presetManager;
+            _screenshotManager = screenshotManager;
 
             RemoveNotificationCommand = new DelegateCommand<Notification>(OnRemoveNotificationCommand);
             LoadedCommand = new DelegateCommand(async () => await OnLoadedCommand());
@@ -84,6 +88,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             _logger.Info("Loaded");
 
             Notifications = new ObservableCollection<Notification>();
+            ScreenshotCount = _screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module), true).Count;
             UpdateUI();
 
             await VerifyIntegrity();
@@ -99,6 +104,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             RaisePropertyChanged(nameof(Image));
             RaisePropertyChanged(nameof(PresetCount));
             RaisePropertyChanged(nameof(ActivePreset));
+            RaisePropertyChanged(nameof(ScreenshotCount));
         }
 
         private void OnRemoveNotificationCommand(Notification notification)

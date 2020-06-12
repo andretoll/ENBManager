@@ -143,6 +143,33 @@
 
                     </materialDesign:Card>
 
+                    <!-- Preset count -->
+                    <materialDesign:Card Height="175" 
+                                         Width="200"
+                                         Margin="10"
+                                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
+
+                        <Grid Margin="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" 
+                                       Text="{x:Static loc:Strings.SCREENSHOTS}"
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                       FontWeight="Normal"/>
+
+                            <TextBlock Grid.Row="1" 
+                                       Text="{Binding ScreenshotCount}"
+                                       Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                       Foreground="{DynamicResource SecondaryAccentBrush}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                        </Grid>
+
+                    </materialDesign:Card>
+
                 </WrapPanel>
 
             </Border>

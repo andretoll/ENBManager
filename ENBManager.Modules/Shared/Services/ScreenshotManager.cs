@@ -19,14 +19,14 @@ namespace ENBManager.Modules.Shared.Services
 
         #region IScreenshotManager Implementation
 
-        public List<string> GetScreenshots(string directory)
+        public List<string> GetScreenshots(string directory, bool includeSubdirectories = false)
         {
             _logger.Debug("Getting screenshots");
 
             if (!Directory.Exists(directory))
                 return new List<string>();
 
-            return Directory.GetFiles(directory).ToList();
+            return Directory.GetFiles(directory, "*", includeSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
         }
 
         public void SaveScreenshot(string directory, string path)

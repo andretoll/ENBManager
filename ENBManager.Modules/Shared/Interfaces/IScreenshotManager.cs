@@ -9,7 +9,7 @@ namespace ENBManager.Modules.Shared.Interfaces
         /// </summary>
         /// <param name="directory"></param>
         /// <returns></returns>
-        List<string> GetScreenshots(string directory);
+        List<string> GetScreenshots(string directory, bool includeSubdirectories = false);
 
         /// <summary>
         /// Saves a screenshot to the provided directory.
