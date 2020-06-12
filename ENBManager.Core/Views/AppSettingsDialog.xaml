@@ -23,6 +23,7 @@
 
             <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
                 <Setter Property="FontSize" Value="16" />
+                <Setter Property="Margin" Value="0 2" />
                 <Setter Property="materialDesign:CheckBoxAssist.CheckBoxSize" Value="24" />
                 <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
             </Style>
@@ -135,10 +136,17 @@
                     <TabItem Header="{x:Static loc:Strings.SCREENSHOTS}">
                         <StackPanel>
 
-                            <CheckBox IsChecked="{Binding EnableScreenshotWithoutPreset}"
-                                      Content="{x:Static loc:Strings.ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET}"
-                                      ToolTip="{x:Static loc:Strings.ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP}"/>
-                        
+                            <GroupBox Header="{x:Static loc:Strings.SCREENSHOTS}">
+                                <StackPanel>
+                                    <CheckBox IsChecked="{Binding EnableScreenshotWithoutPreset}"
+                                              Content="{x:Static loc:Strings.ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET}"
+                                              ToolTip="{x:Static loc:Strings.ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP}"/>
+
+                                    <CheckBox IsChecked="{Binding DeleteScreenshotsWhenDeletingPreset}"
+                                              Content="{x:Static loc:Strings.DELETE_SCREENSHOTS_WHEN_DELETING_A_PRESET}"/>
+                                </StackPanel>
+                            </GroupBox>
+
                         </StackPanel>
                     </TabItem>
                     <!-- Misc -->

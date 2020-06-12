@@ -295,8 +295,11 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _presetManager.DeletePreset(preset);
 
                     // Delete screenshots folder
-                    _logger.Info("Deleting screenshot directory");
-                    _screenshotManager.DeleteScreenshotDirectory(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name));
+                    if (_configurationManager.Settings.DeleteScreenshotsWhenDeletingPreset)
+                    {
+                        _logger.Info("Deleting screenshot directory");
+                        _screenshotManager.DeleteScreenshotDirectory(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name)); 
+                    }
 
                     RaisePropertyChanged(nameof(Presets));
 

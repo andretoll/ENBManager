@@ -159,6 +159,9 @@
   <data name="DELETE" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DELETE_SCREENSHOTS_WHEN_DELETING_A_PRESET" xml:space="preserve">
+    <value>Delete screenshots when deleting a preset</value>
+  </data>
   <data name="DIAGNOSTICS" xml:space="preserve">
     <value>Diagnostics</value>
   </data>

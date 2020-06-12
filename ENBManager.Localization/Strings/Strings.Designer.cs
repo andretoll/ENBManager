@@ -187,6 +187,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete screenshots when deleting a preset.
+        /// </summary>
+        public static string DELETE_SCREENSHOTS_WHEN_DELETING_A_PRESET {
+            get {
+                return ResourceManager.GetString("DELETE_SCREENSHOTS_WHEN_DELETING_A_PRESET", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diagnostics.
         /// </summary>
         public static string DIAGNOSTICS {
