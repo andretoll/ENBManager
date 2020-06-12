@@ -53,7 +53,7 @@ namespace ENBManager.Modules.Shared.Services
 
             var presets = GetPresets(path);
 
-            return Task.FromResult(presets.Single(x => x.Name == preset));
+            return Task.FromResult(presets.Single(x => x.Name == preset.TrimEnd()));
         }
 
         public string RenamePreset(Preset preset, string newName)

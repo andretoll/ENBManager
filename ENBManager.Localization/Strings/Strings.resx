@@ -204,11 +204,8 @@
   <data name="GO_TO_DIRECTORY" xml:space="preserve">
     <value>Go to directory</value>
   </data>
-  <data name="GO_TO_ENBDEV" xml:space="preserve">
-    <value>Go to ENBDev</value>
-  </data>
-  <data name="GO_TO_NEXUS_MODS" xml:space="preserve">
-    <value>Go to Nexus Mods</value>
+  <data name="GO_TO_SCREENSHOTS" xml:space="preserve">
+    <value>Go to screenshots</value>
   </data>
   <data name="GRID" xml:space="preserve">
     <value>Grid</value>
@@ -317,6 +314,12 @@
   </data>
   <data name="VIEW_FILES" xml:space="preserve">
     <value>View files</value>
+  </data>
+  <data name="VISIT_ENBDEV" xml:space="preserve">
+    <value>Visit ENBDev</value>
+  </data>
+  <data name="VISIT_NEXUS_MODS" xml:space="preserve">
+    <value>Visit Nexus Mods</value>
   </data>
   <data name="WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED" xml:space="preserve">
     <value>Version mismatch: An older binary version is currently used</value>

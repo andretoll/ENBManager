@@ -78,6 +78,7 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand OpenDiscoverGamesCommand { get; }
         public DelegateCommand<GameModule> OpenGameDirectoryCommand { get; }
         public DelegateCommand<GameModule> OpenNexusCommand { get; }
+        public DelegateCommand<GameModule> OpenScreenshotsDirectoryCommand { get; }
 
         #endregion
 
@@ -101,6 +102,7 @@ namespace ENBManager.Core.ViewModels
             OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
             OpenGameDirectoryCommand = new DelegateCommand<GameModule>(OnOpenGameDirectoryCommand);
             OpenNexusCommand = new DelegateCommand<GameModule>(OnOpenNexusCommand);
+            OpenScreenshotsDirectoryCommand = new DelegateCommand<GameModule>(OnOpenScreenshotsDirectoryCommand);
         }
 
         #endregion
@@ -188,6 +190,13 @@ namespace ENBManager.Core.ViewModels
             };
 
             Process.Start(psi);
+        }
+
+        private void OnOpenScreenshotsDirectoryCommand(GameModule gameModule)
+        {
+            _logger.Info("Opening screenshot directory");
+
+            Process.Start("explorer", Paths.GetScreenshotsDirectory(gameModule.Module));
         }
 
         private void ActivateModule(string name)

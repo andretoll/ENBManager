@@ -135,7 +135,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 if (_configurationManager.Settings.ManageBinaries && await VerifyBinariesBackup())
                     Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", async () => await RestoreBinaries(), Strings.RESTORE));
                 else
-                    Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.GO_TO_ENBDEV));
+                    Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", OpenLink, Strings.VISIT_ENBDEV));
             }
             else if (_configurationManager.Settings.ManageBinaries && !await VerifyBinariesBackup())
             {

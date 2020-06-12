@@ -56,7 +56,8 @@ namespace ENBManager.Modules.Shared.Services
         {
             _logger.Debug("Deleting screenshot directory");
 
-            Directory.Delete(directory, true);
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, true);
         }
 
         #endregion

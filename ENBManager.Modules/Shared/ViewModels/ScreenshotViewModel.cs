@@ -8,8 +8,8 @@ using ENBManager.Modules.Shared.ViewModels.Base;
 using NLog;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ENBManager.Modules.Shared.ViewModels
@@ -73,6 +73,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 _selectedCategory = value;
                 RaisePropertyChanged();
+                GoToDirectoryCommand.RaiseCanExecuteChanged();
 
                 SetScreenshotSource(value);
             }
@@ -83,6 +84,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         #region Commands
 
         public DelegateCommand LoadedCommand { get; }
+        public DelegateCommand GoToDirectoryCommand { get; }
 
         #endregion
 
@@ -100,6 +102,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             _screenshotWatcher = screenshotWatcher;
 
             LoadedCommand = new DelegateCommand(OnLoadedCommand);
+            GoToDirectoryCommand = new DelegateCommand(OnGoToDirectoryCommand, () => SelectedCategory?.Count > 0);
         }
 
         #endregion
@@ -144,6 +147,18 @@ namespace ENBManager.Modules.Shared.ViewModels
             SelectedCategory = Categories[0];
 
             UpdateUI();
+        }
+
+        private void OnGoToDirectoryCommand()
+        {
+            _logger.Info("Opening screenshot directory");
+
+            var preset = _game.Presets.SingleOrDefault(x => x.Name == SelectedCategory.Name);
+
+            if (preset != null)
+                Process.Start("explorer", Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name));
+            else
+                Process.Start("explorer", Paths.GetScreenshotsDirectory(_game.Module));
         }
 
         #endregion

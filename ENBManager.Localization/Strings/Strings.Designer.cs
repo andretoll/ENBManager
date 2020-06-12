@@ -322,20 +322,11 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go to ENBDev.
+        ///   Looks up a localized string similar to Go to screenshots.
         /// </summary>
-        public static string GO_TO_ENBDEV {
+        public static string GO_TO_SCREENSHOTS {
             get {
-                return ResourceManager.GetString("GO_TO_ENBDEV", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Go to Nexus Mods.
-        /// </summary>
-        public static string GO_TO_NEXUS_MODS {
-            get {
-                return ResourceManager.GetString("GO_TO_NEXUS_MODS", resourceCulture);
+                return ResourceManager.GetString("GO_TO_SCREENSHOTS", resourceCulture);
             }
         }
         
@@ -660,6 +651,24 @@ namespace ENBManager.Localization.Strings {
         public static string VIEW_FILES {
             get {
                 return ResourceManager.GetString("VIEW_FILES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit ENBDev.
+        /// </summary>
+        public static string VISIT_ENBDEV {
+            get {
+                return ResourceManager.GetString("VISIT_ENBDEV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit Nexus Mods.
+        /// </summary>
+        public static string VISIT_NEXUS_MODS {
+            get {
+                return ResourceManager.GetString("VISIT_NEXUS_MODS", resourceCulture);
             }
         }
         

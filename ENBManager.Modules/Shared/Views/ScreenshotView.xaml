@@ -6,7 +6,6 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
-             xmlns:const="clr-namespace:ENBManager.Infrastructure.Constants;assembly=ENBManager.Infrastructure"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
@@ -63,16 +62,23 @@
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           Margin="20 0">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="InformationCircleOutline"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" 
+                                                     Kind="InformationCircleOutline"
                                                      Width="20"
                                                      Height="20"/>
-                            <TextBlock Text="{x:Static loc:Strings.SCREENSHOT_TAB_DESCRIPTION}"
+                            <TextBlock Grid.Column="1" 
+                                       Text="{x:Static loc:Strings.SCREENSHOT_TAB_DESCRIPTION}"
                                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                                       MaxWidth="500"
+                                       MaxHeight="100"
                                        Margin="5 0 0 0"
+                                       TextTrimming="CharacterEllipsis"
                                        TextWrapping="Wrap"/>
-                        </StackPanel>
+                        </Grid>
                     </Grid>
 
                 </Grid>
@@ -111,15 +117,22 @@
             </Grid.RowDefinitions>
             
             <!-- Top bar -->
-            <StackPanel Orientation="Horizontal"
-                        Margin="0 0 0 20">
+            <Grid Grid.Row="0" 
+                  Margin="0 0 0 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
                 
                 <!-- Categories -->
-                <ComboBox ItemsSource="{Binding Categories}"
+                <ComboBox Grid.Column="0" 
+                          ItemsSource="{Binding Categories}"
                           SelectedItem="{Binding SelectedCategory}"
                           Style="{StaticResource MaterialDesignComboBox}"
-                          materialDesign:ComboBoxAssist.ShowSelectedItem="true"
-                          Width="300">
+                          materialDesign:ComboBoxAssist.ClassicMode="true"
+                          HorizontalAlignment="Left"
+                          Width="200">
 
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -145,8 +158,9 @@
                 </ComboBox>
                 
                 <!-- Image size slider -->
-                <StackPanel Orientation="Horizontal"
-                            Margin="20 0 0 0">
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
                     <materialDesign:PackIcon Kind="MinusCircle"
                                              Width="20"
                                              Height="20"
@@ -154,7 +168,7 @@
                                              VerticalAlignment="Center"/>
                     <Slider x:Name="ImageColumnsSlider" 
                             VerticalAlignment="Center"
-                            MinWidth="200"
+                            MinWidth="100"
                             Foreground="{DynamicResource SecondaryAccentBrush}"
                             Minimum="1"
                             Maximum="5"/>
@@ -165,10 +179,34 @@
                                              VerticalAlignment="Center"/>
                 </StackPanel>
 
-            </StackPanel>
+                <!-- Go to directory -->
+                <Button Grid.Column="2" 
+                        Content="{x:Static loc:Strings.GO_TO_DIRECTORY}"
+                        Command="{Binding GoToDirectoryCommand}"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        HorizontalAlignment="Right"/>
+
+            </Grid>
             
             <!-- Screenshots view -->
             <Grid Grid.Row="1">
+
+                <!-- Empty message -->
+                <TextBlock Text="{x:Static loc:Strings.EMPTY}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline3TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCategory.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Screenshots}">
                         <ItemsControl.ItemsPanel>
