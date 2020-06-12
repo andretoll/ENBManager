@@ -46,8 +46,6 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
         }
 
-        //TODO: Add configurable source of screenshots. InstalledLocation as default.
-
         #endregion
 
         #region Constructor

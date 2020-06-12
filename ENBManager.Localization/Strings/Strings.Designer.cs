@@ -547,6 +547,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If enabled, the application will collect screenshots taken in the game and save them according to the active preset..
+        /// </summary>
+        public static string SCREENSHOT_TAB_DESCRIPTION {
+            get {
+                return ResourceManager.GetString("SCREENSHOT_TAB_DESCRIPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Screenshots.
         /// </summary>
         public static string SCREENSHOTS {
