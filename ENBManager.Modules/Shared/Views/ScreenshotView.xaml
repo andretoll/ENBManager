@@ -170,6 +170,7 @@
                             VerticalAlignment="Center"
                             MinWidth="100"
                             Foreground="{DynamicResource SecondaryAccentBrush}"
+                            Value="2"
                             Minimum="1"
                             Maximum="5"/>
                     <materialDesign:PackIcon Kind="PlusCircle"
@@ -228,74 +229,7 @@
                                                RenderTransformOrigin="0.5, 0.5"
                                                MaxHeight="750"
                                                VerticalAlignment="Top" />
-
-                                        <!-- Action bar -->
-                                        <Grid Height="0"
-                                              VerticalAlignment="Bottom"
-                                              Background="{DynamicResource AttentionToActionBrush}">
-
-                                            <Grid.Style>
-                                                <Style TargetType="{x:Type Grid}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type materialDesign:Card}}}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Height)"
-                                                                                         Duration="0:0:0.25"
-                                                                                         To="50" />
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Height)"
-                                                                                         Duration="0:0:0.25"
-                                                                                         To="0" />
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Style>
-
-                                            <StackPanel Orientation="Horizontal"
-                                                        HorizontalAlignment="Right">
-
-                                                <!-- Misc -->
-                                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                                        Margin="5 0">
-                                                    
-                                                <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges">
-                                                    <StackPanel>
-                                                        
-                                                        <!-- View files -->
-                                                        <Button Command="{Binding DataContext.ViewFilesCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                                                CommandParameter="{Binding .}">
-
-                                                            <StackPanel Orientation="Horizontal"
-                                                                        VerticalAlignment="Center">
-                                                                <materialDesign:PackIcon Kind="Files"
-                                                                                         Foreground="{DynamicResource SecondaryAccentBrush}"
-                                                                                         Width="20"
-                                                                                         Height="20"
-                                                                                         Margin="0 0 10 0"/>
-                                                                <TextBlock Text="{x:Static loc:Strings.VIEW_FILES}"
-                                                                           Style="{StaticResource MaterialDesignButtonTextBlock}"
-                                                                           VerticalAlignment="Center"/>
-                                                            </StackPanel>
-
-                                                        </Button>
-
-                                                    </StackPanel>
-                                                </materialDesign:PopupBox>
-                                            </Button>
-
-                                            </StackPanel>
-
-                                        </Grid>
+                                        
                                     </Grid>
 
                                 </materialDesign:Card>
