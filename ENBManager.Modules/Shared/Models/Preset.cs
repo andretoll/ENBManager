@@ -37,7 +37,9 @@ namespace ENBManager.Modules.Shared.Models
             }
         }
 
-        public IEnumerable<string> Files { get; set; } 
+        public IEnumerable<string> Files { get; set; }
+
+        public ICollection<string> Screenshots { get; set; }
 
         #endregion
 

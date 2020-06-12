@@ -1,7 +1,16 @@
-﻿namespace ENBManager.Modules.Shared.Interfaces
+﻿using System.Collections.Generic;
+
+namespace ENBManager.Modules.Shared.Interfaces
 {
     public interface IScreenshotManager
     {
+        /// <summary>
+        /// Gets the screenshots in the provided directory.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <returns></returns>
+        List<string> GetScreenshots(string directory);
+
         /// <summary>
         /// Saves a screenshot to the provided directory.
         /// </summary>

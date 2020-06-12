@@ -6,17 +6,23 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:const="clr-namespace:ENBManager.Infrastructure.Constants;assembly=ENBManager.Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              TextElement.FontSize="16"
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <DockPanel>
         
         <!-- Top bar -->
-        <Border DockPanel.Dock="Top"
-                BorderThickness="0 0 0 1"
-                BorderBrush="Gray">
+        <Border DockPanel.Dock="Top">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -45,6 +51,8 @@
                                                       Width="50">
                                 <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" 
                                               Background="{DynamicResource MaterialDesignDarkBackground}"
+                                              materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="{DynamicResource MaterialDesignDarkBackground}"
+                                              materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignDarkBackground}"
                                               IsChecked="{Binding EnableScreenshots}" />
                             </materialDesign:ColorZone>
                         </StackPanel>
@@ -72,15 +80,22 @@
                 <!-- Bottom -->
                 <Grid Grid.Row="1"
                       Margin="0 20 0 0"
-                      Height="10">
+                      Height="5">
 
-                    <ProgressBar IsIndeterminate="True"
-                                 Style="{StaticResource MaterialDesignLinearProgressBar}"
-                                 Height="{Binding Path=Height, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
-                                 Foreground="{DynamicResource PrimaryHueMidBrush}"
+                    <ProgressBar Height="{Binding Path=Height, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                 Foreground="{DynamicResource SecondaryAccentBrush}"
                                  Background="{DynamicResource AttentionToActionBrush}"
-                                 BorderBrush="Transparent"
-                                 Visibility="{Binding EnableScreenshots, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                 BorderBrush="Transparent">
+                        <ProgressBar.Style>
+                            <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EnableScreenshots}" Value="True">
+                                        <Setter Property="IsIndeterminate" Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ProgressBar.Style>
+                    </ProgressBar>
 
                 </Grid>
                 
@@ -89,9 +104,168 @@
         </Border>
         
         <!-- Screenshots -->
-        <Grid>
+        <Grid Margin="0 10 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             
+            <!-- Top bar -->
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 0 0 20">
+                
+                <!-- Categories -->
+                <ComboBox ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory}"
+                          Style="{StaticResource MaterialDesignComboBox}"
+                          materialDesign:ComboBoxAssist.ShowSelectedItem="true"
+                          Width="300">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                        <Setter Property="FontWeight" Value="Normal" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Highlight}" Value="true">
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding Count, StringFormat={}({0})}" 
+                                           Margin="5 0 0 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    
+                </ComboBox>
+                
+                <!-- Image size slider -->
+                <StackPanel Orientation="Horizontal"
+                            Margin="20 0 0 0">
+                    <materialDesign:PackIcon Kind="MinusCircle"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0 0 5 0"
+                                             VerticalAlignment="Center"/>
+                    <Slider x:Name="ImageColumnsSlider" 
+                            VerticalAlignment="Center"
+                            MinWidth="200"
+                            Foreground="{DynamicResource SecondaryAccentBrush}"
+                            Minimum="1"
+                            Maximum="5"/>
+                    <materialDesign:PackIcon Kind="PlusCircle"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="5 0 0 0"
+                                             VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </StackPanel>
             
+            <!-- Screenshots view -->
+            <Grid Grid.Row="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Screenshots}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding Path=Value, ElementName=ImageColumnsSlider}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Card Margin="10"
+                                                     x:Name="ButtonGrid"
+                                                     VerticalAlignment="Top"
+                                                     HorizontalAlignment="Center"
+                                                     materialDesign:ShadowAssist.ShadowDepth="Depth3">
+
+                                    <Grid>
+                                        <Image Source="{Binding .}"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderTransformOrigin="0.5, 0.5"
+                                               MaxHeight="750"
+                                               VerticalAlignment="Top" />
+
+                                        <!-- Action bar -->
+                                        <Grid Height="0"
+                                              VerticalAlignment="Bottom"
+                                              Background="{DynamicResource AttentionToActionBrush}">
+
+                                            <Grid.Style>
+                                                <Style TargetType="{x:Type Grid}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type materialDesign:Card}}}" Value="true">
+                                                            <DataTrigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                                                                         Duration="0:0:0.25"
+                                                                                         To="50" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.EnterActions>
+                                                            <DataTrigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(FrameworkElement.Height)"
+                                                                                         Duration="0:0:0.25"
+                                                                                         To="0" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </DataTrigger.ExitActions>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+
+                                                <!-- Misc -->
+                                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                                        Margin="5 0">
+                                                    
+                                                <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges">
+                                                    <StackPanel>
+                                                        
+                                                        <!-- View files -->
+                                                        <Button Command="{Binding DataContext.ViewFilesCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                                CommandParameter="{Binding .}">
+
+                                                            <StackPanel Orientation="Horizontal"
+                                                                        VerticalAlignment="Center">
+                                                                <materialDesign:PackIcon Kind="Files"
+                                                                                         Foreground="{DynamicResource SecondaryAccentBrush}"
+                                                                                         Width="20"
+                                                                                         Height="20"
+                                                                                         Margin="0 0 10 0"/>
+                                                                <TextBlock Text="{x:Static loc:Strings.VIEW_FILES}"
+                                                                           Style="{StaticResource MaterialDesignButtonTextBlock}"
+                                                                           VerticalAlignment="Center"/>
+                                                            </StackPanel>
+
+                                                        </Button>
+
+                                                    </StackPanel>
+                                                </materialDesign:PopupBox>
+                                            </Button>
+
+                                            </StackPanel>
+
+                                        </Grid>
+                                    </Grid>
+
+                                </materialDesign:Card>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
 
         </Grid>
         

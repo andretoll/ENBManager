@@ -1,6 +1,8 @@
 ﻿using ENBManager.Modules.Shared.Interfaces;
 using NLog;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace ENBManager.Modules.Shared.Services
@@ -16,6 +18,16 @@ namespace ENBManager.Modules.Shared.Services
         #endregion
 
         #region IScreenshotManager Implementation
+
+        public List<string> GetScreenshots(string directory)
+        {
+            _logger.Debug("Getting screenshots");
+
+            if (!Directory.Exists(directory))
+                return new List<string>();
+
+            return Directory.GetFiles(directory).ToList();
+        }
 
         public void SaveScreenshot(string directory, string path)
         {

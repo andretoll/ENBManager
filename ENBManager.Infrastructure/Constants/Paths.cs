@@ -39,12 +39,12 @@ namespace ENBManager.Infrastructure.Constants
 
         public static string GetScreenshotsDirectory(string module)
         {
-            return Path.Combine(GetBaseDirectory(), GAMES_DIRECTORY, module, SCREENSHOTS_DIRECTORY);
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), BASE_DIRECTORY, SCREENSHOTS_DIRECTORY, module);
         }
 
         public static string GetPresetScreenshotsDirectory(string module, string preset)
         {
-            return Path.Combine(GetBaseDirectory(), GAMES_DIRECTORY, module, SCREENSHOTS_DIRECTORY, preset);
+            return Path.Combine(GetScreenshotsDirectory(module), preset);
         }
 
         #endregion

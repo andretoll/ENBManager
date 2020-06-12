@@ -56,7 +56,7 @@
             <materialDesign:ColorZone Mode="PrimaryMid"
                                       DockPanel.Dock="Top"
                                       Padding="15"
-                                      Height="70"
+                                      Height="80"
                                       Margin="0 0 -3 0"
                                       CornerRadius="0 0 15 0"
                                       materialDesign:ShadowAssist.ShadowDepth="Depth3"
@@ -131,8 +131,18 @@
                                     Visibility="{Binding ShowDarkModeShortcut, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Text="{x:Static loc:Strings.DARK_MODE}"
                                        VerticalAlignment="Center" />
-                            <ToggleButton Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" 
-                                          IsChecked="{Binding DarkMode}" />
+                            <materialDesign:ColorZone Mode="Accent"
+                                                      CornerRadius="15"
+                                                      materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                                      Margin="0 5 0 0"
+                                                      Padding="5"
+                                                      Width="50">
+                                <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" 
+                                              Background="{DynamicResource MaterialDesignDarkBackground}"
+                                              materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="{DynamicResource MaterialDesignDarkBackground}"
+                                              materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignDarkBackground}"
+                                              IsChecked="{Binding DarkMode}" />
+                            </materialDesign:ColorZone>
                         </StackPanel>
 
                         <!-- Add games -->
