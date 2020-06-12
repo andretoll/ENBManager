@@ -16,25 +16,55 @@
         <!-- Top bar -->
         <Border DockPanel.Dock="Top"
                 BorderThickness="0 0 0 1"
-                BorderBrush="Gray"
-                Padding="0 0 0 20">
+                BorderBrush="Gray">
 
-            <!-- Left -->
-            <Grid HorizontalAlignment="Left">
-                <StackPanel Orientation="Vertical">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <!-- Top -->
+                <Grid Grid.Row="0">
 
-                    <TextBlock Text="{x:Static loc:Strings.ENABLE_SCREENSHOTS}"
-                               Margin="0 0 0 10"/>
-                    <materialDesign:ColorZone Mode="Accent"
-                                              CornerRadius="15"
-                                              materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                              Padding="5"
-                                              Width="50">
-                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" 
-                                      Background="{DynamicResource MaterialDesignDarkBackground}"
-                                      IsChecked="{Binding EnableScreenshots}" />
-                    </materialDesign:ColorZone>
-                </StackPanel>
+                    <!-- Left -->
+                    <Grid HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical">
+
+                            <TextBlock Text="{x:Static loc:Strings.ENABLE_SCREENSHOTS}"
+                                   Margin="0 0 0 10"/>
+                            <materialDesign:ColorZone Mode="Accent"
+                                                  CornerRadius="15"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                                  Padding="5"
+                                                  Width="50">
+                                <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" 
+                                          Background="{DynamicResource MaterialDesignDarkBackground}"
+                                          IsChecked="{Binding EnableScreenshots}" />
+                            </materialDesign:ColorZone>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Right -->
+                    
+
+                </Grid>
+
+                <!-- Bottom -->
+                <Grid Grid.Row="1"
+                      Margin="0 10 0 0"
+                      Height="10">
+
+                    <ProgressBar IsIndeterminate="True"
+                                 Style="{StaticResource MaterialDesignLinearProgressBar}"
+                                 Height="{Binding Path=Height, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                 Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                 Background="{DynamicResource AttentionToActionBrush}"
+                                 BorderBrush="Transparent"
+                                 Visibility="{Binding EnableScreenshots, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                </Grid>
+                
             </Grid>
 
         </Border>

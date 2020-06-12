@@ -41,6 +41,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _screenshotWatcher.Start();
                 else
                     _screenshotWatcher.Stop();
+
+                RaisePropertyChanged();
             }
         }
 
