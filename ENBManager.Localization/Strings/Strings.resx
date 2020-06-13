@@ -234,6 +234,9 @@
   <data name="MANAGE_BINARIES_TOOLTIP" xml:space="preserve">
     <value>If enabled, binary files will be automatically managed by the application. It is recommended to have this enabled</value>
   </data>
+  <data name="MINIMIZE_TO_TRAY" xml:space="preserve">
+    <value>Minimize to tray</value>
+  </data>
   <data name="MISC" xml:space="preserve">
     <value>Misc</value>
   </data>

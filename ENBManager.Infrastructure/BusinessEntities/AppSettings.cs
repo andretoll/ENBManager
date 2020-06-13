@@ -26,6 +26,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public bool ManageBinaries { get; set; } = true;
         public bool EnableScreenshotWithoutPreset { get; set; } = true;
         public bool DeleteScreenshotsWhenDeletingPreset { get; set; } = true;
+        public bool MinimizeToTray { get; set; } = true;
 
         #endregion
 

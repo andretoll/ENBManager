@@ -6,6 +6,7 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:const="clr-namespace:ENBManager.Infrastructure.Constants;assembly=ENBManager.Infrastructure"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:views="clr-namespace:ENBManager.Core.Views"
         prism:ViewModelLocator.AutoWireViewModel="True"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Medium"
@@ -14,10 +15,10 @@
         Background="{DynamicResource MaterialDesignPaper}"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="ENB Manager"
+        Title="{x:Static const:ApplicationName.NAME}"
         MinHeight="400" MinWidth="1000"
         Height="800" Width="1100">
-
+    
     <materialDesign:DialogHost CloseOnClickAway="False"
                                Identifier="{x:Static const:RegionNames.RootDialogHost}">
 
@@ -34,6 +35,9 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <!-- NotifyIcon -->
+            <views:NotifyIconView />
 
             <!-- Side menu -->
             <Grid Grid.Column="0">

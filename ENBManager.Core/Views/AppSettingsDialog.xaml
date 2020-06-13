@@ -80,9 +80,13 @@
                         <StackPanel>
 
                             <GroupBox Header="{x:Static loc:Strings.APPLICATION}">
-                                <CheckBox IsChecked="{Binding OpenLastActiveGame}"
-                                          Content="{x:Static loc:Strings.START_WITH_LAST_GAME_ACTIVE}"
-                                          ToolTip="{x:Static loc:Strings.START_WITH_LAST_GAME_ACTIVE_TOOLTIP}"/>
+                                <StackPanel>
+                                    <CheckBox IsChecked="{Binding OpenLastActiveGame}"
+                                              Content="{x:Static loc:Strings.START_WITH_LAST_GAME_ACTIVE}"
+                                              ToolTip="{x:Static loc:Strings.START_WITH_LAST_GAME_ACTIVE_TOOLTIP}"/>
+                                    <CheckBox IsChecked="{Binding MinimizeToTray}"
+                                              Content="{x:Static loc:Strings.MINIMIZE_TO_TRAY}"/>
+                                </StackPanel>
                             </GroupBox>
 
                             <GroupBox Header="{x:Static loc:Strings.DIAGNOSTICS}">

@@ -81,7 +81,7 @@
                     </Style>
                 </Border.Style>
 
-                <WrapPanel>
+                <WrapPanel HorizontalAlignment="Center">
 
                     <!-- Preset count -->
                     <materialDesign:Card Height="175" 

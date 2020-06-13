@@ -412,6 +412,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimize to tray.
+        /// </summary>
+        public static string MINIMIZE_TO_TRAY {
+            get {
+                return ResourceManager.GetString("MINIMIZE_TO_TRAY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Misc.
         /// </summary>
         public static string MISC {

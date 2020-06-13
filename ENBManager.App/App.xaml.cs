@@ -24,8 +24,11 @@ using Prism.Logging;
 using Prism.Services.Dialogs;
 using Prism.Unity;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 
 namespace ENBManager.App
@@ -39,9 +42,45 @@ namespace ENBManager.App
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("User32.dll")]
+        private static extern bool IsIconic(IntPtr handle);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
         #endregion
 
         #region Overriden Methods
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            bool createdNew;
+
+            _ = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
+
+            if (!createdNew)
+            {
+                Process current = Process.GetCurrentProcess();
+                foreach (var process in Process.GetProcessesByName(current.ProcessName))
+                {
+                    if (process.Id != current.Id)
+                    {
+                        RestoreWindow(process);
+                    }
+                }
+
+                Current.Shutdown();
+            }
+
+            base.OnStartup(e);
+        }
 
         protected override void OnExit(ExitEventArgs e)
         {
@@ -168,6 +207,25 @@ namespace ENBManager.App
         #endregion
 
         #region Helper Methods
+
+        private void RestoreWindow(Process process)
+        {
+            IntPtr handle = process.MainWindowHandle;
+
+            // If window is minimized to tray
+            if (handle == IntPtr.Zero)
+            {
+                handle = FindWindow(null, ApplicationName.NAME);
+            }
+
+            // If window is minimized
+            if (IsIconic(handle))
+            {
+                ShowWindow(handle, 9);
+            }
+
+            SetForegroundWindow(handle);
+        }
 
         private LogLevel GetLogLevel()
         {
