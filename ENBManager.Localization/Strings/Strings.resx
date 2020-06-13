@@ -192,6 +192,9 @@
   <data name="ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY" xml:space="preserve">
     <value>Error: Unable to locate game directory</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>

@@ -4,6 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:tb="http://www.hardcodet.net/taskbar"
+             xmlns:const="clr-namespace:ENBManager.Infrastructure.Constants;assembly=ENBManager.Infrastructure"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -30,10 +33,26 @@
             </tb:TaskbarIcon.TrayToolTip>
 
             <tb:TaskbarIcon.ContextMenu>
-                <ContextMenu Background="{DynamicResource MaterialDesignPaper}">
-                    <MenuItem Header="Open"
-                              Command="{Binding RestoreApplicationCommand}"/>
-                    <MenuItem Header="Exit"
+                <ContextMenu Background="{DynamicResource MaterialDesignPaper}"
+                             FontSize="14">
+                    <MenuItem Command="{Binding RestoreApplicationCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/favicon.ico"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       Width="20"
+                                       Height="20"
+                                       Margin="0 0 10 0"
+                                       VerticalAlignment="Center"/>
+                                <TextBlock Text="{x:Static const:ApplicationName.NAME}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Header="{x:Static loc:Strings.SETTINGS}"
+                              Command="{Binding OpenSettingsCommand}" />
+                    <MenuItem Header="{x:Static loc:Strings.EXIT}"
                               Command="{Binding ExitApplicationCommand}"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>

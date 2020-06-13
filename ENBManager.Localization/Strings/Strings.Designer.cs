@@ -286,6 +286,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string EXIT {
+            get {
+                return ResourceManager.GetString("EXIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files.
         /// </summary>
         public static string FILES {
