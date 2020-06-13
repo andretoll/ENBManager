@@ -3,6 +3,7 @@ using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Localization.Strings;
+using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.ViewModels.Base;
 using NLog;
@@ -21,6 +22,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private readonly IConfigurationManager<AppSettings> _configurationManager;
+        private readonly IEventAggregator _eventAggregator;
         private readonly IScreenshotManager _screenshotManager;
         private readonly IScreenshotWatcher _screenshotWatcher;
 
@@ -51,6 +53,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _screenshotWatcher.Stop();
 
                 RaisePropertyChanged();
+
+                _eventAggregator.GetEvent<ScreenshotsStatusChangedModuleEvent>().Publish(value);
             }
         }
 
@@ -98,8 +102,11 @@ namespace ENBManager.Modules.Shared.ViewModels
             :base (eventAggregator)
         {
             _configurationManager = configurationManager;
+            _eventAggregator = eventAggregator;
             _screenshotManager = screenshotManager;
             _screenshotWatcher = screenshotWatcher;
+
+            _eventAggregator.GetEvent<ScreenshotsStatusChangedExternalEvent>().Subscribe((x) => EnableScreenshots = x);
 
             LoadedCommand = new DelegateCommand(OnLoadedCommand);
             GoToDirectoryCommand = new DelegateCommand(OnGoToDirectoryCommand, () => SelectedCategory?.Count > 0);
@@ -247,6 +254,8 @@ namespace ENBManager.Modules.Shared.ViewModels
                 _screenshotWatcher.FileCreated += FileCreated;
                 _screenshotWatcher.Start();
             }
+
+            _eventAggregator.GetEvent<ScreenshotsStatusChangedModuleEvent>().Publish(_game.Settings.ScreenshotsEnabled);
         }
 
         #endregion

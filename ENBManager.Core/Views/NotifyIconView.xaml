@@ -18,22 +18,18 @@
                         PopupActivation="RightClick">
 
             <tb:TaskbarIcon.TrayToolTip>
-                <Border Background="White"
-                            BorderBrush="Orange"
-                            BorderThickness="2"
-                            CornerRadius="4"
-                            Opacity="0.8"
-                            Width="160"
-                            Height="40">
-                    <TextBlock
-                            Text="hello world"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center" />
-                </Border>
+                <materialDesign:ColorZone Mode="Light"
+                                          Padding="5">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static const:ApplicationName.NAME}"/>
+                        <TextBlock Text="{Binding Version, StringFormat={}Version: {0}}" />
+                    </StackPanel>
+                </materialDesign:ColorZone>
             </tb:TaskbarIcon.TrayToolTip>
 
             <tb:TaskbarIcon.ContextMenu>
-                <ContextMenu Background="{DynamicResource MaterialDesignPaper}"
+                <ContextMenu Background="{DynamicResource MaterialDesignDarkBackground}"
+                             Foreground="{StaticResource MaterialDesignDarkForeground}"
                              FontSize="14">
                     <MenuItem Command="{Binding RestoreApplicationCommand}">
                         <MenuItem.Header>
@@ -50,25 +46,23 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding EnableScreenshots}"
+                                          materialDesign:CheckBoxAssist.CheckBoxSize="22"
+                                          Content="{x:Static loc:Strings.ENABLE_SCREENSHOTS}">
+                                </CheckBox>
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <Separator />
                     <MenuItem Header="{x:Static loc:Strings.SETTINGS}"
                               Command="{Binding OpenSettingsCommand}" />
                     <MenuItem Header="{x:Static loc:Strings.EXIT}"
                               Command="{Binding ExitApplicationCommand}"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
-
-            <!--<tb:TaskbarIcon.TrayPopup>
-                    <Border Background="White">
-                        <ListBox>
-                            <ListBoxItem>
-                                <Button Content="Open" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <Button Content="Exit" />
-                            </ListBoxItem>
-                        </ListBox>
-                    </Border>
-                </tb:TaskbarIcon.TrayPopup>-->
 
         </tb:TaskbarIcon>
 
