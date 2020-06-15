@@ -155,20 +155,18 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             RaisePropertyChanged(nameof(EnableScreenshots));
 
-            // TODO: Instead of index, work with preset name instead
-            int selectedIndex = -1;
-            if (Categories != null)
-                selectedIndex = Categories.IndexOf(_selectedCategory);
+            string selectedCategoryName = null;
+            if (_selectedCategory != null)
+                selectedCategoryName = _selectedCategory.Name;
 
             GetScreenshots();
 
             Categories = GetCategories();
             RaisePropertyChanged(nameof(Categories));
 
-            // TODO: Instead of index, work with preset name instead
             SelectedCategory = null;
-            if (selectedIndex > 0)
-                SelectedCategory = Categories[selectedIndex];
+            if (!string.IsNullOrEmpty(selectedCategoryName))
+                SelectedCategory = Categories.SingleOrDefault(x => x.Name == selectedCategoryName);
             else if (Categories != null && Categories.Count > 0)
                 SelectedCategory = Categories[0];
         }
