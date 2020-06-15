@@ -21,6 +21,7 @@ namespace ENBManager.Core.ViewModels
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IConfigurationManager<AppSettings> _configurationManager;
         private readonly IDialogService _dialogService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
@@ -44,7 +45,7 @@ namespace ENBManager.Core.ViewModels
             }
         }
 
-        public bool MinimizeToTray { get; set; }
+        public bool MinimizeToTray => _configurationManager.Settings.MinimizeToTray;
 
         public bool EnableScreenshots
         {
@@ -75,11 +76,10 @@ namespace ENBManager.Core.ViewModels
             IEventAggregator eventAggregator,
             IRegionManager regionManager)
         {
+            _configurationManager = configurationManager;
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
             _regionManager = regionManager;
-
-            MinimizeToTray = configurationManager.Settings.MinimizeToTray;
 
             eventAggregator.GetEvent<ScreenshotsStatusChangedModuleEvent>().Subscribe(OnScreenshotStatusChanged);
 
@@ -103,21 +103,29 @@ namespace ENBManager.Core.ViewModels
 
         private void OnRestoreApplicationCommand()
         {
+            _logger.Debug("Restoring application");
+
             RestoreApplicationEventHandler.Invoke(null, null);
         }
 
         private void OnExitApplicationCommand()
         {
+            _logger.Debug("Existing application");
+
             ExitApplicationEventHandler.Invoke(null, null);
         }
 
         private void OnOpenSettingsCommand()
         {
+            _logger.Debug("Opening settings dialog");
+
             _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), null);
         }
 
         private void OnScreenshotStatusChanged(bool enabled)
         {
+            _logger.Debug($"Screenshot enabled: {enabled}");
+
             _enableScreenshots = enabled;
             RaisePropertyChanged(nameof(EnableScreenshots));
         }

@@ -58,6 +58,7 @@ namespace ENBManager.Core.ViewModels
             ThemeHelper.UpdateColorScheme(_configurationManager.Settings.ColorScheme);
 
             _configurationManager.SaveSettings();
+            _configurationManager.LoadSettings();
 
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
         }

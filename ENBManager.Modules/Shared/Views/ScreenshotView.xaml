@@ -128,7 +128,7 @@
                 <!-- Categories -->
                 <ComboBox Grid.Column="0" 
                           ItemsSource="{Binding Categories}"
-                          SelectedItem="{Binding SelectedCategory}"
+                          SelectedItem="{Binding SelectedCategory, UpdateSourceTrigger=LostFocus}"
                           Style="{StaticResource MaterialDesignComboBox}"
                           materialDesign:ComboBoxAssist.ClassicMode="true"
                           HorizontalAlignment="Left"
@@ -141,7 +141,7 @@
                                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                                         <Setter Property="FontWeight" Value="Normal" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Highlight}" Value="true">
+                                            <DataTrigger Binding="{Binding IsActive}" Value="true">
                                                 <Setter Property="FontWeight" Value="Bold" />
                                                 <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
                                             </DataTrigger>
@@ -149,7 +149,7 @@
                                     </Style>
                                 </StackPanel.Resources>
                                 <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="{Binding Count, StringFormat={}({0})}" 
+                                <TextBlock Text="{Binding Screenshots.Count, UpdateSourceTrigger=PropertyChanged, StringFormat={}({0})}" 
                                            Margin="5 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -184,7 +184,7 @@
                 <Button Grid.Column="2" 
                         Content="{x:Static loc:Strings.GO_TO_DIRECTORY}"
                         Command="{Binding GoToDirectoryCommand}"
-                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
                         HorizontalAlignment="Right"/>
 
             </Grid>
@@ -200,7 +200,7 @@
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline3TextBlock}">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedCategory.Count}" Value="0">
+                                <DataTrigger Binding="{Binding SelectedCategory.Screenshots.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -224,12 +224,13 @@
                                                      materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
                                     <Grid>
+                                        
+                                        <!-- Image -->
                                         <Image Source="{Binding .}"
                                                RenderOptions.BitmapScalingMode="HighQuality"
-                                               RenderTransformOrigin="0.5, 0.5"
                                                MaxHeight="750"
                                                VerticalAlignment="Top" />
-                                        
+
                                     </Grid>
 
                                 </materialDesign:Card>

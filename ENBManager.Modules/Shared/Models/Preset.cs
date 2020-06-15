@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -39,7 +40,7 @@ namespace ENBManager.Modules.Shared.Models
 
         public IEnumerable<string> Files { get; set; }
 
-        public ICollection<string> Screenshots { get; set; }
+        public ObservableCollection<string> Screenshots { get; set; }
 
         #endregion
 

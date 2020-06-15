@@ -125,7 +125,7 @@
                                 </Style>
                             </ResourceDictionary>
                         </StackPanel.Resources>
-                        
+
                         <!-- Light/Dark theme -->
                         <StackPanel Margin="10 0"
                                     Visibility="{Binding ShowDarkModeShortcut, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -152,7 +152,7 @@
                                                      Height="24"
                                                      Width="24"/>
                         </Button>
-                        
+
                         <!-- Settings -->
                         <Button Command="{Binding OpenSettingsCommand}"
                                 ToolTip="{x:Static loc:Strings.SETTINGS}">

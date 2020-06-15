@@ -5,13 +5,18 @@ using ENBManager.Infrastructure.Constants;
 using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Events;
 using ENBManager.Modules.Shared.Interfaces;
+using ENBManager.Modules.Shared.Models;
 using ENBManager.Modules.Shared.ViewModels.Base;
 using NLog;
 using Prism.Commands;
 using Prism.Events;
-using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace ENBManager.Modules.Shared.ViewModels
 {
@@ -27,10 +32,6 @@ namespace ENBManager.Modules.Shared.ViewModels
         private readonly IScreenshotWatcher _screenshotWatcher;
 
         private GameModule _game;
-
-        private List<string> _screenshots;
-        private ScreenshotCategory _selectedCategory;
-        private ICollection<string> _miscScreenshots;
 
         #endregion
 
@@ -48,9 +49,9 @@ namespace ENBManager.Modules.Shared.ViewModels
                 config.SaveSettings();
 
                 if (value)
-                    _screenshotWatcher.Start();
+                    StartCollecting();
                 else
-                    _screenshotWatcher.Stop();
+                    StopCollecting();
 
                 RaisePropertyChanged();
 
@@ -58,30 +59,24 @@ namespace ENBManager.Modules.Shared.ViewModels
             }
         }
 
-        public List<ScreenshotCategory> Categories { get; set; }
+        public ObservableCollection<Preset> Categories { get; set; }
 
-        public List<string> Screenshots
-        {
-            get { return _screenshots; }
-            set
-            {
-                _screenshots = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public ScreenshotCategory SelectedCategory
+        private Preset _selectedCategory;
+        public Preset SelectedCategory
         {
             get { return _selectedCategory; }
-            set
+            set 
             {
                 _selectedCategory = value;
+
                 RaisePropertyChanged();
                 GoToDirectoryCommand.RaiseCanExecuteChanged();
 
                 SetScreenshotSource(value);
             }
         }
+
+        public ObservableCollection<BitmapImage> Screenshots { get; set; }
 
         #endregion
 
@@ -109,35 +104,45 @@ namespace ENBManager.Modules.Shared.ViewModels
             _eventAggregator.GetEvent<ScreenshotsStatusChangedExternalEvent>().Subscribe((x) => EnableScreenshots = x);
 
             LoadedCommand = new DelegateCommand(OnLoadedCommand);
-            GoToDirectoryCommand = new DelegateCommand(OnGoToDirectoryCommand, () => SelectedCategory?.Count > 0);
+            GoToDirectoryCommand = new DelegateCommand(OnGoToDirectoryCommand, () => SelectedCategory?.Screenshots?.Count > 0);
         }
 
         #endregion
 
         #region Events
 
-        private void FileCreated(object sender, System.IO.FileSystemEventArgs e)
+        private void FileCreated(object sender, FileSystemEventArgs e)
         {
             _logger.Info("Detecting new screenshot");
 
             var activePreset = _game.Presets.Where(x => x.IsActive).SingleOrDefault();
 
             // If a preset is active, copy to preset dir
-            if (activePreset != null)
+            try
             {
-                _logger.Info("Copying screenshot to preset");
-                _screenshotManager.SaveScreenshot(Paths.GetPresetScreenshotsDirectory(_game.Module, activePreset.Name), e.FullPath);
-                activePreset.Screenshots.Add(e.FullPath);
+                if (activePreset != null)
+                {
+                    _logger.Info("Copying screenshot to preset");
+                    _screenshotManager.SaveScreenshot(Paths.GetPresetScreenshotsDirectory(_game.Module, activePreset.Name), e.FullPath);
+                    activePreset.Screenshots.Add(e.FullPath);
+                }
+                // Else, copy to base dir
+                else if (_configurationManager.Settings.EnableScreenshotWithoutPreset)
+                {
+                    _logger.Info("Copying screenshot to base");
+                    _screenshotManager.SaveScreenshot(Paths.GetScreenshotsDirectory(_game.Module), e.FullPath);
+                }
             }
-            // Else, copy to base dir
-            else if (_configurationManager.Settings.EnableScreenshotWithoutPreset)
+            catch (FileNotFoundException ex)
             {
-                _logger.Info("Copying screenshot to base");
-                _screenshotManager.SaveScreenshot(Paths.GetScreenshotsDirectory(_game.Module), e.FullPath);
-                _miscScreenshots.Add(e.FullPath);
+                _logger.Warn(ex);
             }
 
-            OnLoadedCommand();
+            // Reload UI on UI thread
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                OnLoadedCommand();
+            });
         }
 
         #endregion
@@ -146,24 +151,34 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OnLoadedCommand()
         {
-            _logger.Debug("Loaded");
+            _logger.Debug("Loading");
+
+            RaisePropertyChanged(nameof(EnableScreenshots));
+
+            // TODO: Instead of index, work with preset name instead
+            int selectedIndex = -1;
+            if (Categories != null)
+                selectedIndex = Categories.IndexOf(_selectedCategory);
 
             GetScreenshots();
-            SetScreenshotCategories();
 
-            SelectedCategory = Categories[0];
+            Categories = GetCategories();
+            RaisePropertyChanged(nameof(Categories));
 
-            UpdateUI();
+            // TODO: Instead of index, work with preset name instead
+            SelectedCategory = null;
+            if (selectedIndex > 0)
+                SelectedCategory = Categories[selectedIndex];
+            else if (Categories != null && Categories.Count > 0)
+                SelectedCategory = Categories[0];
         }
 
         private void OnGoToDirectoryCommand()
         {
             _logger.Info("Opening screenshot directory");
 
-            var preset = _game.Presets.SingleOrDefault(x => x.Name == SelectedCategory.Name);
-
-            if (preset != null)
-                Process.Start("explorer", Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name));
+            if (!string.IsNullOrEmpty(_selectedCategory.FullPath))
+                Process.Start("explorer", Paths.GetPresetScreenshotsDirectory(_game.Module, _selectedCategory.Name));
             else
                 Process.Start("explorer", Paths.GetScreenshotsDirectory(_game.Module));
         }
@@ -172,67 +187,76 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         #region Helper Method
 
-        private void UpdateUI()
+        private ObservableCollection<Preset> GetCategories()
         {
-            _logger.Debug("Updating UI");
+            _logger.Debug("Getting screenshot categories");
 
-            RaisePropertyChanged(nameof(EnableScreenshots));
-            RaisePropertyChanged(nameof(Categories));
+            if (_game == null)
+                return null;
+
+            var presets = new ObservableCollection<Preset>(_game.Presets);
+
+            presets.Add(new Preset()
+            {
+                Name = Strings.MISC,
+                Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module)))
+            });
+
+            return presets;
         }
 
         private void GetScreenshots()
         {
-            _logger.Info("Getting screenshots");
+            _logger.Debug("Getting screenshots");
 
             // Get screenshots for each preset
             foreach (var preset in _game.Presets)
             {
-                preset.Screenshots = _screenshotManager.GetScreenshots(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name));
+                preset.Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetPresetScreenshotsDirectory(_game.Module, preset.Name)));
             }
-
-            // Get misc screenshots
-            _miscScreenshots = _screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module));
         }
 
-        private void SetScreenshotSource(ScreenshotCategory screenshotCategory)
+        private void SetScreenshotSource(Preset preset)
         {
             _logger.Info("Setting screenshot source");
-
-            if (screenshotCategory == null)
+            
+            if (preset == null)
                 return;
 
-            var preset = _game.Presets.SingleOrDefault(x => x.Name == screenshotCategory.Name);
+            Screenshots = new ObservableCollection<BitmapImage>();
 
-            if (preset != null)
-                Screenshots = new List<string>(preset.Screenshots);
-            else
-                Screenshots = new List<string>(_miscScreenshots);
+            foreach (var url in preset.Screenshots)
+            {
+                Screenshots.Add(CreateBitmapImageFromUri(new Uri(url)));
+            }
+
+            RaisePropertyChanged(nameof(Screenshots));
         }
 
-        private void SetScreenshotCategories()
+        private BitmapImage CreateBitmapImageFromUri(Uri source)
         {
-            _logger.Debug("Updating screenshot categories");
+            _logger.Debug("Creating screenshot bitmap");
 
-            if (_game == null)
-                return;
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = source;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            return bitmap;
+        }
 
-            Categories = new List<ScreenshotCategory>();
+        private void StartCollecting()
+        {
+            _logger.Debug("Starting collecting");
 
-            // Add active preset
-            var activePreset = _game.Presets.SingleOrDefault(x => x.IsActive);
-            if (activePreset != null)
-            {
-                Categories.Add(new ScreenshotCategory(activePreset.Name, activePreset.Screenshots != null ? activePreset.Screenshots.Count : 0, true));
-            }
+            _screenshotWatcher.FileCreated += FileCreated;
+            _screenshotWatcher.Start();
+        }
 
-            // Add all other presets
-            foreach (var preset in _game.Presets.Where(x => !x.IsActive))
-            {
-                Categories.Add(new ScreenshotCategory(preset.Name, preset.Screenshots != null ? preset.Screenshots.Count : 0));
-            }
-
-            // Add unrelated
-            Categories.Add(new ScreenshotCategory(Strings.MISC, _miscScreenshots != null ? _miscScreenshots.Count : 0));
+        private void StopCollecting()
+        {
+            _logger.Debug("Stopping collecting");
+            _screenshotWatcher.Stop();
         }
 
         #endregion
@@ -246,39 +270,16 @@ namespace ENBManager.Modules.Shared.ViewModels
             _game = game;
 
             _screenshotWatcher.Configure(game.InstalledLocation, FileTypes.ScreenshotFileTypes);
-            _screenshotWatcher.Stop();
+            StopCollecting();
             
             // If screenshot watcher is enabled
             if (game.Settings.ScreenshotsEnabled)
             {
-                _screenshotWatcher.FileCreated += FileCreated;
-                _screenshotWatcher.Start();
+                StartCollecting();
             }
 
             _eventAggregator.GetEvent<ScreenshotsStatusChangedModuleEvent>().Publish(_game.Settings.ScreenshotsEnabled);
         }
-
-        #endregion
-    }
-
-    public class ScreenshotCategory
-    {
-        #region Public Properties
-
-        public string Name { get; set; }
-        public int Count { get; set; }
-        public bool Highlight { get; set; }
-
-        #endregion
-
-        #region Constructor
-
-        public ScreenshotCategory(string name, int count, bool highlight = false)
-        {
-            Name = name;
-            Count = count;
-            Highlight = highlight;
-        } 
 
         #endregion
     }

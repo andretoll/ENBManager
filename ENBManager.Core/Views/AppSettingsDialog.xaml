@@ -157,8 +157,10 @@
                     <TabItem Header="{x:Static loc:Strings.MISC}">
                         <StackPanel>
 
-                            <CheckBox IsChecked="{Binding DarkModeShortcut}"
+                            <GroupBox Header="{x:Static loc:Strings.MISC}">
+                                <CheckBox IsChecked="{Binding DarkModeShortcut}"
                                       Content="{x:Static loc:Strings.DARK_MODE_SHORTCUT}" />
+                            </GroupBox>
 
                         </StackPanel>
                     </TabItem>
