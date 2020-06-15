@@ -42,6 +42,8 @@ namespace ENBManager.App
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+        private static Mutex _mutex;
+
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -63,7 +65,7 @@ namespace ENBManager.App
         {
             bool createdNew;
 
-            _ = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
+            _mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out createdNew);
 
             if (!createdNew)
             {
