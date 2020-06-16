@@ -131,6 +131,7 @@ namespace ENBManager.App
             // Dialogs
             containerRegistry.RegisterDialog<DiscoverGamesDialog, DiscoverGamesDialogViewModel>();
             containerRegistry.RegisterDialog<AppSettingsDialog, AppSettingsViewModel>();
+            containerRegistry.RegisterDialog<GameSettingsDialog, GameSettingsViewModel>();
             containerRegistry.RegisterDialog<AddPresetDialog, AddPresetDialogViewModel>();
         }
 

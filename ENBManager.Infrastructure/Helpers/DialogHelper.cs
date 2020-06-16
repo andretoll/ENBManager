@@ -26,9 +26,34 @@ namespace ENBManager.Infrastructure.Helpers
             return dialog.SelectedPath;
         }
 
+        public static string OpenExecutable()
+        {
+            _logger.Debug("Opening OpenFileDialog without filename");
+
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                Filter = "Exe Files (.exe)|*.exe",
+                CheckFileExists = true
+            };
+
+            bool? cancelled;
+            do
+            {
+                cancelled = !dialog.ShowDialog();
+            }
+            while (!cancelled.Value
+            && !string.IsNullOrEmpty(dialog.FileName)
+            && Path.GetExtension(dialog.FileName) != ".exe");
+
+            if (cancelled.Value)
+                return null;
+
+            return dialog.FileName;
+        }
+
         public static string OpenExecutable(string fileName)
         {
-            _logger.Debug("Opening OpenFileDialog");
+            _logger.Debug("Opening OpenFileDialog with filename");
 
             OpenFileDialog dialog = new OpenFileDialog()
             {

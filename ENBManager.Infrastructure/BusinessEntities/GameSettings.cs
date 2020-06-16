@@ -18,6 +18,8 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public string InstalledLocation { get; set; } = null;
         public string ActivePreset { get; set; } = null;
         public bool ScreenshotsEnabled { get; set; } = false;
+        public bool VirtualExecutableEnabled { get; set; } = false;
+        public string VirtualExecutablePath { get; set; } = null;
 
         #endregion
 

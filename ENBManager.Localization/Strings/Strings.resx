@@ -177,8 +177,17 @@
   <data name="ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP" xml:space="preserve">
     <value>If enabled, screenshots will be saved even if no preset is active</value>
   </data>
+  <data name="ENABLE_VIRTUAL_EXECUTABLE" xml:space="preserve">
+    <value>Enable virtual executable</value>
+  </data>
+  <data name="ENABLE_VIRTUAL_EXECUTABLE_TOOLTIP" xml:space="preserve">
+    <value>If enabled, running the game will execute the provided executable instead of the default game executable.</value>
+  </data>
   <data name="ENTER_A_NEW_NAME" xml:space="preserve">
     <value>Enter a new name:</value>
+  </data>
+  <data name="ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED" xml:space="preserve">
+    <value>Error: An unknown error has occured</value>
   </data>
   <data name="ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN" xml:space="preserve">
     <value>Error: Files are in use. Make sure the game is not running and try again.</value>
@@ -275,6 +284,9 @@
   </data>
   <data name="RESTORE" xml:space="preserve">
     <value>Restore</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Run</value>
   </data>
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>

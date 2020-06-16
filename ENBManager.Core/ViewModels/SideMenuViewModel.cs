@@ -3,18 +3,22 @@ using ENBManager.Configuration.Services;
 using ENBManager.Core.Helpers;
 using ENBManager.Core.Views;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
 using ENBManager.Infrastructure.Interfaces;
+using ENBManager.Localization.Strings;
 using ENBManager.Modules.Shared.Interfaces;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ENBManager.Core.ViewModels
 {
@@ -79,6 +83,8 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand<GameModule> OpenGameDirectoryCommand { get; }
         public DelegateCommand<GameModule> OpenNexusCommand { get; }
         public DelegateCommand<GameModule> OpenScreenshotsDirectoryCommand { get; }
+        public DelegateCommand<GameModule> OpenGameSettingsCommand { get; }
+        public DelegateCommand<GameModule> RunCommand { get; set; }
 
         #endregion
 
@@ -103,6 +109,8 @@ namespace ENBManager.Core.ViewModels
             OpenGameDirectoryCommand = new DelegateCommand<GameModule>(OnOpenGameDirectoryCommand);
             OpenNexusCommand = new DelegateCommand<GameModule>(OnOpenNexusCommand);
             OpenScreenshotsDirectoryCommand = new DelegateCommand<GameModule>(OnOpenScreenshotsDirectoryCommand);
+            OpenGameSettingsCommand = new DelegateCommand<GameModule>(OnOpenGameSettingsCommand);
+            RunCommand = new DelegateCommand<GameModule>(async (x) => await OnRunCommand(x));
         }
 
         #endregion
@@ -197,6 +205,43 @@ namespace ENBManager.Core.ViewModels
             _logger.Info("Opening screenshot directory");
 
             Process.Start("explorer", Paths.GetScreenshotsDirectory(gameModule.Module));
+        }
+
+        private void OnOpenGameSettingsCommand(GameModule gameModule)
+        {
+            _logger.Info("Opening game settings dialog");
+
+            DialogParameters dp = new DialogParameters
+            {
+                { "Title", gameModule.Title },
+                { "GameSettings", gameModule.Settings }
+            };
+
+            _dialogService.ShowDialog(nameof(GameSettingsDialog), dp, null);
+        }
+
+        private async Task OnRunCommand(GameModule gameModule)
+        {
+            try
+            {
+                if (gameModule.Settings.VirtualExecutableEnabled && !string.IsNullOrWhiteSpace(gameModule.Settings.VirtualExecutablePath))
+                {
+                    _logger.Info($"Running virtual executable for {gameModule.Module}");
+
+                    Process.Start(gameModule.Settings.VirtualExecutablePath);
+                }
+                else
+                {
+                    _logger.Info($"Running default executable for {gameModule.Module}");
+
+                    Process.Start(Path.Combine(gameModule.InstalledLocation, gameModule.Executable));
+                }
+            }
+            catch (Exception ex)
+            {
+                await new MessageDialog(Strings.ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED).OpenAsync();
+                _logger.Error(ex);
+            }
         }
 
         private void ActivateModule(string name)

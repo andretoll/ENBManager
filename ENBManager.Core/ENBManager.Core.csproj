@@ -22,4 +22,16 @@
     <ProjectReference Include="..\ENBManager.Modules\ENBManager.Modules.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\GameSettingsDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\GameSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

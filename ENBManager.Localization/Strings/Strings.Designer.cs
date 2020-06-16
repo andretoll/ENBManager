@@ -241,11 +241,38 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable virtual executable.
+        /// </summary>
+        public static string ENABLE_VIRTUAL_EXECUTABLE {
+            get {
+                return ResourceManager.GetString("ENABLE_VIRTUAL_EXECUTABLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If enabled, running the game will execute the provided executable instead of the default game executable..
+        /// </summary>
+        public static string ENABLE_VIRTUAL_EXECUTABLE_TOOLTIP {
+            get {
+                return ResourceManager.GetString("ENABLE_VIRTUAL_EXECUTABLE_TOOLTIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a new name:.
         /// </summary>
         public static string ENTER_A_NEW_NAME {
             get {
                 return ResourceManager.GetString("ENTER_A_NEW_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: An unknown error has occured.
+        /// </summary>
+        public static string ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED {
+            get {
+                return ResourceManager.GetString("ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED", resourceCulture);
             }
         }
         
@@ -534,6 +561,15 @@ namespace ENBManager.Localization.Strings {
         public static string RESTORE {
             get {
                 return ResourceManager.GetString("RESTORE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run.
+        /// </summary>
+        public static string RUN {
+            get {
+                return ResourceManager.GetString("RUN", resourceCulture);
             }
         }
         
