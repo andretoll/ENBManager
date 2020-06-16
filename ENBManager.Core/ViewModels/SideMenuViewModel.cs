@@ -83,6 +83,7 @@ namespace ENBManager.Core.ViewModels
         public DelegateCommand GetDataCommand { get; }
         public DelegateCommand OpenSettingsCommand { get; }
         public DelegateCommand OpenDiscoverGamesCommand { get; }
+        public DelegateCommand OpenAboutCommand { get; set; }
         public DelegateCommand<GameModule> OpenGameDirectoryCommand { get; }
         public DelegateCommand<GameModule> OpenNexusCommand { get; }
         public DelegateCommand<GameModule> OpenScreenshotsDirectoryCommand { get; }
@@ -109,6 +110,7 @@ namespace ENBManager.Core.ViewModels
             GetDataCommand = new DelegateCommand(OnGetDataCommand);
             OpenSettingsCommand = new DelegateCommand(OnOpenSettingsCommand);
             OpenDiscoverGamesCommand = new DelegateCommand(OnOpenDiscoverGamesCommand);
+            OpenAboutCommand = new DelegateCommand(OnAboutCommand);
             OpenGameDirectoryCommand = new DelegateCommand<GameModule>(OnOpenGameDirectoryCommand);
             OpenNexusCommand = new DelegateCommand<GameModule>(OnOpenNexusCommand);
             OpenScreenshotsDirectoryCommand = new DelegateCommand<GameModule>(OnOpenScreenshotsDirectoryCommand);
@@ -182,6 +184,13 @@ namespace ENBManager.Core.ViewModels
                     SelectedGame = null;
                 }
             });
+        }
+
+        private void OnAboutCommand()
+        {
+            _logger.Info("Opening about dialog");
+
+            _dialogService.ShowDialog(nameof(AboutDialog), new DialogParameters(), null);
         }
 
         private void OnOpenGameDirectoryCommand(GameModule gameModule)

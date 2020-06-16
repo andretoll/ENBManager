@@ -7,13 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
-    <Grid Margin="25">
+    <StackPanel Margin="25"
+                VerticalAlignment="Center">
+        <Border Background="{DynamicResource PrimaryHueMidBrush}"
+                CornerRadius="15"
+                Width="75"
+                Height="75"
+                Padding="10"
+                Margin="0 0 15 0">
+
+            <Image Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/favicon.ico"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+
+        </Border>
         <Viewbox MaxWidth="1200">
             <TextBlock Text="{x:Static loc:Strings.SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED}"
                        Style="{StaticResource MaterialDesignHeadline4TextBlock}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"/>
         </Viewbox>
-    </Grid>
+    </StackPanel>
     
 </UserControl>

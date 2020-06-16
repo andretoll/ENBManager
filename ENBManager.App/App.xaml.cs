@@ -133,6 +133,7 @@ namespace ENBManager.App
             containerRegistry.RegisterDialog<AppSettingsDialog, AppSettingsViewModel>();
             containerRegistry.RegisterDialog<GameSettingsDialog, GameSettingsViewModel>();
             containerRegistry.RegisterDialog<AddPresetDialog, AddPresetDialogViewModel>();
+            containerRegistry.RegisterDialog<AboutDialog, AboutViewModel>();
         }
 
         #endregion

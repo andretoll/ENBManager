@@ -161,6 +161,14 @@
                                                      Width="24"/>
                         </Button>
 
+                        <!-- About -->
+                        <Button Command="{Binding OpenAboutCommand}"
+                                ToolTip="{x:Static loc:Strings.ABOUT}">
+                            <materialDesign:PackIcon Kind="AboutVariant"
+                                                     Height="24"
+                                                     Width="24"/>
+                        </Button>
+
                     </StackPanel>
 
                 </Grid>

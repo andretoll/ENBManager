@@ -61,6 +61,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string ABOUT {
+            get {
+                return ResourceManager.GetString("ABOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active preset.
         /// </summary>
         public static string ACTIVE_PRESET {
@@ -133,6 +142,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string CLOSE {
+            get {
+                return ResourceManager.GetString("CLOSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Color scheme.
         /// </summary>
         public static string COLOR_SCHEME {
@@ -147,6 +165,15 @@ namespace ENBManager.Localization.Strings {
         public static string CONTINUE {
             get {
                 return ResourceManager.GetString("CONTINUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit.
+        /// </summary>
+        public static string CREDIT {
+            get {
+                return ResourceManager.GetString("CREDIT", resourceCulture);
             }
         }
         
