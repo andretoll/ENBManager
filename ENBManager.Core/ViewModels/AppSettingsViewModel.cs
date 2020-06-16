@@ -1,12 +1,15 @@
 ﻿using ENBManager.Configuration.Interfaces;
 using ENBManager.Core.Helpers;
 using ENBManager.Infrastructure.BusinessEntities;
+using ENBManager.Infrastructure.Helpers;
 using NLog;
+using NLog.Targets;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ENBManager.Core.ViewModels
@@ -33,6 +36,7 @@ namespace ENBManager.Core.ViewModels
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand CancelCommand { get; }
+        public DelegateCommand ExportLogFileCommand { get; set; }
 
         #endregion
 
@@ -44,6 +48,7 @@ namespace ENBManager.Core.ViewModels
 
             SaveCommand = new DelegateCommand(OnSaveCommand);
             CancelCommand = new DelegateCommand(() => RequestClose?.Invoke(new DialogResult(ButtonResult.Cancel)));
+            ExportLogFileCommand = new DelegateCommand(OnExportLogFileCommand);
         }
 
         #endregion
@@ -61,6 +66,14 @@ namespace ENBManager.Core.ViewModels
             _configurationManager.LoadSettings();
 
             RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+        }
+
+        private void OnExportLogFileCommand()
+        {
+            _logger.Info("Exporting log file");
+
+            string logFilePath = (LogManager.Configuration.AllTargets[0] as FileTarget).FileName.Render(new LogEventInfo());
+            DialogHelper.SaveFile(logFilePath, Path.GetFileName(logFilePath), "Log files (*.log)|*.log");
         }
 
         #endregion

@@ -201,6 +201,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="EXPORT" xml:space="preserve">
+    <value>Export</value>
+    <comment> </comment>
+  </data>
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using ENBManager.Localization.Strings;
+using NLog;
 using System.IO;
 using System.Windows.Forms;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -74,6 +75,25 @@ namespace ENBManager.Infrastructure.Helpers
                 return null;
 
             return dialog.FileName;
+        }
+
+        public static void SaveFile(string path, string fileName, string filter)
+        {
+            _logger.Debug("Opening SaveFileDialog");
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog()
+            {
+                Title = Strings.EXPORT,
+                InitialDirectory = @"C:\",
+                Filter = filter,
+                FileName = fileName
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fileName = saveFileDialog.FileName;
+                File.Copy(path, fileName, true);
+            }
         }
     }
 }

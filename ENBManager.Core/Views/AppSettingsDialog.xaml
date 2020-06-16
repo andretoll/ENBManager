@@ -11,7 +11,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             Width="500" Height="400">
+             Width="500">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -92,10 +92,25 @@
                             <GroupBox Header="{x:Static loc:Strings.DIAGNOSTICS}">
                                 <StackPanel Margin="0 5">
                                     <Label Content="{x:Static loc:Strings.LOG_LEVEL}" />
-                                    <ComboBox materialDesign:ComboBoxAssist.ClassicMode="True"
-                                              ItemsSource="{Binding LogLevel, Mode=OneTime, Converter={StaticResource EnumToCollectionConverter}}"
-                                              SelectedItem="{Binding LogLevel}"
-                                              SelectedValuePath="Name" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <ComboBox Grid.Column="0" 
+                                                  materialDesign:ComboBoxAssist.ClassicMode="True"
+                                                  ItemsSource="{Binding LogLevel, Mode=OneTime, Converter={StaticResource EnumToCollectionConverter}}"
+                                                  SelectedItem="{Binding LogLevel}" />
+                                        
+                                        <Button Grid.Column="1" 
+                                                Content="{x:Static loc:Strings.EXPORT}"
+                                                Command="{Binding DataContext.ExportLogFileCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                                HorizontalAlignment="Left"
+                                                Margin="10 0 0 0"/>
+                                        
+                                    </Grid>
                                 </StackPanel>
                             </GroupBox>
 
