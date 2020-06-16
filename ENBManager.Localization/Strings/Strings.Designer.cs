@@ -160,15 +160,6 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dark mode shortcut.
-        /// </summary>
-        public static string DARK_MODE_SHORTCUT {
-            get {
-                return ResourceManager.GetString("DARK_MODE_SHORTCUT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dashboard.
         /// </summary>
         public static string DASHBOARD {
@@ -651,6 +642,15 @@ namespace ENBManager.Localization.Strings {
         public static string SETTINGS {
             get {
                 return ResourceManager.GetString("SETTINGS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcuts.
+        /// </summary>
+        public static string SHORTCUTS {
+            get {
+                return ResourceManager.GetString("SHORTCUTS", resourceCulture);
             }
         }
         

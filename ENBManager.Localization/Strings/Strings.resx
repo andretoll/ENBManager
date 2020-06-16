@@ -150,9 +150,6 @@
   <data name="DARK_MODE" xml:space="preserve">
     <value>Dark mode</value>
   </data>
-  <data name="DARK_MODE_SHORTCUT" xml:space="preserve">
-    <value>Dark mode shortcut</value>
-  </data>
   <data name="DASHBOARD" xml:space="preserve">
     <value>Dashboard</value>
   </data>
@@ -314,6 +311,9 @@
   </data>
   <data name="SET_ROOT_TOOLTIP_TEXT" xml:space="preserve">
     <value>Sets the selected folder as the top-level directory</value>
+  </data>
+  <data name="SHORTCUTS" xml:space="preserve">
+    <value>Shortcuts</value>
   </data>
   <data name="START_WITH_LAST_GAME_ACTIVE" xml:space="preserve">
     <value>Start with last game active</value>

@@ -200,13 +200,45 @@
                                     <!-- Icon -->
                                     <Grid Grid.Column="1"
                                           Margin="5 0"
+                                          Height="50"
+                                          Width="50"
                                           ToolTip="{Binding Title}"
                                           ToolTipService.InitialShowDelay="0">
 
-                                        <Image Source="{Binding Icon}"
-                                               RenderOptions.BitmapScalingMode="HighQuality"
-                                               Width="50" 
-                                               Height="50"/>
+                                        <Grid>
+
+                                            <Image Source="{Binding Icon}"
+                                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </Grid>
+
+                                        <!-- Run shortcut -->
+                                        <Grid VerticalAlignment="Center">
+                                            <Grid.Style>
+                                                <Style TargetType="{x:Type Grid}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" Value="true" />
+                                                                <Condition Binding="{Binding DataContext.ShowRunGameShortcut, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <MultiDataTrigger.Setters>
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </MultiDataTrigger.Setters>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                            
+                                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                                                    Command="{Binding DataContext.RunCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                    CommandParameter="{Binding .}">
+                                                <materialDesign:PackIcon Kind="Play"
+                                                                         Width="30"
+                                                                         Height="30"/>
+                                            </Button>
+                                        </Grid>
+                                        
                                     </Grid>
 
                                     <!-- Title -->

@@ -27,6 +27,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public bool EnableScreenshotWithoutPreset { get; set; } = true;
         public bool DeleteScreenshotsWhenDeletingPreset { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;
+        public bool RunGameShortcut { get; set; } = false;
 
         #endregion
 

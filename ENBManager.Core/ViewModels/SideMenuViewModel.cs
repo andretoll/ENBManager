@@ -71,6 +71,9 @@ namespace ENBManager.Core.ViewModels
                 ThemeHelper.UpdateTheme(value);
             }
         }
+
+        public bool ShowRunGameShortcut => _configurationManager.Settings.RunGameShortcut;
+
         public bool ShowDarkModeShortcut => _configurationManager.Settings.DarkModeShortcut;
 
         #endregion
@@ -157,6 +160,7 @@ namespace ENBManager.Core.ViewModels
 
                     RaisePropertyChanged(nameof(DarkMode));
                     RaisePropertyChanged(nameof(ShowDarkModeShortcut));
+                    RaisePropertyChanged(nameof(ShowRunGameShortcut));
                 }
             });
         }
