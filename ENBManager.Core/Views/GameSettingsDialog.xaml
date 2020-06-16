@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="ENBManager.Core.Views.GameSettingsDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:vc="clr-namespace:ENBManager.Infrastructure.ValueConverters;assembly=ENBManager.Infrastructure"
+             mc:Ignorable="d" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Width="500" Height="400">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/TabControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <vc:EnumToCollectionValueConverter x:Key="EnumToCollectionConverter" />
+
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignAccentCheckBox}">
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="Margin" Value="0 2" />
+                <Setter Property="materialDesign:CheckBoxAssist.CheckBoxSize" Value="24" />
+                <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
+            </Style>
+
+            <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource MaterialDesignCardGroupBox}">
+                <Setter Property="Margin" Value="0 0 0 20" />
+                <Setter Property="Padding" Value="10" />
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+            <Setter Property="ShowInTaskbar" Value="True"/>
+            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Border Padding="10">
+
+        <DockPanel LastChildFill="True">
+            
+            <!-- Actions -->
+            <StackPanel DockPanel.Dock="Bottom"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <!-- Save -->
+                <Button Content="{x:Static loc:Strings.SAVE}"
+                        IsDefault="True"
+                        Command="{Binding SaveCommand}"
+                        Margin="0 0 10 0" />
+
+                <!-- Cancel -->
+                <Button Content="{x:Static loc:Strings.CANCEL}"
+                        IsCancel="True"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding CancelCommand}"/>
+
+            </StackPanel>
+
+            <!-- Settings -->
+            <Grid Margin="0 0 0 20"
+                  DataContext="{Binding Settings}">
+
+                <StackPanel>
+                    <GroupBox Header="{x:Static loc:Strings.GENERAL}">
+                        <StackPanel>
+                            <CheckBox x:Name="EnableVirtualExecutableCheckBox"
+                                      IsChecked="{Binding VirtualExecutableEnabled}"
+                                      Content="{x:Static loc:Strings.ENABLE_VIRTUAL_EXECUTABLE}"
+                                      ToolTip="{x:Static loc:Strings.ENABLE_VIRTUAL_EXECUTABLE_TOOLTIP}"/>
+                            <Grid IsEnabled="{Binding IsChecked, ElementName=EnableVirtualExecutableCheckBox}"
+                                  Margin="0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0"
+                                         Text="{Binding DataContext.VirtualExecutablePath, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                         IsReadOnly="True"
+                                         Height="25"
+                                         Margin="0 0 20 0"/>
+                                <Button Grid.Column="1" 
+                                        Content="{x:Static loc:Strings.BROWSE}"
+                                        Command="{Binding DataContext.BrowseCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+
+            </Grid>
+            
+        </DockPanel>
+
+    </Border>
+    
+</UserControl>

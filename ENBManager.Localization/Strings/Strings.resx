@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ABOUT" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="ACTIVE_PRESET" xml:space="preserve">
+    <value>Active preset</value>
+  </data>
+  <data name="ADD_NEW_PRESET" xml:space="preserve">
+    <value>Add new preset</value>
+  </data>
+  <data name="AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS" xml:space="preserve">
+    <value>An item with this this name already exists</value>
+  </data>
+  <data name="APPEARANCE" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="APPLICATION" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="BACKUP" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="BROWSE" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CLOSE" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="COLOR_SCHEME" xml:space="preserve">
+    <value>Color scheme</value>
+  </data>
+  <data name="CONTINUE" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="CREDIT" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="DARK_MODE" xml:space="preserve">
+    <value>Dark mode</value>
+  </data>
+  <data name="DASHBOARD" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DELETE_SCREENSHOTS_WHEN_DELETING_A_PRESET" xml:space="preserve">
+    <value>Delete screenshots when deleting a preset</value>
+  </data>
+  <data name="DIAGNOSTICS" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>Empty.</value>
+  </data>
+  <data name="ENABLE_SCREENSHOTS" xml:space="preserve">
+    <value>Enable screenshots</value>
+  </data>
+  <data name="ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET" xml:space="preserve">
+    <value>Enable screenshots without active preset</value>
+  </data>
+  <data name="ENABLE_SCREENSHOTS_WITHOUT_ACTIVE_PRESET_TOOLTIP" xml:space="preserve">
+    <value>If enabled, screenshots will be saved even if no preset is active</value>
+  </data>
+  <data name="ENABLE_VIRTUAL_EXECUTABLE" xml:space="preserve">
+    <value>Enable virtual executable</value>
+  </data>
+  <data name="ENABLE_VIRTUAL_EXECUTABLE_TOOLTIP" xml:space="preserve">
+    <value>If enabled, running the game will execute the provided executable instead of the default game executable.</value>
+  </data>
+  <data name="ENTER_A_NEW_NAME" xml:space="preserve">
+    <value>Enter a new name:</value>
+  </data>
+  <data name="ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED" xml:space="preserve">
+    <value>Error: An unknown error has occured</value>
+  </data>
+  <data name="ERROR_MAKE_SURE_THE_GAME_IS_NOT_RUNNING_AND_TRY_AGAIN" xml:space="preserve">
+    <value>Error: Files are in use. Make sure the game is not running and try again.</value>
+  </data>
+  <data name="ERROR_MISSING_BINARIES" xml:space="preserve">
+    <value>Error: Missing binaries</value>
+  </data>
+  <data name="ERROR_PRESET_COULD_NOT_BE_ACTIVATED" xml:space="preserve">
+    <value>Error: Preset could not be activated. Make sure the files included in the preset are compatible with the game directory</value>
+  </data>
+  <data name="ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY" xml:space="preserve">
+    <value>Error: Unable to locate game directory</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="EXPORT" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="FILES" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="GAMES" xml:space="preserve">
+    <value>Games</value>
+  </data>
+  <data name="GAME_UPDATED" xml:space="preserve">
+    <value>Game updated</value>
+  </data>
+  <data name="GENERAL" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GO_TO_DIRECTORY" xml:space="preserve">
+    <value>Go to directory</value>
+  </data>
+  <data name="GO_TO_SCREENSHOTS" xml:space="preserve">
+    <value>Go to screenshots</value>
+  </data>
+  <data name="GRID" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="INSTALLED_GAMES" xml:space="preserve">
+    <value>Installed Games</value>
+  </data>
+  <data name="INVALID_NAME" xml:space="preserve">
+    <value>Invalid name: The name may contain illegal characters</value>
+  </data>
+  <data name="INVALID_PRESET_NO_FILES" xml:space="preserve">
+    <value>Invalid preset: No eligible files were found</value>
+  </data>
+  <data name="LOG_LEVEL" xml:space="preserve">
+    <value>Log level</value>
+  </data>
+  <data name="MANAGE" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="MANAGE_BINARIES" xml:space="preserve">
+    <value>Manage binaries</value>
+  </data>
+  <data name="MANAGE_BINARIES_TOOLTIP" xml:space="preserve">
+    <value>If enabled, binary files will be automatically managed by the application. It is recommended to have this enabled</value>
+  </data>
+  <data name="MINIMIZE_TO_TRAY" xml:space="preserve">
+    <value>Minimize to tray</value>
+  </data>
+  <data name="MISC" xml:space="preserve">
+    <value>Misc</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="NO_PRESET_ACTIVE" xml:space="preserve">
+    <value>No preset active</value>
+  </data>
+  <data name="NO_PROBLEMS_HAVE_BEEN_DETECTED" xml:space="preserve">
+    <value>No problems have been detected</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="PRESETS" xml:space="preserve">
+    <value>Presets</value>
+  </data>
+  <data name="PRESET_ACTIVATED" xml:space="preserve">
+    <value>activated.</value>
+  </data>
+  <data name="PRESET_ADDED" xml:space="preserve">
+    <value>Preset added</value>
+  </data>
+  <data name="PRESET_DELETED" xml:space="preserve">
+    <value>Preset deleted</value>
+  </data>
+  <data name="PRESET_UPDATED" xml:space="preserve">
+    <value>Preset updated</value>
+  </data>
+  <data name="RENAME" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="RESTORE" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="SAVE" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SAVE_CURRENT" xml:space="preserve">
+    <value>Save current</value>
+  </data>
+  <data name="SAVE_CURRENT_TOOLTIP_TEXT" xml:space="preserve">
+    <value>EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory</value>
+  </data>
+  <data name="SCREENSHOTS" xml:space="preserve">
+    <value>Screenshots</value>
+  </data>
+  <data name="SCREENSHOT_TAB_DESCRIPTION" xml:space="preserve">
+    <value>If enabled, the application will collect screenshots taken in the game and save them according to the active preset.</value>
+  </data>
+  <data name="SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED" xml:space="preserve">
+    <value>Select a game in the menu to get started!</value>
+  </data>
+  <data name="SETTINGS" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SET_ROOT" xml:space="preserve">
+    <value>Set root</value>
+  </data>
+  <data name="SET_ROOT_TOOLTIP_TEXT" xml:space="preserve">
+    <value>Sets the selected folder as the top-level directory</value>
+  </data>
+  <data name="SHORTCUTS" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="START_WITH_LAST_GAME_ACTIVE" xml:space="preserve">
+    <value>Start with last game active</value>
+  </data>
+  <data name="START_WITH_LAST_GAME_ACTIVE_TOOLTIP" xml:space="preserve">
+    <value>Automatically selects the last active game upon startup</value>
+  </data>
+  <data name="THEMES_AND_COLORS" xml:space="preserve">
+    <value>Themes &amp; Colors</value>
+  </data>
+  <data name="UNMANAGING_MANAGED_GAME" xml:space="preserve">
+    <value>Unmanaging a previously managed game will reset its content</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="VERTICAL_LIST" xml:space="preserve">
+    <value>Vertical list</value>
+  </data>
+  <data name="VIEW_FILES" xml:space="preserve">
+    <value>View files</value>
+  </data>
+  <data name="VISIT_ENBDEV" xml:space="preserve">
+    <value>Visit ENBDev</value>
+  </data>
+  <data name="VISIT_NEXUS_MODS" xml:space="preserve">
+    <value>Visit Nexus Mods</value>
+  </data>
+  <data name="WARNING_AN_OLDER_BINARY_VERSION_IS_CURRENTLY_USED" xml:space="preserve">
+    <value>Version mismatch: An older binary version is currently used</value>
+  </data>
+  <data name="WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED" xml:space="preserve">
+    <value>Version mismatch: A newer binary version is currently used</value>
+  </data>
+  <data name="WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET" xml:space="preserve">
+    <value>Warning: File(s) are missing from the active preset</value>
+  </data>
+  <data name="WARNING_NO_BINARIES_BACKUP" xml:space="preserve">
+    <value>Warning: Binaries have not yet been backed up</value>
+  </data>
+  <data name="WARNING_THE_ACTIVE_PRESET_DIFFERS_FROM_THE_PRESET_CURRENTLY_USED" xml:space="preserve">
+    <value>Warning: The active preset differs from the preset currently used</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE" xml:space="preserve">
+    <value>You are about to delete this item, are you sure?</value>
+  </data>
+</root>

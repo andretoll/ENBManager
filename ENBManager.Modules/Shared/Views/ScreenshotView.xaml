@@ -1,0 +1,247 @@
+﻿<UserControl x:Class="ENBManager.Modules.Shared.Views.ScreenshotView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             TextElement.FontSize="16"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <DockPanel>
+        
+        <!-- Top bar -->
+        <Border DockPanel.Dock="Top">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <!-- Top -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left -->
+                    <Grid Grid.Column="0"
+                          HorizontalAlignment="Left">
+                        <StackPanel Orientation="Vertical">
+
+                            <TextBlock Text="{x:Static loc:Strings.ENABLE_SCREENSHOTS}"
+                                       Margin="0 0 0 10"/>
+                            <materialDesign:ColorZone Mode="Accent"
+                                                      CornerRadius="15"
+                                                      materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                                      Padding="5"
+                                                      Width="50">
+                                <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" 
+                                              Background="{DynamicResource MaterialDesignDarkBackground}"
+                                              materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="{DynamicResource MaterialDesignDarkBackground}"
+                                              materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="{DynamicResource MaterialDesignDarkBackground}"
+                                              IsChecked="{Binding EnableScreenshots}" />
+                            </materialDesign:ColorZone>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Right -->
+                    <Grid Grid.Column="1" 
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Margin="20 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" 
+                                                     Kind="InformationCircleOutline"
+                                                     Width="20"
+                                                     Height="20"/>
+                            <TextBlock Grid.Column="1" 
+                                       Text="{x:Static loc:Strings.SCREENSHOT_TAB_DESCRIPTION}"
+                                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                       MaxHeight="100"
+                                       Margin="5 0 0 0"
+                                       TextTrimming="CharacterEllipsis"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+
+                <!-- Bottom -->
+                <Grid Grid.Row="1"
+                      Margin="0 20 0 0"
+                      Height="5">
+
+                    <ProgressBar Height="{Binding Path=Height, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"
+                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                 Background="{DynamicResource AttentionToActionBrush}"
+                                 BorderBrush="Transparent">
+                        <ProgressBar.Style>
+                            <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EnableScreenshots}" Value="True">
+                                        <Setter Property="IsIndeterminate" Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ProgressBar.Style>
+                    </ProgressBar>
+
+                </Grid>
+                
+            </Grid>
+
+        </Border>
+        
+        <!-- Screenshots -->
+        <Grid Margin="0 10 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <!-- Top bar -->
+            <Grid Grid.Row="0" 
+                  Margin="0 0 0 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- Categories -->
+                <ComboBox Grid.Column="0" 
+                          ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory, UpdateSourceTrigger=LostFocus}"
+                          Style="{StaticResource MaterialDesignComboBox}"
+                          materialDesign:ComboBoxAssist.ClassicMode="true"
+                          HorizontalAlignment="Left"
+                          Width="200">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                        <Setter Property="FontWeight" Value="Normal" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive}" Value="true">
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding Screenshots.Count, UpdateSourceTrigger=PropertyChanged, StringFormat={}({0})}" 
+                                           Margin="5 0 0 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    
+                </ComboBox>
+                
+                <!-- Image size slider -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <materialDesign:PackIcon Kind="MinusCircle"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="0 0 5 0"
+                                             VerticalAlignment="Center"/>
+                    <Slider x:Name="ImageColumnsSlider" 
+                            VerticalAlignment="Center"
+                            MinWidth="100"
+                            Foreground="{DynamicResource SecondaryAccentBrush}"
+                            Value="2"
+                            Minimum="1"
+                            Maximum="5"/>
+                    <materialDesign:PackIcon Kind="PlusCircle"
+                                             Width="20"
+                                             Height="20"
+                                             Margin="5 0 0 0"
+                                             VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Go to directory -->
+                <Button Grid.Column="2" 
+                        Content="{x:Static loc:Strings.GO_TO_DIRECTORY}"
+                        Command="{Binding GoToDirectoryCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        HorizontalAlignment="Right"/>
+
+            </Grid>
+            
+            <!-- Screenshots view -->
+            <Grid Grid.Row="1">
+
+                <!-- Empty message -->
+                <TextBlock Text="{x:Static loc:Strings.EMPTY}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline3TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedCategory.Screenshots.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Screenshots}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding Path=Value, ElementName=ImageColumnsSlider}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Card Margin="10"
+                                                     x:Name="ButtonGrid"
+                                                     VerticalAlignment="Top"
+                                                     HorizontalAlignment="Center"
+                                                     materialDesign:ShadowAssist.ShadowDepth="Depth3">
+
+                                    <Grid>
+                                        
+                                        <!-- Image -->
+                                        <Image Source="{Binding .}"
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               MaxHeight="750"
+                                               VerticalAlignment="Top" />
+
+                                    </Grid>
+
+                                </materialDesign:Card>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+        </Grid>
+        
+    </DockPanel>
+    
+</UserControl>
