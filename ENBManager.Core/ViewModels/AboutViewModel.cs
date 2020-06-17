@@ -1,8 +1,10 @@
 ﻿using ENBManager.Infrastructure.Constants;
 using ENBManager.Localization.Strings;
 using NLog;
+using Prism.Commands;
 using Prism.Services.Dialogs;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace ENBManager.Core.ViewModels
@@ -19,6 +21,38 @@ namespace ENBManager.Core.ViewModels
 
         public string Name => ApplicationName.NAME;
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        #endregion
+
+        #region Commands
+
+        public DelegateCommand OpenSourceCodeCommand { get; }
+
+        #endregion
+
+        #region Constructor
+
+        public AboutViewModel()
+        {
+            OpenSourceCodeCommand = new DelegateCommand(OnOpenSourceCodeCommand);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void OnOpenSourceCodeCommand()
+        {
+            _logger.Info($"Opening {Urls.SOURCE_CODE}");
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = Urls.SOURCE_CODE,
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
+        }
 
         #endregion
 

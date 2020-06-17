@@ -118,6 +118,7 @@
     <Compile Include="Constants\Paths.cs" />
     <Compile Include="Constants\RegionNames.cs" />
     <Compile Include="Constants\FileTypes.cs" />
+    <Compile Include="Constants\Urls.cs" />
     <Compile Include="Enums\VersionMismatch.cs" />
     <Compile Include="Exceptions\IdenticalNameException.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />

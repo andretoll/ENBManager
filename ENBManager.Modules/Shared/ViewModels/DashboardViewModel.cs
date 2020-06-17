@@ -221,13 +221,11 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OpenLink()
         {
-            string url = "http://enbdev.com/download.html";
-
-            _logger.Info($"Opening {url}");
+            _logger.Info($"Opening {Urls.ENBDEV}");
 
             var psi = new ProcessStartInfo
             {
-                FileName = url,
+                FileName = Urls.ENBDEV,
                 UseShellExecute = true
             };
 

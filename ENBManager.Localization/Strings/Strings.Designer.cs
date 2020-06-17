@@ -691,6 +691,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source code.
+        /// </summary>
+        public static string SOURCE_CODE {
+            get {
+                return ResourceManager.GetString("SOURCE_CODE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start with last game active.
         /// </summary>
         public static string START_WITH_LAST_GAME_ACTIVE {

@@ -327,6 +327,9 @@
   <data name="SHORTCUTS" xml:space="preserve">
     <value>Shortcuts</value>
   </data>
+  <data name="SOURCE_CODE" xml:space="preserve">
+    <value>Source code</value>
+  </data>
   <data name="START_WITH_LAST_GAME_ACTIVE" xml:space="preserve">
     <value>Start with last game active</value>
   </data>
