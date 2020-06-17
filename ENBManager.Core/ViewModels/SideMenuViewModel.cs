@@ -154,17 +154,13 @@ namespace ENBManager.Core.ViewModels
         {
             _logger.Info("Opening app settings dialog");
 
-            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), (dr) =>
-            {
-                if (dr.Result == ButtonResult.OK)
-                {
-                    _configurationManager.LoadSettings();
+            _dialogService.ShowDialog(nameof(AppSettingsDialog), new DialogParameters(), null);
 
-                    RaisePropertyChanged(nameof(DarkMode));
-                    RaisePropertyChanged(nameof(ShowDarkModeShortcut));
-                    RaisePropertyChanged(nameof(ShowRunGameShortcut));
-                }
-            });
+            _configurationManager.LoadSettings();
+
+            RaisePropertyChanged(nameof(DarkMode));
+            RaisePropertyChanged(nameof(ShowDarkModeShortcut));
+            RaisePropertyChanged(nameof(ShowRunGameShortcut));
         }
 
         private void OnOpenDiscoverGamesCommand()
@@ -231,6 +227,8 @@ namespace ENBManager.Core.ViewModels
             };
 
             _dialogService.ShowDialog(nameof(GameSettingsDialog), dp, null);
+
+            gameModule.Settings = ConfigurationManager<GameSettings>.LoadSettings(new GameSettings(gameModule.Module).GetFullPath());
         }
 
         private async Task OnRunCommand(GameModule gameModule)

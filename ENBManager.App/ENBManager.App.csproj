@@ -16,10 +16,16 @@
     <Authors>André Toll</Authors>
     <PackageId>ENBManager</PackageId>
     <AssemblyName>ENBManager</AssemblyName>
+    <Deterministic>False</Deterministic>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="splashscreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs" Link="SharedAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
