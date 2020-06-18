@@ -258,20 +258,28 @@ namespace ENBManager.Modules.Shared.Services
 
                 string hash1, hash2;
 
-                using (var md5 = MD5.Create())
+                try
                 {
-                    using (var stream = File.OpenRead(file1))
+                    using (var md5 = MD5.Create())
                     {
-                        hash1 = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                        using (var stream = File.OpenRead(file1))
+                        {
+                            hash1 = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                        }
+                        using (var stream = File.OpenRead(file2))
+                        {
+                            hash2 = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                        }
                     }
-                    using (var stream = File.OpenRead(file2))
-                    {
-                        hash2 = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
-                    }
-                }
 
-                if (hash1 != hash2)
+                    if (hash1 != hash2)
+                        identical = false;
+                }
+                catch (DirectoryNotFoundException ex)
+                {
+                    _logger.Warn(ex);
                     identical = false;
+                }
             }
 
             _logger.Debug($"Identical - {identical}");
