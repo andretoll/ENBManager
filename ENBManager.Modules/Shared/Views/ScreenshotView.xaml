@@ -212,7 +212,8 @@
                     <ItemsControl ItemsSource="{Binding Screenshots}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="{Binding Path=Value, ElementName=ImageColumnsSlider}"/>
+                                <UniformGrid Columns="{Binding Path=Value, ElementName=ImageColumnsSlider}"
+                                             VerticalAlignment="Top"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>

@@ -138,7 +138,16 @@ namespace ENBManager.Modules.Shared.ViewModels
                     if (other.IsActive)
                     {
                         _logger.Info($"Deactivating preset {preset.Name}");
-                        await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, other);
+
+                        try
+                        {
+                            await _presetManager.DeactivatePresetAsync(_game.InstalledLocation, other);
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            _logger.Error(ex);
+                        }
+
                         other.IsActive = false;
                     }
                 }
