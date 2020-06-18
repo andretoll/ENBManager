@@ -7,7 +7,7 @@ A comprehensive and highly customizable ENB manager that allows the user to quic
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Future plans](#future plans)
+- [Future](#future)
 
 ## Features
 
@@ -16,15 +16,13 @@ A comprehensive and highly customizable ENB manager that allows the user to quic
 - Game launcher
 - Screenshot collector
 
-## Installation & Setup
+## Installation
 
 1. Download the single executable file and save it anywhere you like
 2. Run the executable (.exe) (Windows might prevent the app from running the first time)
 3. Select the games to manage and continue
 
 ## Usage
-
-Replace the contents of `README.md` with your project's:
 
 - Name
 - Description
@@ -34,7 +32,7 @@ Replace the contents of `README.md` with your project's:
 - Contributing instructions
 - Licence
 
-## Future plans
+## Future
 
 - Multi-language support
 - Nexus Mods API integration
