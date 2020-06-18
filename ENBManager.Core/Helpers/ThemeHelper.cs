@@ -31,11 +31,11 @@ namespace ENBManager.Core.Helpers
             List<ColorScheme> colorSchemes = new List<ColorScheme>();
 
             var swatches = new SwatchesProvider().Swatches;
-            colorSchemes.Add(new ColorScheme("Earth", "#7a411d", "#7db043"));
-            colorSchemes.Add(new ColorScheme("Joker", "#7554A3", "#96C93C"));
-            colorSchemes.Add(new ColorScheme("Fire", "#852222", "#ffb300"));
             colorSchemes.Add(new ColorScheme("Fallout", "#0079c9", "#e0dd02"));
             colorSchemes.Add(new ColorScheme("Flamingo", "#04ae9d", "#fe4a70"));
+            colorSchemes.Add(new ColorScheme("Volcano", "#852222", "#ffb300"));
+            colorSchemes.Add(new ColorScheme("Joker", "#7554A3", "#96C93C"));
+            colorSchemes.Add(new ColorScheme("Nature", "#7a411d", "#7db043"));
 
             return colorSchemes;
         }

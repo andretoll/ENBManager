@@ -194,11 +194,14 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             var presets = new ObservableCollection<Preset>(_game.Presets.OrderByDescending(x => x.IsActive));
 
-            presets.Add(new Preset()
+            if (_configurationManager.Settings.EnableScreenshotWithoutPreset)
             {
-                Name = Strings.MISC,
-                Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module)))
-            });
+                presets.Add(new Preset()
+                {
+                    Name = Strings.MISC,
+                    Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module)))
+                }); 
+            }
 
             return presets;
         }
