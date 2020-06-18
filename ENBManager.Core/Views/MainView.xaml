@@ -14,7 +14,7 @@
                 Width="75"
                 Height="75"
                 Padding="10"
-                Margin="0 0 15 0">
+                Margin="0 0 15 20">
 
             <Image Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/favicon.ico"
                    RenderOptions.BitmapScalingMode="HighQuality"/>

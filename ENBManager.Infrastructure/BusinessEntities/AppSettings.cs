@@ -19,7 +19,7 @@ namespace ENBManager.Infrastructure.BusinessEntities
         public bool OpenLastActiveGame { get; set; } = true;
         public string LastActiveGame { get; set; } = "";
         public bool DarkMode { get; set; } = false;
-        public bool DarkModeShortcut { get; set; } = false;
+        public bool DarkModeShortcut { get; set; } = true;
         public string ColorScheme { get; set; } = "Fire";
         public LogLevel LogLevel { get; set; } = LogLevel.Information;
         public bool DefaultPresetView { get; set; } = true;

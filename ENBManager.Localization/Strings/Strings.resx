@@ -310,7 +310,7 @@
     <value>Screenshots</value>
   </data>
   <data name="SCREENSHOT_TAB_DESCRIPTION" xml:space="preserve">
-    <value>If enabled, the application will collect screenshots taken in the game and save them according to the active preset.</value>
+    <value>If enabled, the application will collect screenshots taken in the game and save them according to the active preset. Screenshots are collected from the game directory.</value>
   </data>
   <data name="SELECT_A_GAME_IN_THE_MENU_TO_GET_STARTED" xml:space="preserve">
     <value>Select a game in the menu to get started!</value>

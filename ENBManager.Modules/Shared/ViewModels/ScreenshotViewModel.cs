@@ -192,7 +192,7 @@ namespace ENBManager.Modules.Shared.ViewModels
             if (_game == null)
                 return null;
 
-            var presets = new ObservableCollection<Preset>(_game.Presets);
+            var presets = new ObservableCollection<Preset>(_game.Presets.OrderByDescending(x => x.IsActive));
 
             presets.Add(new Preset()
             {
@@ -266,6 +266,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         protected override void OnModuleActivated(GameModule game)
         {
             _game = game;
+            _selectedCategory = null;
 
             _screenshotWatcher.Configure(game.InstalledLocation, FileTypes.ScreenshotFileTypes);
             StopCollecting();

@@ -87,6 +87,8 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Info("Loaded");
 
+            _configurationManager.LoadSettings();
+
             Notifications = new ObservableCollection<Notification>();
             ScreenshotCount = _screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module), true).Count;
             UpdateUI();

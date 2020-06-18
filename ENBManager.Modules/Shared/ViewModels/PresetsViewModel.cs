@@ -311,6 +311,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 }
 
                 Presets.Remove(preset);
+                RaisePropertyChanged(nameof(Presets));
             }
         }
 
