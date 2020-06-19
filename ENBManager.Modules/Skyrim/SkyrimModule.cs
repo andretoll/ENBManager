@@ -27,7 +27,7 @@ namespace ENBManager.Modules.Skyrim
 
         public override void Activate()
         {
-            ActivateModule(typeof(DashboardView));
+            ActivateModule(typeof(DashboardView), typeof(PresetsView), typeof(ScreenshotView));
         }
 
         #endregion
