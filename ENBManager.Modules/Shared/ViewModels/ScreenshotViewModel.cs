@@ -200,7 +200,7 @@ namespace ENBManager.Modules.Shared.ViewModels
                 {
                     Name = Strings.MISC,
                     Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module)))
-                }); 
+                });
             }
 
             return presets;
@@ -222,7 +222,11 @@ namespace ENBManager.Modules.Shared.ViewModels
             _logger.Info("Setting screenshot source");
             
             if (preset == null)
+            {
+                Screenshots = null;
+                RaisePropertyChanged(nameof(Screenshots));
                 return;
+            }
 
             Screenshots = new ObservableCollection<BitmapImage>();
 

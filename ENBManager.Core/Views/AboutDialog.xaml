@@ -51,11 +51,11 @@
                 <StackPanel Grid.Row="0" 
                             Orientation="Horizontal">
 
-                    <Border Background="{DynamicResource PrimaryHueMidBrush}"
+                    <Border Background="{DynamicResource AttentionToActionBrush}"
                             CornerRadius="15"
                             Width="75"
                             Height="75"
-                            Padding="10"
+                            Padding="15"
                             Margin="0 0 15 0">
                         
                         <Image Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/favicon.ico"
