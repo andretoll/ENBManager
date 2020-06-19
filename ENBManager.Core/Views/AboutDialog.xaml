@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
@@ -50,11 +51,11 @@
                 <StackPanel Grid.Row="0" 
                             Orientation="Horizontal">
 
-                    <Border Background="{DynamicResource PrimaryHueMidBrush}"
+                    <Border Background="{DynamicResource AttentionToActionBrush}"
                             CornerRadius="15"
                             Width="75"
                             Height="75"
-                            Padding="10"
+                            Padding="15"
                             Margin="0 0 15 0">
                         
                         <Image Source="pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/favicon.ico"
@@ -68,13 +69,35 @@
 
                 </StackPanel>
                 
-                <!-- Version -->
-                <StackPanel Grid.Row="1">
+                <!-- Version and source code -->
+                <Grid Grid.Row="1">
                     
+                    <!-- Version -->
                     <TextBlock Text="{Binding Version, StringFormat={}v{0}}"
                                Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
                                Margin="10 0 0 0"/>
-                </StackPanel>
+
+                    <!-- Source code -->
+                    <StackPanel Orientation="Horizontal" 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right">
+                        <materialDesign:PackIcon Kind="Github"
+                                                 VerticalAlignment="Center"
+                                                 Width="30"
+                                                 Height="30"
+                                                 Margin="0 0 5 0"/>
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="14">
+                            <Hyperlink Command="{Binding OpenSourceCodeCommand}">
+                                <TextBlock Text="{x:Static loc:Strings.SOURCE_CODE}" />
+                            </Hyperlink>
+                        </TextBlock>
+                        
+                    </StackPanel>
+
+                </Grid>
                 
                 <!-- Credit -->
                 <GroupBox Grid.Row="2"

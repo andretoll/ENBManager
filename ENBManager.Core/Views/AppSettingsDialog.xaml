@@ -11,7 +11,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             Width="500">
+             Width="500" Height="400">
 
     <UserControl.Resources>
         <ResourceDictionary>

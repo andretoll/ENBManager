@@ -95,6 +95,8 @@ namespace ENBManager.App
         {
             ConfigureLogging();
 
+            _logger.Info($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}");
+
             ConfigureGameModuleCatalog();
 
             ApplyTheme();
@@ -102,8 +104,6 @@ namespace ENBManager.App
             RunDiscoverGames();
 
             base.InitializeShell(shell);
-            
-            _logger.Info($"Starting {Assembly.GetExecutingAssembly().GetName().Name} v{Assembly.GetExecutingAssembly().GetName().Version}");
         }
 
         protected override Window CreateShell()

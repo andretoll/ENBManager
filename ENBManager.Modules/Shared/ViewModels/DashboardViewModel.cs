@@ -87,6 +87,8 @@ namespace ENBManager.Modules.Shared.ViewModels
         {
             _logger.Info("Loaded");
 
+            _configurationManager.LoadSettings();
+
             Notifications = new ObservableCollection<Notification>();
             ScreenshotCount = _screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module), true).Count;
             UpdateUI();
@@ -221,13 +223,11 @@ namespace ENBManager.Modules.Shared.ViewModels
 
         private void OpenLink()
         {
-            string url = "http://enbdev.com/download.html";
-
-            _logger.Info($"Opening {url}");
+            _logger.Info($"Opening {Urls.ENBDEV}");
 
             var psi = new ProcessStartInfo
             {
-                FileName = url,
+                FileName = Urls.ENBDEV,
                 UseShellExecute = true
             };
 

@@ -59,120 +59,123 @@
                   IsExpanded="True"
                   ExpandDirection="Up"
                   materialDesign:ExpanderAssist.UpHeaderPadding="0">
-            
-            <Border DockPanel.Dock="Bottom"
-                    Padding="0 20 0 0"
-                    BorderThickness="0 2 0 0"
-                    BorderBrush="Gray">
 
-                <Border.Style>
-                    <Style TargetType="{x:Type Border}">
-                        <Style.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation From="0"
-                                                         To="1"
-                                                         Storyboard.TargetProperty="Opacity" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
+            <ScrollViewer MaxHeight="415"
+                          VerticalScrollBarVisibility="Auto">
+                <Border DockPanel.Dock="Bottom"
+                        Padding="0 20 0 0"
+                        BorderThickness="0 2 0 0"
+                        BorderBrush="Gray">
 
-                <WrapPanel HorizontalAlignment="Center">
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation From="0"
+                                                             To="1"
+                                                             Storyboard.TargetProperty="Opacity" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
 
-                    <!-- Preset count -->
-                    <materialDesign:Card Height="175" 
-                                         Width="200"
-                                         Margin="10"
-                                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                    <WrapPanel HorizontalAlignment="Center">
 
-                        <Grid Margin="20">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                        <!-- Preset count -->
+                        <materialDesign:Card Height="175" 
+                                             Width="200"
+                                             Margin="10"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
-                            <TextBlock Grid.Row="0" 
-                                       Text="{x:Static loc:Strings.PRESETS}"
-                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                       FontWeight="Normal"/>
+                            <Grid Margin="20">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="1" 
-                                       Text="{Binding PresetCount}"
-                                       Style="{StaticResource MaterialDesignHeadline2TextBlock}"
-                                       Foreground="{DynamicResource SecondaryAccentBrush}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                        </Grid>
+                                <TextBlock Grid.Row="0" 
+                                           Text="{x:Static loc:Strings.PRESETS}"
+                                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                           FontWeight="Normal"/>
 
-                    </materialDesign:Card>
-
-                    <!-- Active preset -->
-                    <materialDesign:Card Height="175" 
-                                         Width="200"
-                                         Margin="10"
-                                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
-
-                        <Grid Margin="20">
-
-                            <TextBlock FontWeight="Normal">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
-                                        <Setter Property="Text" Value="{x:Static loc:Strings.ACTIVE_PRESET}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ActivePreset}" Value="{x:Null}">
-                                                <Setter Property="Text" Value="{x:Static loc:Strings.NO_PRESET_ACTIVE}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <Viewbox>
-                                <TextBlock Text="{Binding ActivePreset}"
+                                <TextBlock Grid.Row="1" 
+                                           Text="{Binding PresetCount}"
                                            Style="{StaticResource MaterialDesignHeadline2TextBlock}"
-                                           TextWrapping="Wrap"
-                                           Margin="0 100 0 0"
-                                           MaxWidth="600"
-                                           Foreground="{DynamicResource SecondaryAccentBrush}"/>
-                            </Viewbox>
-                        </Grid>
+                                           Foreground="{DynamicResource SecondaryAccentBrush}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"/>
+                            </Grid>
 
-                    </materialDesign:Card>
+                        </materialDesign:Card>
 
-                    <!-- Preset count -->
-                    <materialDesign:Card Height="175" 
-                                         Width="200"
-                                         Margin="10"
-                                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
+                        <!-- Active preset -->
+                        <materialDesign:Card Height="175" 
+                                             Width="200"
+                                             Margin="10"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
-                        <Grid Margin="20">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                            <Grid Margin="20">
 
-                            <TextBlock Grid.Row="0" 
-                                       Text="{x:Static loc:Strings.SCREENSHOTS}"
-                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                       FontWeight="Normal"/>
+                                <TextBlock FontWeight="Normal">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline6TextBlock}">
+                                            <Setter Property="Text" Value="{x:Static loc:Strings.ACTIVE_PRESET}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ActivePreset}" Value="{x:Null}">
+                                                    <Setter Property="Text" Value="{x:Static loc:Strings.NO_PRESET_ACTIVE}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                            <TextBlock Grid.Row="1" 
-                                       Text="{Binding ScreenshotCount}"
-                                       Style="{StaticResource MaterialDesignHeadline2TextBlock}"
-                                       Foreground="{DynamicResource SecondaryAccentBrush}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                        </Grid>
+                                <Viewbox>
+                                    <TextBlock Text="{Binding ActivePreset}"
+                                               Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                               TextWrapping="Wrap"
+                                               Margin="0 20 0 0"
+                                               MaxWidth="600"
+                                               Foreground="{DynamicResource SecondaryAccentBrush}"/>
+                                </Viewbox>
+                            </Grid>
 
-                    </materialDesign:Card>
+                        </materialDesign:Card>
 
-                </WrapPanel>
+                        <!-- Preset count -->
+                        <materialDesign:Card Height="175" 
+                                             Width="200"
+                                             Margin="10"
+                                             materialDesign:ShadowAssist.ShadowDepth="Depth3">
 
-            </Border>
+                            <Grid Margin="20">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" 
+                                           Text="{x:Static loc:Strings.SCREENSHOTS}"
+                                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                           FontWeight="Normal"/>
+
+                                <TextBlock Grid.Row="1" 
+                                           Text="{Binding ScreenshotCount}"
+                                           Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                           Foreground="{DynamicResource SecondaryAccentBrush}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"/>
+                            </Grid>
+
+                        </materialDesign:Card>
+
+                    </WrapPanel>
+
+                </Border>
+            </ScrollViewer>
         </Expander>
 
         <!-- Status -->

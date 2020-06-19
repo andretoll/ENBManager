@@ -16,7 +16,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="{x:Static const:ApplicationName.NAME}"
-        MinHeight="400" MinWidth="1000"
+        MinHeight="725" MinWidth="900"
         Height="800" Width="1150">
     
     <materialDesign:DialogHost CloseOnClickAway="False"

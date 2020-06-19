@@ -192,13 +192,16 @@ namespace ENBManager.Modules.Shared.ViewModels
             if (_game == null)
                 return null;
 
-            var presets = new ObservableCollection<Preset>(_game.Presets);
+            var presets = new ObservableCollection<Preset>(_game.Presets.OrderByDescending(x => x.IsActive));
 
-            presets.Add(new Preset()
+            if (_configurationManager.Settings.EnableScreenshotWithoutPreset)
             {
-                Name = Strings.MISC,
-                Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module)))
-            });
+                presets.Add(new Preset()
+                {
+                    Name = Strings.MISC,
+                    Screenshots = new ObservableCollection<string>(_screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module)))
+                });
+            }
 
             return presets;
         }
@@ -219,7 +222,11 @@ namespace ENBManager.Modules.Shared.ViewModels
             _logger.Info("Setting screenshot source");
             
             if (preset == null)
+            {
+                Screenshots = null;
+                RaisePropertyChanged(nameof(Screenshots));
                 return;
+            }
 
             Screenshots = new ObservableCollection<BitmapImage>();
 
@@ -266,6 +273,7 @@ namespace ENBManager.Modules.Shared.ViewModels
         protected override void OnModuleActivated(GameModule game)
         {
             _game = game;
+            _selectedCategory = null;
 
             _screenshotWatcher.Configure(game.InstalledLocation, FileTypes.ScreenshotFileTypes);
             StopCollecting();
