@@ -32,9 +32,14 @@ At any point in time, the user can revisit this function via the menu to either 
 
 NOTE: Unmanaging a previously managed game will remove all presets and settings for that particular game.
 
+![start_first_time](https://user-images.githubusercontent.com/31740657/85110194-c86d8e80-b212-11ea-9610-13cb622a90a0.PNG)
+
+
 ### Configuration
 
 A wide array of settings are available and can be accessed via the 'Settings' menu. Including themes, colors, shortcuts, logging and application behavior.
+
+![configuration](https://user-images.githubusercontent.com/31740657/85110436-344ff700-b213-11ea-9993-18e18357e91f.PNG)
 
 ### Binaries
 
@@ -43,13 +48,19 @@ ENB binares are a fundamental part of the application and its usage. The user ca
 1. The user allows the application to automatically manage the binaries. This includes copying and removing the binaries from the game directory when needed. This is the default behavior.
 2. The user is responsible for managing binaries. Switching between or deactivating presets will not affect the binaries.
 
+NOTE: If managed by the application, the binaries will need to be backed up and updated by the user. This can be done by placing the binaries in the game directory and then performing the appropriate action in the Dashboard.
+
 ### Dashboard
 
 The Dashboard acts as a control center for a particular game. In this module, the user is greeted with messages, warnings and errors that communicates the current state of the game. For example, the user will be notified if binaries are missing. The Dashboard also provides information about the number of presets, the currently active preset and more.
 
+![dashboard_ok](https://user-images.githubusercontent.com/31740657/85112626-2fd90d80-b216-11ea-9aa1-9b386fbf1acc.PNG)
+
 ### Presets
 
 A preset within the application is a set of files and folders that would otherwise be copied directly into the game directory. Each preset is tied to a specific game and only exists for that game. Binaries should NEVER be a part of an ENB preset. They are either managed by the application or by the user. The idea is that binaries are static and unaffected by the chosen preset. As a result, only one file version of the binaries can be managed at once.
+
+![presets](https://user-images.githubusercontent.com/31740657/85128022-d29e8580-b230-11ea-984c-103307adba70.PNG)
 
 #### Add
 
@@ -86,10 +97,12 @@ Depending on configuration, screenshots might also be collected without an activ
 
 NOTE: Screenshots are collected from the game directory.
 
+![screenshots](https://user-images.githubusercontent.com/31740657/85128438-8f90e200-b231-11ea-9dff-720727678a5b.PNG)
+
 ## Future
 
 - Multi-language support
-- Nexus Mods API integration
+- Nexus Mods integration
 - Export presets
 - More games
 - Preset editor & comparer
