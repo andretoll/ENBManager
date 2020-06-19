@@ -43,7 +43,7 @@ A wide array of settings are available and can be accessed via the 'Settings' me
 
 ### Binaries
 
-ENB binares are a fundamental part of the application and its usage. The user can take 2 different approaches in this regard:
+ENB binaries are a fundamental part of the application and its usage. The user can take 2 different approaches in this regard:
 
 1. The user allows the application to automatically manage the binaries. This includes copying and removing the binaries from the game directory when needed. This is the default behavior.
 2. The user is responsible for managing binaries. Switching between or deactivating presets will not affect the binaries.
@@ -64,7 +64,7 @@ A preset within the application is a set of files and folders that would otherwi
 
 #### Add
 
-The most basic approach to adding a new preset is to manually browse for a folder that acts as the parent for the various files. Typically, the root folder would be the same folder as in the file system. Once a folder has been chosen, the file structure is presented in a TreeView where it's possible to choose a new root folder. It is also possible to delete files and folders.
+The most basic approach to adding a new preset is to manually browse for a folder that acts as the parent for the various files. Typically, the root folder would be the same folder as in the file system. Once a folder has been chosen, the file structure is presented in a tree where it's possible to choose a new root folder. It is also possible to delete files and folders.
 
 Another approach to add a preset is to save the current one if present. The idea is that whatever preset exists in the game directory, will be saved and managed by the application. The files included in the preset are based on a set of keywords. For example, files and folders containing the keyword 'enb'.
 
