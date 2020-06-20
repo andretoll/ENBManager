@@ -69,7 +69,7 @@ namespace ENBManager.Infrastructure.Helpers
             }
             while (!cancelled.Value
             && !string.IsNullOrEmpty(dialog.FileName)
-            && Path.GetFileName(dialog.FileName) != fileName);
+            && Path.GetFileName(dialog.FileName.ToLower()) != fileName.ToLower());
 
             if (cancelled.Value)
                 return null;

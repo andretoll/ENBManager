@@ -149,6 +149,7 @@ namespace ENBManager.App
             catalog.Register<Fallout4Module>(Container);
             catalog.Register<SkyrimSEModule>(Container);
             catalog.Register<SkyrimModule>(Container);
+            catalog.Register<FalloutNVModule>(Container);
         }
 
         private void ConfigureLogging()
