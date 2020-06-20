@@ -17,6 +17,13 @@ A comprehensive and highly customizable ENB manager that allows the user to quic
 - Game launcher
 - Screenshot collector
 
+### Supported games
+
+- Fallout 4
+- Fallout: New Vegas
+- Skyrim
+- Skyrim Special Edition
+
 ## Installation
 
 1. Download the single executable file and save it anywhere you like
