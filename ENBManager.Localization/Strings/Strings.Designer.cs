@@ -502,6 +502,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No notifications.
+        /// </summary>
+        public static string NO_NOTIFICATIONS {
+            get {
+                return ResourceManager.GetString("NO_NOTIFICATIONS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No preset active.
         /// </summary>
         public static string NO_PRESET_ACTIVE {

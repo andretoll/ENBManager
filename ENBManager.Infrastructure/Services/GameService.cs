@@ -127,6 +127,20 @@ namespace ENBManager.Infrastructure.Services
             return VersionMismatch.Matching;
         }
 
+        public string[] AppendBinaryVersions(string target, string[] binaries)
+        {
+            _logger.Debug("Getting binaries version");
+
+            for (int i = 0; i < binaries.Length; i++)
+            {
+                string info = FileVersionInfo.GetVersionInfo(Path.Combine(target, binaries[i])).ProductVersion.Replace(',', '.');
+
+                binaries[i] += " (" + info + ")";
+            }
+
+            return binaries;
+        }
+
         #endregion
     }
 }

@@ -91,6 +91,7 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             Notifications = new ObservableCollection<Notification>();
             ScreenshotCount = _screenshotManager.GetScreenshots(Paths.GetScreenshotsDirectory(_game.Module), true).Count;
+
             UpdateUI();
 
             await VerifyIntegrity();
@@ -122,14 +123,11 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             Notifications.Clear();
 
-            bool healthy = true;
-
             // Verify installation path
             if (!await VerifyInstallationPath())
             {
                 _logger.Warn(Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY);
 
-                healthy = false;
                 Notifications.Add(new Notification(Icon.Error, Strings.ERROR_UNABLE_TO_LOCATE_GAME_DIRECTORY, async () => await BrowseGameDirectory(), Strings.BROWSE));
             }
 
@@ -137,8 +135,6 @@ namespace ENBManager.Modules.Shared.ViewModels
             if (ActivePreset != null && !await VerifyBinaries(out string[] missingFiles))
             {
                 _logger.Warn(Strings.ERROR_MISSING_BINARIES);
-
-                healthy = false;
 
                 if (_configurationManager.Settings.ManageBinaries && await VerifyBinariesBackup())
                     Notifications.Add(new Notification(Icon.Error, $"{Strings.ERROR_MISSING_BINARIES} ({string.Join(", ", missingFiles)})", async () => await RestoreBinaries(), Strings.RESTORE));
@@ -149,7 +145,6 @@ namespace ENBManager.Modules.Shared.ViewModels
             {
                 _logger.Warn(Strings.WARNING_NO_BINARIES_BACKUP);
 
-                healthy = false;
                 Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_NO_BINARIES_BACKUP, async () => await BackupBinaries(), Strings.BACKUP));
             }
             else if (_configurationManager.Settings.ManageBinaries)
@@ -158,8 +153,6 @@ namespace ENBManager.Modules.Shared.ViewModels
 
                 if (versionMismatch != VersionMismatch.Matching)
                 {
-                    healthy = false;
-
                     switch (versionMismatch)
                     {
                         // If older version is used in game dir
@@ -173,6 +166,11 @@ namespace ENBManager.Modules.Shared.ViewModels
                             Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_A_NEWER_BINARY_VERSION_IS_CURRENTLY_USED, async () => await BackupBinaries(), Strings.UPDATE));
                             break;
                     } 
+                }
+                else
+                {
+                    _logger.Debug("Version match");
+                    Notifications.Add(new Notification(Icon.Success, string.Join(" | ", _gameService.AppendBinaryVersions(Paths.GetBinariesBackupDirectory(_game.Module), _game.Binaries)), null, null));
                 }
             }
 
@@ -192,13 +190,6 @@ namespace ENBManager.Modules.Shared.ViewModels
                     _logger.Info(Strings.WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET);
                     Notifications.Add(new Notification(Icon.Warning, Strings.WARNING_FILES_ARE_MISSING_FROM_THE_ACTIVE_PRESET, async () => await UpdatePreset(), Strings.UPDATE));
                 }
-            }
-
-            if (healthy)
-            {
-                _logger.Info("Game healthy");
-
-                Notifications.Add(new Notification(Icon.Success, Strings.NO_PROBLEMS_HAVE_BEEN_DETECTED, null, null));
             }
         }
 
