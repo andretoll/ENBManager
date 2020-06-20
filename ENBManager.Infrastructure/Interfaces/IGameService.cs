@@ -54,5 +54,12 @@ namespace ENBManager.Infrastructure.Interfaces
         /// <param name="target"></param>
         /// <param name="binaries"></param>
         void DeleteBinaries(string target, string[] binaries);
+
+        /// <summary>
+        /// Gets the file version of the provided files.
+        /// </summary>
+        /// <param name="binaries"></param>
+        /// <returns></returns>
+        string[] AppendBinaryVersions(string target, string[] binaries);
     }
 }

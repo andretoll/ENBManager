@@ -179,80 +179,98 @@
         </Expander>
 
         <!-- Status -->
-        <materialDesign:Card VerticalAlignment="Top">
-            <ItemsControl ItemsSource="{Binding Notifications}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid MaxHeight="100">
+        <Grid>
 
-                            <Border Padding="10"
-                                    BorderThickness="0 0 0 1"
-                                    BorderBrush="{DynamicResource MaterialDesignShadowBrush}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <!-- Icon -->
-                                    <materialDesign:PackIcon Grid.Column="0" 
-                                                             Width="25"
-                                                             Height="25"
-                                                             VerticalAlignment="Center">
-                                        <materialDesign:PackIcon.Style>
-                                            <Style TargetType="materialDesign:PackIcon">
-                                                <Setter Property="Kind" Value="QuestionMark" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Icon}" Value="Success">
-                                                        <Setter Property="Kind" Value="CheckboxMarkedOutline" />
-                                                        <Setter Property="Foreground" Value="LimeGreen" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Icon}" Value="Warning">
-                                                        <Setter Property="Kind" Value="WarningOutline" />
-                                                        <Setter Property="Foreground" Value="Orange" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Icon}" Value="Error">
-                                                        <Setter Property="Kind" Value="ErrorOutline" />
-                                                        <Setter Property="Foreground" Value="Red" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </materialDesign:PackIcon.Style>
-                                    </materialDesign:PackIcon>
-                                    
-                                    <!-- Message -->
-                                    <TextBlock Grid.Column="1"
-                                               TextWrapping="Wrap"
-                                               Text="{Binding Message}"
-                                               Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                               VerticalAlignment="Center"
-                                               Margin="10 0"/>
-                                    
-                                    <!-- Action -->
-                                    <Button Grid.Column="2" 
-                                            Content="{Binding ActionButtonText}"
-                                            Command="{Binding ExecuteActionCommand}"
-                                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                            Margin="10 0"
-                                            Visibility="{Binding Action, Converter={StaticResource NullableToVisibilityConverter}}"/>
-                                    
-                                    <!-- Close item -->
-                                    <Button Grid.Column="3" 
-                                            Command="{Binding DataContext.RemoveNotificationCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                            CommandParameter="{Binding .}"
-                                            Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                            VerticalAlignment="Top">
-                                        <materialDesign:PackIcon Kind="Close" />
-                                    </Button>
-                                </Grid>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </materialDesign:Card>
+            <TextBlock Text="{x:Static loc:Strings.NO_NOTIFICATIONS}"
+                       HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignHeadline4TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ItemsSource.Count, ElementName=NotificationsItemsControl}" Value="0">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <materialDesign:Card VerticalAlignment="Top">
+                <ItemsControl ItemsSource="{Binding Notifications}"
+                              x:Name="NotificationsItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MaxHeight="100">
+
+                                <Border Padding="10"
+                                        BorderThickness="0 0 0 1"
+                                        BorderBrush="{DynamicResource MaterialDesignShadowBrush}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Icon -->
+                                        <materialDesign:PackIcon Grid.Column="0" 
+                                                                 Width="25"
+                                                                 Height="25"
+                                                                 VerticalAlignment="Center">
+                                            <materialDesign:PackIcon.Style>
+                                                <Style TargetType="materialDesign:PackIcon">
+                                                    <Setter Property="Kind" Value="QuestionMark" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Icon}" Value="Success">
+                                                            <Setter Property="Kind" Value="CheckboxMarkedOutline" />
+                                                            <Setter Property="Foreground" Value="LimeGreen" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Icon}" Value="Warning">
+                                                            <Setter Property="Kind" Value="WarningOutline" />
+                                                            <Setter Property="Foreground" Value="Orange" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Icon}" Value="Error">
+                                                            <Setter Property="Kind" Value="ErrorOutline" />
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </materialDesign:PackIcon.Style>
+                                        </materialDesign:PackIcon>
+
+                                        <!-- Message -->
+                                        <TextBlock Grid.Column="1"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding Message}"
+                                                   Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10 0"/>
+
+                                        <!-- Action -->
+                                        <Button Grid.Column="2" 
+                                                Content="{Binding ActionButtonText}"
+                                                Command="{Binding ExecuteActionCommand}"
+                                                Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                                Margin="10 0"
+                                                Visibility="{Binding Action, Converter={StaticResource NullableToVisibilityConverter}}"/>
+
+                                        <!-- Close item -->
+                                        <Button Grid.Column="3" 
+                                                Command="{Binding DataContext.RemoveNotificationCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding .}"
+                                                Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                VerticalAlignment="Top">
+                                            <materialDesign:PackIcon Kind="Close" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </materialDesign:Card>
+        </Grid>
 
     </DockPanel>
     

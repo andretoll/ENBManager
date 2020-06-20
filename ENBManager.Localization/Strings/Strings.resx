@@ -264,6 +264,9 @@
   <data name="NO" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="NO_NOTIFICATIONS" xml:space="preserve">
+    <value>No notifications</value>
+  </data>
   <data name="NO_PRESET_ACTIVE" xml:space="preserve">
     <value>No preset active</value>
   </data>
