@@ -13,8 +13,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-             TextElement.FontSize="18"
-             Width="600" Height="800">
+             TextElement.FontSize="18">
 
     <UserControl.Resources>
 
@@ -50,7 +49,7 @@
         <Style TargetType="{x:Type Window}">
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterScreen" />
             <Setter Property="ShowInTaskbar" Value="True"/>
-            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
             <Setter Property="SizeToContent" Value="WidthAndHeight"/>
         </Style>
     </prism:Dialog.WindowStyle>
@@ -66,7 +65,9 @@
             </ResourceDictionary>
         </materialDesign:DialogHost.Resources>
 
-        <DockPanel LastChildFill="True">
+        <DockPanel LastChildFill="True"
+                   MinHeight="600"
+                   MinWidth="600">
 
             <!-- Title -->
             <StackPanel DockPanel.Dock="Top"

@@ -146,10 +146,11 @@ namespace ENBManager.App
 
             var catalog = Container.Resolve<IGameModuleCatalog>();
 
-            catalog.Register<Fallout4Module>(Container);
             catalog.Register<SkyrimSEModule>(Container);
             catalog.Register<SkyrimModule>(Container);
+            catalog.Register<Fallout4Module>(Container);
             catalog.Register<FalloutNVModule>(Container);
+            catalog.Register<Fallout3Module>(Container);
         }
 
         private void ConfigureLogging()
