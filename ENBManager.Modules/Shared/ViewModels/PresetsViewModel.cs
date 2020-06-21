@@ -342,7 +342,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             // Prompt name
             var inputDialog = new InputDialog(Strings.ENTER_A_NEW_NAME);
-            var result = await inputDialog.OpenAsync();
+            bool result = false;
+            do
+            {
+                result = await inputDialog.OpenAsync();
+            }
+            while (result && inputDialog.Value.Any(x => Path.GetInvalidPathChars().Contains(x)));
 
             if (result)
             {
@@ -362,7 +367,6 @@ namespace ENBManager.Modules.Shared.ViewModels
                         newPreset.IsActive = true;
                         Presets.Add(newPreset);
                         await OnActivatePresetCommand(newPreset);
-                        RaisePropertyChanged(nameof(Presets));
 
                         _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
                     }
@@ -373,8 +377,12 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
                     catch (IOException ex)
                     {
-                        await new MessageDialog(Strings.INVALID_NAME).OpenAsync();
-                        _logger.Warn(ex);
+                        await new MessageDialog(Strings.ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED).OpenAsync();
+                        _logger.Error(ex);
+                    }
+                    finally
+                    {
+                        RaisePropertyChanged(nameof(Presets));
                     }
                 }
             }

@@ -117,10 +117,10 @@ namespace ENBManager.App
             _ = containerRegistry.RegisterSingleton<IConfigurationManager<AppSettings>, ConfigurationManager<AppSettings>>();
             _ = containerRegistry.RegisterSingleton<IGameModuleCatalog, GameModuleCatalog>();
             _ = containerRegistry.RegisterSingleton<IScreenshotWatcher, ScreenshotWatcher>();
+            _ = containerRegistry.RegisterSingleton<IPresetManager, PresetManager>();
             _ = containerRegistry.Register<ILoggerFacade, PrismLogger>();
             _ = containerRegistry.Register<IGameService, GameService>();
             _ = containerRegistry.Register<ISnackbarMessageQueue, SnackbarMessageQueue>();
-            _ = containerRegistry.Register<IPresetManager, PresetManager>();
             _ = containerRegistry.Register<IScreenshotManager, ScreenshotManager>();
 
             // ViewModels

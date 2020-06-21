@@ -113,6 +113,7 @@
     <Compile Include="BusinessEntities\DirectoryNode.cs" />
     <Compile Include="BusinessEntities\FileNode.cs" />
     <Compile Include="BusinessEntities\GameSettings.cs" />
+    <Compile Include="BusinessEntities\Keywords.cs" />
     <Compile Include="Constants\ApplicationName.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
