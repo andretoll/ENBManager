@@ -21,6 +21,7 @@ A comprehensive and highly customizable ENB manager that allows the user to quic
 
 - Fallout 4
 - Fallout: New Vegas
+- Fallout 3
 - Skyrim
 - Skyrim Special Edition
 
@@ -73,7 +74,7 @@ A preset within the application is a set of files and folders that would otherwi
 
 The most basic approach to adding a new preset is to manually browse for a folder that acts as the parent for the various files. Typically, the root folder would be the same folder as in the file system. Once a folder has been chosen, the file structure is presented in a tree where it's possible to choose a new root folder. It is also possible to delete files and folders.
 
-Another approach to add a preset is to save the current one if present. The idea is that whatever preset exists in the game directory, will be saved and managed by the application. The files included in the preset are based on a set of keywords. For example, files and folders containing the keyword 'enb'.
+Another approach to add a preset is to save the current one if present. The idea is that whatever preset exists in the game directory, will be saved and managed by the application. The files included in the preset are based on an expansive set of keywords. For example, files and folders containing the keyword 'enb'.
 
 NOTE: This feature is, as of yet, experimental as it requires further testing and feedback.
 
