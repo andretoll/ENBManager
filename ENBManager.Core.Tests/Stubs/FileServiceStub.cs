@@ -6,6 +6,11 @@ namespace ENBManager.Core.Tests.Stubs
 {
     public class GameServiceStub : IGameService
     {
+        public string[] AppendBinaryVersions(string target, string[] binaries)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public string BrowseGameExecutable(string fileName)
         {
             return TestValues.GetRandomString();
