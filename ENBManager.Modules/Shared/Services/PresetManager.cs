@@ -1,9 +1,7 @@
-﻿using ENBManager.Infrastructure.BusinessEntities;
-using ENBManager.Infrastructure.Constants;
-using ENBManager.Infrastructure.Exceptions;
+﻿using ENBManager.Infrastructure.Exceptions;
+using ENBManager.Infrastructure.Helpers;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
-using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -19,29 +17,6 @@ namespace ENBManager.Modules.Shared.Services
         #region Private Members
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
-        private readonly Keywords _keywords;
-
-        #endregion
-
-        #region Constructor
-
-        public PresetManager()
-        {
-            _keywords = GetKeywordsFromFile();
-        }
-
-        #endregion
-
-        #region Helper Methods
-
-        private Keywords GetKeywordsFromFile()
-        {
-            if (!File.Exists(Paths.GetKeywordsFilePath()))
-                File.WriteAllText(Paths.GetKeywordsFilePath(), JsonConvert.SerializeObject(Keywords.Instance, Formatting.Indented));
-
-            return JsonConvert.DeserializeObject<Keywords>(File.ReadAllText(Paths.GetKeywordsFilePath()));
-        }
 
         #endregion
 
@@ -173,11 +148,13 @@ namespace ENBManager.Modules.Shared.Services
         {
             _logger.Debug("Creating existing preset");
 
+            var keywords = KeywordsHelper.GetKeywords();
+
             var enbFiles = Directory.EnumerateFiles(targetDir, "*.*", SearchOption.TopDirectoryOnly)
-                .Where(x => Keywords.MatchesKeyword(_keywords.Files, Path.GetFileName(x))).ToList();
+                .Where(x => KeywordsHelper.MatchesKeyword(keywords.Files, Path.GetFileName(x))).ToList();
 
             var enbDirs = Directory.EnumerateDirectories(targetDir, "*", SearchOption.AllDirectories)
-                .Where(x => Keywords.MatchesKeyword(_keywords.Directories, x));
+                .Where(x => KeywordsHelper.MatchesKeyword(keywords.Directories, x));
 
             foreach (var dir in enbDirs)
             {

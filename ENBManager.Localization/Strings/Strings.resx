@@ -216,6 +216,9 @@
   <data name="FILES" xml:space="preserve">
     <value>Files</value>
   </data>
+  <data name="FOLDERS" xml:space="preserve">
+    <value>Folders</value>
+  </data>
   <data name="GAMES" xml:space="preserve">
     <value>Games</value>
   </data>
@@ -243,6 +246,9 @@
   <data name="INVALID_PRESET_NO_FILES" xml:space="preserve">
     <value>Invalid preset: No eligible files were found</value>
   </data>
+  <data name="KEYWORDS" xml:space="preserve">
+    <value>Keywords</value>
+  </data>
   <data name="LOG_LEVEL" xml:space="preserve">
     <value>Log level</value>
   </data>
@@ -260,6 +266,9 @@
   </data>
   <data name="MISC" xml:space="preserve">
     <value>Misc</value>
+  </data>
+  <data name="NEW" xml:space="preserve">
+    <value>New</value>
   </data>
   <data name="NO" xml:space="preserve">
     <value>No</value>
@@ -303,8 +312,9 @@
   <data name="SAVE" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="SAVE_CURRENT" xml:space="preserve">
-    <value>Save current</value>
+  <data name="SAVE_CURRENT_PRESET" xml:space="preserve">
+    <value>Save current preset</value>
+    <comment> </comment>
   </data>
   <data name="SAVE_CURRENT_TOOLTIP_TEXT" xml:space="preserve">
     <value>EXPERIMENTAL: Attempts to create a preset based on current ENB preset files in game directory</value>

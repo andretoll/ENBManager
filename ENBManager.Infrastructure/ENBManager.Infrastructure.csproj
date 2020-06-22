@@ -63,6 +63,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=3.1.3.1513, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.3.1.3\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -115,14 +118,17 @@
     <Compile Include="BusinessEntities\GameSettings.cs" />
     <Compile Include="BusinessEntities\Keywords.cs" />
     <Compile Include="Constants\ApplicationName.cs" />
+    <Compile Include="Constants\DefaultKeywords.cs" />
     <Compile Include="Constants\ModuleNames.cs" />
     <Compile Include="Constants\Paths.cs" />
     <Compile Include="Constants\RegionNames.cs" />
     <Compile Include="Constants\FileTypes.cs" />
     <Compile Include="Constants\Urls.cs" />
+    <Compile Include="Enums\KeywordType.cs" />
     <Compile Include="Enums\VersionMismatch.cs" />
     <Compile Include="Exceptions\IdenticalNameException.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
+    <Compile Include="Helpers\KeywordsHelper.cs" />
     <Compile Include="Helpers\TreeViewHelper.cs" />
     <Compile Include="Interfaces\IGameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
