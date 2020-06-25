@@ -136,9 +136,19 @@
 
                                             </TextBlock>
 
-                                            <TextBlock Text="{Binding InstalledLocation}"
-                                                       Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                                       Visibility="{Binding Installed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <StackPanel Orientation="Horizontal"
+                                                        Visibility="{Binding Installed, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding InstalledLocation}"
+                                                           Style="{StaticResource MaterialDesignBody1TextBlock}"/>
+                                                <Button Style="{StaticResource MaterialDesignToolButton}"
+                                                        Command="{Binding DataContext.BrowseGameCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding .}"
+                                                        Foreground="{DynamicResource SecondaryAccentBrush}">
+                                                    <materialDesign:PackIcon Kind="DotsHorizontal"
+                                                                             Width="20"
+                                                                             Height="20"/>
+                                                </Button>
+                                            </StackPanel>
 
                                             <Button Content="{x:Static loc:Strings.BROWSE}"
                                                     Command="{Binding DataContext.BrowseGameCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"

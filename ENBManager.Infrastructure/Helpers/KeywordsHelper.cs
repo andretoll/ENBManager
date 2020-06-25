@@ -90,6 +90,9 @@ namespace ENBManager.Infrastructure.Helpers
         {
             _logger.Debug("Saving keywords to file");
 
+            if (!Directory.Exists(Path.GetDirectoryName(Paths.GetKeywordsFilePath())))
+                Directory.CreateDirectory(Path.GetDirectoryName(Paths.GetKeywordsFilePath()));
+
             File.WriteAllText(Paths.GetKeywordsFilePath(), JsonConvert.SerializeObject(keywords, Formatting.Indented));
         }
 

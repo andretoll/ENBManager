@@ -154,7 +154,7 @@ namespace ENBManager.Modules.Shared.Services
                 .Where(x => KeywordsHelper.MatchesKeyword(keywords.Files, Path.GetFileName(x))).ToList();
 
             var enbDirs = Directory.EnumerateDirectories(targetDir, "*", SearchOption.AllDirectories)
-                .Where(x => KeywordsHelper.MatchesKeyword(keywords.Directories, x));
+                .Where(x => KeywordsHelper.MatchesKeyword(keywords.Directories, x.Replace(targetDir, "")));
 
             foreach (var dir in enbDirs)
             {
