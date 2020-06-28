@@ -5,25 +5,25 @@ using Prism.Ioc;
 using System;
 using System.Windows.Media.Imaging;
 
-namespace ENBManager.Modules.Skyrim
+namespace ENBManager.Modules.Fallout4
 {
-    public class SkyrimModule : GameModule
+    public class Fallout3Module : GameModule
     {
         #region Constructor
 
-        public SkyrimModule(IContainerProvider container)
+        public Fallout3Module(IContainerProvider container)
             : base(container) { }
 
         #endregion
 
         #region GameModule Override
 
-        public override string Title => "The Elder Scrolls V: Skyrim";
-        public override string Executable => "TESV.exe";
-        public override string Module => ModuleNames.SKYRIM;
-        public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/skyrim.png"));
+        public override string Title => "Fallout 3";
+        public override string Executable => "Fallout3.exe";
+        public override string Module => ModuleNames.FALLOUT3;
+        public override BitmapImage Icon => new BitmapImage(new Uri("pack://application:,,,/ENBManager.Infrastructure;component/Resources/Icons/fallout3.png"));
         public override string[] Binaries => new[] { "d3d9.dll" };
-        public override string Url => "https://www.nexusmods.com/skyrim";
+        public override string Url => "https://www.nexusmods.com/fallout3";
 
         public override void Activate()
         {

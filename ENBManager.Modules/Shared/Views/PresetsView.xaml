@@ -7,6 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:loc="clr-namespace:ENBManager.Localization.Strings;assembly=ENBManager.Localization"
              xmlns:vc="clr-namespace:ENBManager.Infrastructure.ValueConverters;assembly=ENBManager.Infrastructure"
+             xmlns:enums="clr-namespace:ENBManager.Infrastructure.Enums;assembly=ENBManager.Infrastructure"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -272,151 +273,313 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <DockPanel>
+    <materialDesign:DrawerHost>
 
-        <!-- Top bar -->
-        <Border DockPanel.Dock="Top">
+        <!-- Drawer content -->
+        <materialDesign:DrawerHost.RightDrawerContent>
+            <Border Background="{DynamicResource AttentionToActionBrush}">
+                <DockPanel Width="400">
 
-            <Grid>
+                    <!-- Actions -->
+                    <Border DockPanel.Dock="Bottom"
+                            BorderThickness="0 1 0 0"
+                            BorderBrush="{DynamicResource SecondaryAccentBrush}"
+                            Margin="5 15 5 5"
+                            Padding="15">
 
-                <!-- Left -->
-                <Grid HorizontalAlignment="Left">
-                    <StackPanel Orientation="Horizontal">
+                        <Button Content="{x:Static loc:Strings.CLOSE}" 
+                                Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                                CommandParameter="{x:Static Dock.Right}"
+                                HorizontalAlignment="Center"
+                                Style="{DynamicResource MaterialDesignOutlinedButton}" />
 
-                        <StackPanel.Resources>
-                            <ResourceDictionary>
-                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton}">
-                                    <Setter Property="Height" Value="35" />
-                                </Style>
-                            </ResourceDictionary>
-                        </StackPanel.Resources>
-                        
-                        <!-- Add new preset -->
-                        <Button Command="{Binding AddPresetCommand}">
+                    </Border>
 
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="OpenInApp"
-                                                         Height="24"
-                                                         Width="24"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 10 0"/>
-                                <TextBlock Text="{x:Static loc:Strings.ADD_NEW_PRESET}"
-                                           VerticalAlignment="Center"/>
+                    <!-- Keywords -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  Padding="15">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Folders -->
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static loc:Strings.FOLDERS}"
+                                               Margin="0 0 0 5"
+                                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                                    <Button Command="{Binding AddKeywordCommand}"
+                                            CommandParameter="{x:Static enums:KeywordType.Folder}"
+                                            Style="{StaticResource MaterialDesignToolButton}"
+                                            Foreground="{DynamicResource SecondaryAccentBrush}">
+                                        <materialDesign:PackIcon Kind="TextBoxPlus"
+                                                                 Width="20"
+                                                                 Height="20"/>
+                                    </Button>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding Keywords.Directories}"
+                                              TextElement.FontSize="14">
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.Column="0"
+                                                      VerticalAlignment="Center">
+                                                    <Button Command="{Binding DataContext.RemoveFolderKeywordCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Foreground="IndianRed"
+                                                            Style="{StaticResource MaterialDesignToolButton}">
+                                                        <materialDesign:PackIcon Kind="MinusBox"
+                                                                                 Width="15"
+                                                                                 Height="15"/>
+                                                    </Button>
+                                                </Grid>
+
+                                                <TextBlock Grid.Column="1" 
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding .}" />
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    
+                                </ItemsControl>
                             </StackPanel>
 
-                        </Button>
+                            <!-- Files -->
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static loc:Strings.FILES}"
+                                               Margin="0 0 0 5"
+                                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+                                    <Button Command="{Binding AddKeywordCommand}" 
+                                            CommandParameter="{x:Static enums:KeywordType.File}"
+                                            Style="{StaticResource MaterialDesignToolButton}"
+                                            Foreground="{DynamicResource SecondaryAccentBrush}">
+                                        <materialDesign:PackIcon Kind="TextBoxPlus"
+                                                                 Width="20"
+                                                                 Height="20"/>
+                                    </Button>
+                                </StackPanel>
+                                <ItemsControl ItemsSource="{Binding Keywords.Files}"
+                                              TextElement.FontSize="14">
 
-                        <!-- Save current -->
-                        <materialDesign:Badged Badge="{materialDesign:PackIcon Kind=Flask}"
-                                               BadgeColorZoneMode="Accent"
-                                               BadgePlacementMode="TopRight"
-                                               ToolTip="{x:Static loc:Strings.SAVE_CURRENT_TOOLTIP_TEXT}"
-                                               ToolTipService.InitialShowDelay="0"
-                                               Margin="20 0">
-                            <Button Command="{Binding SaveCurrentPresetCommand}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Grid Grid.Column="0"
+                                                      VerticalAlignment="Center">
+                                                    <Button Command="{Binding DataContext.RemoveFileKeywordCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Style="{StaticResource MaterialDesignToolButton}"
+                                                            Foreground="IndianRed">
+                                                        <materialDesign:PackIcon Kind="MinusBox"
+                                                                                 Width="15"
+                                                                                 Height="15"/>
+                                                    </Button>
+                                                </Grid>
+
+                                                <TextBlock Grid.Column="1" 
+                                                           VerticalAlignment="Center"
+                                                           Text="{Binding .}" />
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+                            </StackPanel>
+
+                        </Grid>
+
+                    </ScrollViewer>
+
+                </DockPanel>
+            </Border>
+        </materialDesign:DrawerHost.RightDrawerContent>
+        
+        <DockPanel>
+
+            <!-- Top bar -->
+            <Border DockPanel.Dock="Top">
+
+                <Grid>
+
+                    <!-- Left -->
+                    <Grid HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+
+                            <StackPanel.Resources>
+                                <ResourceDictionary>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                        <Setter Property="Height" Value="35" />
+                                    </Style>
+                                </ResourceDictionary>
+                            </StackPanel.Resources>
+
+                            <!-- Add new preset -->
+                            <Button Command="{Binding AddPresetCommand}">
 
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="ContentSaveOutline"
-                                                         Height="24"
-                                                         Width="24"
-                                                         VerticalAlignment="Center"
-                                                         Margin="0 0 10 0"/>
-                                    <TextBlock Text="{x:Static loc:Strings.SAVE_CURRENT}"
-                                           VerticalAlignment="Center"/>
+                                    <materialDesign:PackIcon Kind="OpenInApp"
+                                                             Height="24"
+                                                             Width="24"
+                                                             VerticalAlignment="Center"
+                                                             Margin="0 0 10 0"/>
+                                    <TextBlock Text="{x:Static loc:Strings.ADD_NEW_PRESET}"
+                                               VerticalAlignment="Center"/>
                                 </StackPanel>
 
                             </Button>
-                        </materialDesign:Badged>
 
-                    </StackPanel>
+                            <!-- Save current -->
+                            <materialDesign:Badged Badge="{materialDesign:PackIcon Kind=Flask}"
+                                                   BadgeColorZoneMode="Accent"
+                                                   BadgePlacementMode="TopRight"
+                                                   ToolTip="{x:Static loc:Strings.SAVE_CURRENT_TOOLTIP_TEXT}"
+                                                   ToolTipService.InitialShowDelay="0"
+                                                   Margin="20 10">
+                                <Button Command="{Binding SaveCurrentPresetCommand}">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ContentSaveOutline"
+                                                                 Height="24"
+                                                                 Width="24"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 10 0"/>
+                                        <TextBlock Text="{x:Static loc:Strings.SAVE_CURRENT_PRESET}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                </Button>
+                            </materialDesign:Badged>
+                            
+                            <!-- Keywords -->
+                            <materialDesign:Badged Badge="{x:Static loc:Strings.NEW}"
+                                                   BadgeColorZoneMode="Accent"
+                                                   BadgePlacementMode="TopRight"
+                                                   Margin="0 10">
+                                <Button Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                        CommandParameter="{x:Static Dock.Right}">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="LetterKCircleOutline"
+                                                                 Height="24"
+                                                                 Width="24"
+                                                                 VerticalAlignment="Center"
+                                                                 Margin="0 0 10 0"/>
+                                        <TextBlock Text="{x:Static loc:Strings.KEYWORDS}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                </Button>
+                            </materialDesign:Badged>
+
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Right -->
+                    <Grid HorizontalAlignment="Right"
+                          VerticalAlignment="Center">
+                        <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}">
+                            <ListBoxItem ToolTip="{x:Static loc:Strings.VERTICAL_LIST}"
+                                         IsSelected="{Binding ListPresetView}">
+                                <materialDesign:PackIcon Kind="FormatListChecks" />
+                            </ListBoxItem>
+                            <ListBoxItem ToolTip="{x:Static loc:Strings.GRID}"
+                                         IsSelected="{Binding GridPresetView}">
+                                <materialDesign:PackIcon Kind="Apps" />
+                            </ListBoxItem>
+                        </ListBox>
+                    </Grid>
+                    
                 </Grid>
 
-                <!-- Right -->
-                <Grid HorizontalAlignment="Right">
-                    <ListBox Style="{StaticResource MaterialDesignToolToggleListBox}">
-                        <ListBoxItem ToolTip="{x:Static loc:Strings.VERTICAL_LIST}"
-                                     IsSelected="{Binding ListPresetView}">
-                            <materialDesign:PackIcon Kind="FormatListChecks" />
-                        </ListBoxItem>
-                        <ListBoxItem ToolTip="{x:Static loc:Strings.GRID}"
-                                     IsSelected="{Binding GridPresetView}">
-                            <materialDesign:PackIcon Kind="Apps" />
-                        </ListBoxItem>
-                    </ListBox>
-                </Grid>
+            </Border>
+
+            <!-- Preset list -->
+            <Grid Margin="0 20 0 0">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding Presets}">
+                        <ItemsControl.Style>
+                            <Style TargetType="ItemsControl">
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel />
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.GridPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                                        <Setter Property="ItemsPanel">
+                                            <Setter.Value>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                                        <Setter Property="ItemsPanel">
+                                            <Setter.Value>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel />
+                                                </ItemsPanelTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ItemsControl.Style>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+
+                                <Setter Property="ContentTemplate"
+                                        Value="{StaticResource PresetListItemTemplate}"/>
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="false">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource PresetGridItemTemplate}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource PresetListItemTemplate}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <Viewbox HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         MaxWidth="200"
+                         Visibility="{Binding Presets, Converter={StaticResource EmptyCollectionToVisibilityValueConverter}}">
+
+                    <TextBlock Text="{x:Static loc:Strings.EMPTY}"
+                               Style="{StaticResource MaterialDesignHeadline2TextBlock}"/>
+
+                </Viewbox>
+
             </Grid>
 
-        </Border>
-
-        <!-- Preset list -->
-        <Grid Margin="0 20 0 0">
-
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl ItemsSource="{Binding Presets}">
-                    <ItemsControl.Style>
-                        <Style TargetType="ItemsControl">
-                            <Setter Property="ItemsPanel">
-                                <Setter.Value>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel />
-                                    </ItemsPanelTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DataContext.GridPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
-                                    <Setter Property="ItemsPanel">
-                                        <Setter.Value>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel />
-                                            </ItemsPanelTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
-                                    <Setter Property="ItemsPanel">
-                                        <Setter.Value>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel />
-                                            </ItemsPanelTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ItemsControl.Style>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-
-                            <Setter Property="ContentTemplate"
-                                    Value="{StaticResource PresetListItemTemplate}"/>
-
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="false">
-                                    <Setter Property="ContentTemplate" Value="{StaticResource PresetGridItemTemplate}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DataContext.ListPresetView, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="true">
-                                    <Setter Property="ContentTemplate" Value="{StaticResource PresetListItemTemplate}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-                </ItemsControl>
-            </ScrollViewer>
-
-            <Viewbox HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     MaxWidth="200"
-                     Visibility="{Binding Presets, Converter={StaticResource EmptyCollectionToVisibilityValueConverter}}">
-
-                <TextBlock Text="{x:Static loc:Strings.EMPTY}"
-                           Style="{StaticResource MaterialDesignHeadline2TextBlock}"/>
-
-            </Viewbox>
-
-        </Grid>
-
-    </DockPanel>
+        </DockPanel>
+    </materialDesign:DrawerHost>
 
 </UserControl>

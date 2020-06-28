@@ -358,6 +358,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Folders.
+        /// </summary>
+        public static string FOLDERS {
+            get {
+                return ResourceManager.GetString("FOLDERS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game updated.
         /// </summary>
         public static string GAME_UPDATED {
@@ -439,6 +448,15 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keywords.
+        /// </summary>
+        public static string KEYWORDS {
+            get {
+                return ResourceManager.GetString("KEYWORDS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log level.
         /// </summary>
         public static string LOG_LEVEL {
@@ -489,6 +507,15 @@ namespace ENBManager.Localization.Strings {
         public static string MISC {
             get {
                 return ResourceManager.GetString("MISC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string NEW {
+            get {
+                return ResourceManager.GetString("NEW", resourceCulture);
             }
         }
         
@@ -619,11 +646,11 @@ namespace ENBManager.Localization.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save current.
+        ///   Looks up a localized string similar to Save current preset.
         /// </summary>
-        public static string SAVE_CURRENT {
+        public static string SAVE_CURRENT_PRESET {
             get {
-                return ResourceManager.GetString("SAVE_CURRENT", resourceCulture);
+                return ResourceManager.GetString("SAVE_CURRENT_PRESET", resourceCulture);
             }
         }
         

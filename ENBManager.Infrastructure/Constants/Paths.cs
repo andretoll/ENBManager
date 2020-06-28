@@ -12,6 +12,7 @@ namespace ENBManager.Infrastructure.Constants
         private const string PRESETS_DIRECTORY = "Presets";
         private const string BINARIES_BACKUP_DIRECTORY = "Binaries";
         private const string SCREENSHOTS_DIRECTORY = "Screenshots";
+        private const string KEYWORDS_FILE = "keywords.json";
 
         #endregion
 
@@ -45,6 +46,11 @@ namespace ENBManager.Infrastructure.Constants
         public static string GetPresetScreenshotsDirectory(string module, string preset)
         {
             return Path.Combine(GetScreenshotsDirectory(module), preset);
+        }
+
+        public static string GetKeywordsFilePath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), BASE_DIRECTORY, KEYWORDS_FILE);
         }
 
         #endregion

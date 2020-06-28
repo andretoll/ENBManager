@@ -77,7 +77,7 @@ namespace ENBManager.Configuration.Services
             if (File.Exists(Settings.GetFullPath()))
                 SetReadOnly(false);
 
-            string json = JsonConvert.SerializeObject(Settings);
+            string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             File.WriteAllText(Settings.GetFullPath(), json);
 
             SetReadOnly(true);

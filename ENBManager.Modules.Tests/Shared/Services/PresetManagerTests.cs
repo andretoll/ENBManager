@@ -240,14 +240,18 @@ namespace ENBManager.Modules.Tests.Shared.Services
             string validFile1 = "enbseries.txt";
             string validFile2 = "enblocal.ini";
             string validFile3 = @"enbcache\file.ini";
+            string validFile4 = @"data\shaders\file.ini";
             string invalidFile1 = @"folder\file.ini";
             string invalidFile2 = "file.txt";
+            string invalidFile3 = @"folder\subfolder\file.ini";
             CreatePreset(presetName,
                 validFile1,
                 validFile2,
                 validFile3,
+                validFile4,
                 invalidFile1,
-                invalidFile2);
+                invalidFile2,
+                invalidFile3);
             var preset = await _presetManager.GetPresetAsync(_presetRoot, presetName);
             await _presetManager.ActivatePresetAsync(_gameDir, preset);
 
@@ -255,7 +259,7 @@ namespace ENBManager.Modules.Tests.Shared.Services
             var newPreset = _presetManager.CreateExistingPreset(_gameDir);
 
             // Assert
-            Assert.That(newPreset.Files.Count(), Is.EqualTo(3));
+            Assert.That(newPreset.Files.Count(), Is.EqualTo(4));
             CollectionAssert.DoesNotContain(newPreset.Files, invalidFile1);
             CollectionAssert.DoesNotContain(newPreset.Files, invalidFile2);
         }

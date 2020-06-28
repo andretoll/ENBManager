@@ -3,6 +3,7 @@ using ENBManager.Configuration.Services;
 using ENBManager.Infrastructure.BusinessEntities;
 using ENBManager.Infrastructure.BusinessEntities.Dialogs;
 using ENBManager.Infrastructure.Constants;
+using ENBManager.Infrastructure.Enums;
 using ENBManager.Infrastructure.Exceptions;
 using ENBManager.Infrastructure.Helpers;
 using ENBManager.Infrastructure.Interfaces;
@@ -44,6 +45,8 @@ namespace ENBManager.Modules.Shared.ViewModels
         #region Public Properties
 
         public ObservableCollection<Preset> Presets => _game?.Presets;
+
+        public Keywords Keywords => KeywordsHelper.GetKeywords();
 
         #endregion
 
@@ -89,6 +92,9 @@ namespace ENBManager.Modules.Shared.ViewModels
         public DelegateCommand<Preset> DeletePresetCommand { get; }
         public DelegateCommand SaveCurrentPresetCommand { get; }
         public DelegateCommand AddPresetCommand { get; }
+        public DelegateCommand<object> AddKeywordCommand { get; set; }
+        public DelegateCommand<string> RemoveFolderKeywordCommand { get; set; }
+        public DelegateCommand<string> RemoveFileKeywordCommand { get; set; }
         public DelegateCommand<Preset> ViewFilesCommand { get; set; }
 
         #endregion
@@ -116,6 +122,9 @@ namespace ENBManager.Modules.Shared.ViewModels
             DeletePresetCommand = new DelegateCommand<Preset>(async (x) => await OnDeletePresetCommand(x));
             SaveCurrentPresetCommand = new DelegateCommand(async () => await OnSaveCurrentPresetCommand());
             AddPresetCommand = new DelegateCommand(async () => await OnAddPresetCommand());
+            AddKeywordCommand = new DelegateCommand<object>(async (x) => await OnAddKeywordCommand(x));
+            RemoveFolderKeywordCommand = new DelegateCommand<string>(async (x) => await OnRemoveFolderKeywordCommand(x));
+            RemoveFileKeywordCommand = new DelegateCommand<string>(async (x) => await OnRemoveFileKeywordCommand(x));
             ViewFilesCommand = new DelegateCommand<Preset>(OnViewFilesCommand);
 
             _listPresetView = _configurationManager.Settings.DefaultPresetView;
@@ -342,7 +351,12 @@ namespace ENBManager.Modules.Shared.ViewModels
 
             // Prompt name
             var inputDialog = new InputDialog(Strings.ENTER_A_NEW_NAME);
-            var result = await inputDialog.OpenAsync();
+            bool result = false;
+            do
+            {
+                result = await inputDialog.OpenAsync();
+            }
+            while (result && inputDialog.Value.Any(x => Path.GetInvalidPathChars().Contains(x)));
 
             if (result)
             {
@@ -362,7 +376,6 @@ namespace ENBManager.Modules.Shared.ViewModels
                         newPreset.IsActive = true;
                         Presets.Add(newPreset);
                         await OnActivatePresetCommand(newPreset);
-                        RaisePropertyChanged(nameof(Presets));
 
                         _eventAggregator.GetEvent<ShowSnackbarMessageEvent>().Publish(Strings.PRESET_ADDED);
                     }
@@ -373,8 +386,12 @@ namespace ENBManager.Modules.Shared.ViewModels
                     }
                     catch (IOException ex)
                     {
-                        await new MessageDialog(Strings.INVALID_NAME).OpenAsync();
-                        _logger.Warn(ex);
+                        await new MessageDialog(Strings.ERROR_AN_UNKNOWN_ERROR_HAS_OCCURED).OpenAsync();
+                        _logger.Error(ex);
+                    }
+                    finally
+                    {
+                        RaisePropertyChanged(nameof(Presets));
                     }
                 }
             }
@@ -403,6 +420,63 @@ namespace ENBManager.Modules.Shared.ViewModels
             });
 
             await Task.CompletedTask;
+        }
+
+        private async Task OnAddKeywordCommand(object keywordType)
+        {
+
+            var inputDialog = new InputDialog(Strings.ENTER_A_NEW_NAME);
+
+            var result = await inputDialog.OpenAsync();
+
+            if (result)
+            {
+                _logger.Info("Adding folder keyword");
+
+                try
+                {
+                    KeywordsHelper.AddKeyword((KeywordType)keywordType, inputDialog.Value);
+                }
+                catch (IdenticalNameException ex)
+                {
+                    _logger.Debug(ex.Message);
+                    await new MessageDialog(Strings.AN_ITEM_WITH_THIS_NAME_ALREADY_EXISTS).OpenAsync();
+                }
+            }
+
+            RaisePropertyChanged(nameof(Keywords));
+        }
+
+        private async Task OnRemoveFolderKeywordCommand(string keyword)
+        {
+            var confirmDialog = new ConfirmDialog(Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE);
+
+            var result = await confirmDialog.OpenAsync();
+
+            if (result)
+            {
+                _logger.Info("Removing folder keyword");
+
+                KeywordsHelper.RemoveKeyword(KeywordType.Folder, keyword);
+            }
+
+            RaisePropertyChanged(nameof(Keywords));
+        }
+
+        private async Task OnRemoveFileKeywordCommand(string keyword)
+        {
+            var confirmDialog = new ConfirmDialog(Strings.YOU_ARE_ABOUT_TO_DELETE_THIS_ITEM_ARE_YOU_SURE);
+
+            var result = await confirmDialog.OpenAsync();
+
+            if (result)
+            {
+                _logger.Info("Removing file keyword");
+
+                KeywordsHelper.RemoveKeyword(KeywordType.File, keyword);
+            }
+
+            RaisePropertyChanged(nameof(Keywords));
         }
 
         private void OnViewFilesCommand(Preset preset)

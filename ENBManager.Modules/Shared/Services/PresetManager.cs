@@ -1,4 +1,5 @@
 ﻿using ENBManager.Infrastructure.Exceptions;
+using ENBManager.Infrastructure.Helpers;
 using ENBManager.Modules.Shared.Interfaces;
 using ENBManager.Modules.Shared.Models;
 using NLog;
@@ -147,9 +148,13 @@ namespace ENBManager.Modules.Shared.Services
         {
             _logger.Debug("Creating existing preset");
 
-            var enbFiles = Directory.GetFiles(targetDir, "*enb*.*", SearchOption.TopDirectoryOnly).ToList();
+            var keywords = KeywordsHelper.GetKeywords();
 
-            var enbDirs = Directory.GetDirectories(targetDir, "*enb*", SearchOption.TopDirectoryOnly);
+            var enbFiles = Directory.EnumerateFiles(targetDir, "*.*", SearchOption.TopDirectoryOnly)
+                .Where(x => KeywordsHelper.MatchesKeyword(keywords.Files, Path.GetFileName(x))).ToList();
+
+            var enbDirs = Directory.EnumerateDirectories(targetDir, "*", SearchOption.AllDirectories)
+                .Where(x => KeywordsHelper.MatchesKeyword(keywords.Directories, x.Replace(targetDir, "")));
 
             foreach (var dir in enbDirs)
             {
@@ -160,6 +165,9 @@ namespace ENBManager.Modules.Shared.Services
                 var files = Directory.GetFiles(dir, "*", SearchOption.AllDirectories);
                 foreach (var file in files)
                 {
+                    if (enbFiles.Any(x => x == file))
+                        continue;
+
                     enbFiles.Add(file);
                 }
             }

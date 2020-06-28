@@ -58,6 +58,7 @@ namespace ENBManager.Core.Tests.ViewModels
 
             // Act
             _viewModel.GetDataCommand.Execute();
+            _viewModel.Games[0].InstalledLocation = "C:\\Game";
             bool expectingTrue = _viewModel.ContinueCommand.CanExecute();
             foreach (var game in _viewModel.Games)
             {
@@ -81,6 +82,8 @@ namespace ENBManager.Core.Tests.ViewModels
             gameModuleCatalog.Register<SkyrimModule>(null);
             gameModuleCatalog.Register<SkyrimSEModule>(null);
             gameModuleCatalog.Register<Fallout4Module>(null);
+            gameModuleCatalog.Register<Fallout3Module>(null);
+            gameModuleCatalog.Register<FalloutNVModule>(null);
 
             return gameModuleCatalog;
         }

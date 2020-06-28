@@ -132,7 +132,13 @@ namespace ENBManager.Core.ViewModels
 
             foreach (var directory in directories)
             {
-                var game = _gameModuleCatalog.GameModules.Single(x => x.Module == Path.GetFileName(directory));
+                var game = _gameModuleCatalog.GameModules.SingleOrDefault(x => x.Module == Path.GetFileName(directory));
+
+                if (game == null)
+                {
+                    _logger.Warn("Unsupported game in directory");
+                    continue;
+                }
 
                 game.Settings = 
                     ConfigurationManager<GameSettings>.LoadSettings(
