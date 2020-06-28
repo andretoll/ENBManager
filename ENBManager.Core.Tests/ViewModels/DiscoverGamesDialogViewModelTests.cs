@@ -58,6 +58,7 @@ namespace ENBManager.Core.Tests.ViewModels
 
             // Act
             _viewModel.GetDataCommand.Execute();
+            _viewModel.Games[0].InstalledLocation = "C:\\Game";
             bool expectingTrue = _viewModel.ContinueCommand.CanExecute();
             foreach (var game in _viewModel.Games)
             {

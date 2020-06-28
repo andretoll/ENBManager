@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
 using NLog;
+using System.IO;
 
 namespace ENBManager.Infrastructure.BusinessEntities
 {
@@ -112,6 +113,10 @@ namespace ENBManager.Infrastructure.BusinessEntities
             regionManager.Regions[RegionNames.TabRegion].RemoveAll();
             foreach (var type in types)
             {
+                // If installed location does not exist, skip all views except Dashboard
+                if (!Directory.Exists(InstalledLocation) & type != typeof(DashboardView))
+                    continue;
+
                 regionManager.RegisterViewWithRegion(RegionNames.TabRegion, type);
             }
 
